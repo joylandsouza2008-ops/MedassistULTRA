@@ -5,7 +5,7 @@ import html
 import pandas as pd
 import streamlit as st
 
-from core import ai, data, geo, live, state, ui, voice
+from core import ai, data, geo, live, notify, state, ui, voice
 from core.i18n import lang, t
 
 # What each emergency needs, and words that point to it (English, Kannada, Hindi)
@@ -178,7 +178,7 @@ def render_result(res, loc, family_contact="Family member"):
     # 1. The answer to what they actually said
     ui.card(kind, f"{t('urg_' + res['urgency'])} · {label}", res["reply"])
     if res["urgency"] != "routine":
-        st.link_button(t("call_108"), "tel:108", use_container_width=True, type="primary")
+        st.link_button(t("call_108"), "tel:108", width="stretch", type="primary")
     if res["do"] or res["dont"]:
         c1, c2 = st.columns(2)
         with c1:
@@ -221,7 +221,10 @@ def render_result(res, loc, family_contact="Family member"):
             m2.metric(t("m_ambulance"), t("m_requested"))
             m3.metric(t("m_family"), t("m_informed"))
 
-    # 3. Map with real hospitals from OpenStreetMap
+    # 3. Family SOS: automatic SMS + call, and one-tap buttons
+    render_sos(res, loc, ok, label)
+
+    # 4. Map with real hospitals from OpenStreetMap
     try:
         real = live.hospitals_near(loc["lat"], loc["lon"])
     except Exception:
@@ -245,7 +248,7 @@ def render_result(res, loc, family_contact="Family member"):
     else:
         st.caption(t("real_none"))
 
-    # 4. The pre-checked first aid, as a safety net under the AI answer
+    # 5. The pre-checked first aid, as a safety net under the AI answer
     if known and res["source"] == "ai":
         with st.expander(t("verified_fa")):
             tx = text_for(res["type"])
@@ -257,3 +260,41 @@ def render_result(res, loc, family_contact="Family member"):
 
     voice.say(" ".join(spoken))
     voice.listen_button(" ".join(spoken + res["do"] + res["dont"]), "em-result")
+
+
+def render_sos(res, loc, ok, label):
+    st.markdown(f"#### {t('sos_title')}")
+    people = notify.contacts()
+    if not people and not notify.ntfy_ready():
+        st.caption(t("sos_none"))
+        return
+    situation = res["summary"] or (EM_TEXT[res["type"]]["en"]["label"] if res["type"] in EM_TEXT else "Medical emergency")
+    where = f"Going to {ok['name']} ({ok['km']} km)." if ok else "Please call 108."
+    maps = notify.maps_link(loc["lat"], loc["lon"])
+    message = f"SANJEEVANI SOS: {situation} at {loc['name']}. {where} Location: {maps} Please call now."
+    spoken = (f"This is an emergency alert from Sanjeevani. {situation} at {loc['name']}. {where} "
+              f"Please call your family member now.")
+
+    if notify.auto_ready():
+        key = f"sos-{loc['name']}-{situation}"
+        resend = st.button(t("sos_resend"), key="sos_resend")
+        if resend or key not in st.session_state.sent_keys:
+            st.session_state.sent_keys.add(key)
+            with st.spinner("..."):
+                st.session_state.sos_results = notify.send_sos(message, spoken, call=res["urgency"] != "routine",
+                                                               click_url=maps)
+        for name, kind, good, err in st.session_state.get("sos_results", []):
+            if good:
+                st.success(t({"sms": "sos_sms_ok", "call": "sos_call_ok", "alarm": "sos_alarm_ok"}[kind], name=name))
+            else:
+                st.warning(t("sos_fail", name=name, err=err))
+    else:
+        st.caption("ℹ️ " + t("sos_auto_off"))
+
+    st.caption(t("sos_manual"))
+    for c in people:
+        lk = notify.links(c["phone"], message)
+        b1, b2, b3 = st.columns(3)
+        b1.link_button(t("sos_call_btn", name=c["name"]), lk["call"], width="stretch")
+        b2.link_button("💬 SMS", lk["sms"], width="stretch")
+        b3.link_button("🟢 WhatsApp", lk["whatsapp"], width="stretch")

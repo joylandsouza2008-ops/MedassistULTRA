@@ -56,7 +56,7 @@ for rank, z in enumerate(zones, 1):
             if key in st.session_state.sent_keys:
                 st.success("✅")
             elif st.button(t("dispatch"), key=key, type="primary" if z["level"] == "critical" else "secondary",
-                           use_container_width=True):
+                           width="stretch"):
                 state.add_alert("Rescue dispatch", "District control room",
                                 f"Send {', '.join(t(x) for x in z['teams']) or 'survey team'} to {z['place']} "
                                 f"({len(z['reports'])} reports, ~{z['people']} people).", key=key)
@@ -115,4 +115,4 @@ if st.button(t("sar_add_btn"), type="primary") and text.strip():
 with st.expander(t("all_reports")):
     st.dataframe(pd.DataFrame([{"ID": r["id"], "⏱": r["time"], "📡": t("src_" + r["source"]),
                                 "📝": r["text"], "⚠️": t("lvl_" + r["level"]), "🔢": r["score"]}
-                               for r in reports]), hide_index=True, use_container_width=True)
+                               for r in reports]), hide_index=True, width="stretch")

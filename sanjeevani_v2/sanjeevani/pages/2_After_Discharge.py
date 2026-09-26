@@ -31,7 +31,7 @@ with c1:
             elif result is not None:
                 st.error(t("rx_unclear"))
 with c2:
-    if st.button(t("use_sample"), use_container_width=True):
+    if st.button(t("use_sample"), width="stretch"):
         st.session_state.discharge_meds = sample["medicines"]
         st.session_state.follow_up_days = sample["follow_up_days"]
     st.caption(f"{sample['patient']}: {sample['reason']}")
@@ -47,7 +47,7 @@ for col in ["brand", "salt", "strength", "pattern", "days"]:
         df[col] = None
 edited = st.data_editor(
     df[["brand", "salt", "strength", "pattern", "days"]],
-    num_rows="dynamic", use_container_width=True, key="med_editor",
+    num_rows="dynamic", width="stretch", key="med_editor",
     column_config={
         "brand": st.column_config.TextColumn(t("col_brand")),
         "salt": st.column_config.TextColumn(t("col_salt")),
@@ -87,7 +87,7 @@ table = pd.DataFrame(rows).rename(columns={
     "Brand price / tab": t("col_bprice"), "Generic price / tab": t("col_gprice"),
     "You save for course": t("col_save")})
 table[t("col_generic")] = table[t("col_generic")].replace("Not found in demo list", t("not_in_list"))
-st.dataframe(table, use_container_width=True, hide_index=True)
+st.dataframe(table, width="stretch", hide_index=True)
 total = sum(r["You save for course"] or 0 for r in rows)
 if total:
     msg = t("savings", n=total)

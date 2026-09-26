@@ -67,6 +67,19 @@ It opens at `http://localhost:8501`. It works **without an API key** in demo mod
 3. Add the API key under *Advanced settings → Secrets*.
 4. Open the link on a phone for the demo.
 
+## Family SOS (SMS, alarms, calls)
+
+When an emergency is detected, Sanjeevani reaches the family automatically, with a Google Maps link to the location:
+
+| Channel | Cost | Setup |
+|---|---|---|
+| Real SMS from your own Android phone's SIM | Free (uses your SIM plan) | Install *SMS Gateway for Android*, Cloud mode, put its username/password in secrets |
+| Loud urgent alarm on family phones | Free | Family installs the *ntfy* app and subscribes to your `NTFY_TOPIC` |
+| Automatic phone call that speaks the alert | Paid (Twilio) | Optional |
+| One-tap Call / SMS / WhatsApp buttons | Free | Nothing |
+
+Family numbers go in the sidebar under **🆘 SOS contacts** (or `SOS_CONTACTS` in secrets). See `.streamlit/secrets.toml.example`.
+
 ## Sanjeevani API
 
 The same agent brain as an API, so WhatsApp bots, IVR phone systems, hospital software or a mobile app can use it.

@@ -64,9 +64,9 @@ st.text_area(t("message"), key="em_text", height=90)
 with st.expander(t("ex_title")):
     cols = st.columns(len(EXAMPLES))
     for col, (label, text) in zip(cols, EXAMPLES.items()):
-        col.button(label, on_click=use_example, args=(text,), use_container_width=True)
+        col.button(label, on_click=use_example, args=(text,), width="stretch")
 
-go = st.button(t("get_help"), type="primary", use_container_width=True)
+go = st.button(t("get_help"), type="primary", width="stretch")
 if (go or st.session_state.pop("em_go", False)) and st.session_state.em_text.strip():
     loc, note = resolve_place(st.session_state.em_place)
     with st.spinner(t("thinking")):

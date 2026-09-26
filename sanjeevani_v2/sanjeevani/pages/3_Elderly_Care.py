@@ -3,7 +3,7 @@ from datetime import date
 import pandas as pd
 import streamlit as st
 
-from core import ui, ai, data, meds, state, voice
+from core import notify, ui, ai, data, meds, state, voice
 from core.i18n import slot, t
 
 p = data.load("elderly_profile")
@@ -17,7 +17,7 @@ profile = t("eld_profile", name=p["name"], age=p["age"], village=p["village"], f
 ui.header(t("eld_title"), profile)
 
 # ---------- HELP button ----------
-if st.button(t("help_btn"), type="primary", use_container_width=True):
+if st.button(t("help_btn"), type="primary", width="stretch"):
     st.session_state.em_text = "Elderly person pressed HELP: chest pain"
     st.session_state.em_place = p["village"]
     st.session_state.em_go = True
@@ -117,7 +117,7 @@ with tab_missed:
     log = p["dose_log"]
     st.dataframe(pd.DataFrame(log).rename(columns={"when": t("col_when"), "brand": t("col_brand"),
                                                     "taken": t("col_taken")}),
-                 hide_index=True, use_container_width=True)
+                 hide_index=True, width="stretch")
     streak = 0
     for entry in reversed(log):
         if entry["taken"]:
@@ -128,6 +128,10 @@ with tab_missed:
         state.add_alert("Family alert", family,
                         f"{p['name']} has missed {streak} doses of {log[-1]['brand']} in a row. Please call her.",
                         key="missed-streak")
+        if notify.auto_ready() and "missed-sms" not in st.session_state.sent_keys:
+            st.session_state.sent_keys.add("missed-sms")
+            notify.send_sos(f"Sanjeevani: {p['name']} has missed {streak} doses of {log[-1]['brand']} in a row. "
+                            f"Please call her.", "", call=False)
         st.success(t("missed_sent", family=family))
     else:
         st.success(t("no_gaps"))
@@ -138,7 +142,7 @@ with tab_dup:
     st.dataframe(pd.DataFrame(med_list)[["brand", "salt", "strength", "pattern", "doctor"]].rename(columns={
         "brand": t("col_brand"), "salt": t("col_salt"), "strength": t("col_strength"),
         "pattern": t("col_pattern"), "doctor": t("col_doctor")}),
-        hide_index=True, use_container_width=True)
+        hide_index=True, width="stretch")
     dups = meds.duplicates(med_list)
     if not dups:
         st.success(t("no_dup"))
@@ -157,7 +161,7 @@ with tab_stock:
     st.dataframe(pd.DataFrame([{t("col_brand"): m["brand"], t("col_left"): m["tablets_left"],
                                 t("col_perday"): meds.per_day(m["pattern"]),
                                 t("col_daysleft"): meds.days_left(m)} for m in med_list]),
-                 hide_index=True, use_container_width=True)
+                 hide_index=True, width="stretch")
     for m in med_list:
         left = meds.days_left(m)
         if left is not None and left <= 5:

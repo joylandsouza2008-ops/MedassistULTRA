@@ -2,7 +2,7 @@
 Run with:  python -m streamlit run app.py"""
 import streamlit as st
 
-from core import i18n, state, ui
+from core import i18n, notify, state, ui
 
 st.set_page_config(page_title="Sanjeevani", page_icon="🌿", layout="wide")
 state.init()
@@ -13,6 +13,13 @@ with st.sidebar:
                  format_func=lambda k: i18n.LANGS[k], key="lang")
     st.toggle(i18n.t("voice_on"), value=True, key="voice_on")
     st.toggle(i18n.t("big_text"), value=True, key="big_text")
+    with st.expander(i18n.t("sos_contacts")):
+        defaults = notify.default_contacts()
+        for i in (1, 2):
+            d = defaults[i - 1] if len(defaults) >= i else {"name": "", "phone": ""}
+            c1, c2 = st.columns([2, 3])
+            c1.text_input(i18n.t("sos_name"), value=d["name"], key=f"sos_name_{i}")
+            c2.text_input(i18n.t("sos_phone"), value=d["phone"], key=f"sos_phone_{i}")
 
 ui.css()
 i18n.big_text_css()

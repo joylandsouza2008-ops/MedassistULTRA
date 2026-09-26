@@ -318,6 +318,23 @@ TEXT = {
     "ex_title": {"en": "Try an example", "kn": "ಉದಾಹರಣೆ ಪ್ರಯತ್ನಿಸಿ", "hi": "उदाहरण आज़माएँ"},
     "what_happened": {"en": "What happened? Speak or type in any words", "kn": "ಏನಾಯಿತು? ಯಾವುದೇ ಪದಗಳಲ್ಲಿ ಹೇಳಿ ಅಥವಾ ಬರೆಯಿರಿ", "hi": "क्या हुआ? किसी भी शब्दों में बोलिए या लिखिए"},
 
+    # ---------- family SOS ----------
+    "sos_title": {"en": "🆘 Family SOS", "kn": "🆘 ಕುಟುಂಬಕ್ಕೆ SOS", "hi": "🆘 परिवार को SOS"},
+    "sos_contacts": {"en": "🆘 SOS contacts", "kn": "🆘 SOS ಸಂಪರ್ಕಗಳು", "hi": "🆘 SOS संपर्क"},
+    "sos_name": {"en": "Name", "kn": "ಹೆಸರು", "hi": "नाम"},
+    "sos_phone": {"en": "Phone (+91...)", "kn": "ಫೋನ್ (+91...)", "hi": "फ़ोन (+91...)"},
+    "sos_none": {"en": "Add a family phone number under 🆘 SOS contacts in the sidebar.",
+                 "kn": "ಸೈಡ್‌ಬಾರ್‌ನ 🆘 SOS ಸಂಪರ್ಕಗಳಲ್ಲಿ ಕುಟುಂಬದವರ ಫೋನ್ ಸಂಖ್ಯೆ ಸೇರಿಸಿ.",
+                 "hi": "साइडबार में 🆘 SOS संपर्क में परिवार का फ़ोन नंबर जोड़ें।"},
+    "sos_sms_ok": {"en": "✅ SMS sent to {name}", "kn": "✅ {name} ಅವರಿಗೆ SMS ಕಳುಹಿಸಲಾಗಿದೆ", "hi": "✅ {name} को SMS भेजा गया"},
+    "sos_call_ok": {"en": "📞 Calling {name} now", "kn": "📞 {name} ಅವರಿಗೆ ಈಗ ಕರೆ ಮಾಡಲಾಗುತ್ತಿದೆ", "hi": "📞 {name} को अभी कॉल हो रहा है"},
+    "sos_fail": {"en": "⚠️ Couldn't reach {name} automatically: {err}", "kn": "⚠️ {name} ಅವರನ್ನು ತಾನಾಗಿ ಸಂಪರ್ಕಿಸಲಾಗಲಿಲ್ಲ: {err}", "hi": "⚠️ {name} से अपने-आप संपर्क नहीं हो सका: {err}"},
+    "sos_manual": {"en": "Tap to contact them yourself:", "kn": "ನೀವೇ ಸಂಪರ್ಕಿಸಲು ಒತ್ತಿ:", "hi": "खुद संपर्क करने के लिए दबाएँ:"},
+    "sos_call_btn": {"en": "📞 Call {name}", "kn": "📞 {name} ಗೆ ಕರೆ", "hi": "📞 {name} को कॉल"},
+    "sos_resend": {"en": "🆘 Send SOS again", "kn": "🆘 ಮತ್ತೆ SOS ಕಳುಹಿಸಿ", "hi": "🆘 फिर से SOS भेजें"},
+    "sos_auto_off": {"en": "Automatic SMS and alarms switch on when the free SMS gateway or ntfy is set up.", "kn": "ಉಚಿತ SMS ಗೇಟ್‌ವೇ ಅಥವಾ ntfy ಹೊಂದಿಸಿದಾಗ ಸ್ವಯಂ SMS ಮತ್ತು ಎಚ್ಚರಿಕೆ ಆನ್ ಆಗುತ್ತದೆ.", "hi": "मुफ़्त SMS गेटवे या ntfy सेट होने पर अपने-आप SMS और अलार्म चालू हो जाते हैं।"},
+    "sos_alarm_ok": {"en": "🔔 Loud alarm sent to the {name}", "kn": "🔔 {name} ಗೆ ಜೋರಾದ ಎಚ್ಚರಿಕೆ ಕಳುಹಿಸಲಾಗಿದೆ", "hi": "🔔 {name} पर तेज़ अलार्म भेजा गया"},
+
     # ---------- dashboard ----------
     "dash_title": {"en": "📋 Dashboard", "kn": "📋 ಡ್ಯಾಶ್‌ಬೋರ್ಡ್", "hi": "📋 डैशबोर्ड"},
     "dash_intro": {"en": "For hospitals, pharmacies and families: every action the agent took.",

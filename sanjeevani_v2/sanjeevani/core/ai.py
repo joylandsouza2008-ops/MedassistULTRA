@@ -5,7 +5,8 @@ so the demo never breaks on stage.
 
 Secrets (in .streamlit/secrets.toml or Streamlit Cloud -> Settings -> Secrets):
     NVIDIA_API_KEY = "nvapi-..."
-    NVIDIA_MODEL = "meta/llama-3.2-90b-vision-instruct"   # optional
+    NVIDIA_TEXT_MODEL = "sarvamai/sarvam-m"                              # optional
+    NVIDIA_VISION_MODEL = "meta/llama-4-maverick-17b-128e-instruct"      # optional
 """
 import base64
 import json
@@ -16,8 +17,10 @@ import urllib.request
 import streamlit as st
 
 API_URL = "https://integrate.api.nvidia.com/v1/chat/completions"
-# One model that handles both text and images (prescription and strip photos)
-DEFAULT_MODEL = "meta/llama-3.2-90b-vision-instruct"
+# Text (understanding what people say, replying in Kannada/Hindi/English)
+# and vision (reading prescriptions and medicine strips) can use different models.
+DEFAULT_VISION_MODEL = "meta/llama-4-maverick-17b-128e-instruct"
+DEFAULT_TEXT_MODEL = DEFAULT_VISION_MODEL
 
 
 def _secret(name):
@@ -33,10 +36,17 @@ def available():
     return bool(_secret("NVIDIA_API_KEY"))
 
 
+def _model(has_image):
+    if has_image:
+        return _secret("NVIDIA_VISION_MODEL") or _secret("NVIDIA_MODEL") or DEFAULT_VISION_MODEL
+    return _secret("NVIDIA_TEXT_MODEL") or _secret("NVIDIA_MODEL") or DEFAULT_TEXT_MODEL
+
+
 def _ask(content, max_tokens=1000):
     """Send one message (text, or text + image) to NVIDIA and return the reply text."""
+    has_image = any(part.get("type") == "image_url" for part in content)
     body = {
-        "model": _secret("NVIDIA_MODEL") or DEFAULT_MODEL,
+        "model": _model(has_image),
         "messages": [{"role": "user", "content": content}],
         "max_tokens": max_tokens,
         "temperature": 0.2,
@@ -50,7 +60,7 @@ def _ask(content, max_tokens=1000):
             "Accept": "application/json",
         },
     )
-    with urllib.request.urlopen(req, timeout=60) as resp:
+    with urllib.request.urlopen(req, timeout=20) as resp:
         data = json.loads(resp.read().decode("utf-8"))
     return data["choices"][0]["message"]["content"] or ""
 
