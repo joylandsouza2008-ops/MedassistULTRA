@@ -1,0 +1,11 @@
+{
+  "patient": "Ramesh (demo)",
+  "reason": "Treated for snakebite, stable at discharge",
+  "follow_up_days": 7,
+  "medicines": [
+    {"brand": "Moxiclav 625", "salt": "Amoxicillin + Clavulanic acid", "strength": "625 mg", "pattern": "1-0-1", "days": 5},
+    {"brand": "Feverex 650", "salt": "Paracetamol", "strength": "650 mg", "pattern": "1-1-1", "days": 3},
+    {"brand": "Pantoguard 40", "salt": "Pantoprazole", "strength": "40 mg", "pattern": "1-0-0", "days": 5},
+    {"brand": "Glucora 500", "salt": "Metformin", "strength": "500 mg", "pattern": "1-0-1", "days": 30}
+  ]
+}

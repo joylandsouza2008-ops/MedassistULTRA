@@ -1,0 +1,18 @@
+[
+  {"id": "H1", "name": "District Hospital, Mangaluru", "lat": 12.8703, "lon": 74.8423, "phone": "0824-0000001",
+   "stock": {"antivenom_vials": 25, "anti_rabies_vaccine": 40, "cardiac_care": 1}},
+  {"id": "H2", "name": "Taluk Hospital, Bantwal", "lat": 12.8905, "lon": 75.0349, "phone": "08255-000002",
+   "stock": {"antivenom_vials": 10, "anti_rabies_vaccine": 15, "cardiac_care": 0}},
+  {"id": "H3", "name": "Community Health Centre, Moodbidri", "lat": 13.0677, "lon": 74.9950, "phone": "08258-000003",
+   "stock": {"antivenom_vials": 0, "anti_rabies_vaccine": 8, "cardiac_care": 0}},
+  {"id": "H4", "name": "Primary Health Centre, Mulki", "lat": 13.0911, "lon": 74.7938, "phone": "0824-0000004",
+   "stock": {"antivenom_vials": 0, "anti_rabies_vaccine": 5, "cardiac_care": 0}},
+  {"id": "H5", "name": "Private Hospital, Surathkal", "lat": 13.0086, "lon": 74.7946, "phone": "0824-0000005",
+   "stock": {"antivenom_vials": 12, "anti_rabies_vaccine": 20, "cardiac_care": 1}},
+  {"id": "H6", "name": "Community Health Centre, Puttur", "lat": 12.7600, "lon": 75.2010, "phone": "08251-000006",
+   "stock": {"antivenom_vials": 6, "anti_rabies_vaccine": 10, "cardiac_care": 0}},
+  {"id": "H7", "name": "Taluk Hospital, Belthangady", "lat": 12.9900, "lon": 75.2800, "phone": "08256-000007",
+   "stock": {"antivenom_vials": 0, "anti_rabies_vaccine": 12, "cardiac_care": 0}},
+  {"id": "H8", "name": "Primary Health Centre, Ullal", "lat": 12.8058, "lon": 74.8560, "phone": "0824-0000008",
+   "stock": {"antivenom_vials": 4, "anti_rabies_vaccine": 6, "cardiac_care": 0}}
+]

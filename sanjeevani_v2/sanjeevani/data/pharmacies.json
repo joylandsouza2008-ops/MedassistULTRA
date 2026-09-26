@@ -1,0 +1,12 @@
+[
+  {"id": "P1", "name": "Jan Aushadhi Kendra, Kinnigoli", "lat": 13.0760, "lon": 74.8700,
+   "stock": {"metformin": 40, "amlodipine": 0, "telmisartan": 30, "atorvastatin": 20, "clopidogrel": 0, "pantoprazole": 50, "paracetamol": 100, "amoxicillin + clavulanic acid": 0}},
+  {"id": "P2", "name": "Sri Durga Medicals, Mulki", "lat": 13.0900, "lon": 74.7950,
+   "stock": {"metformin": 60, "amlodipine": 50, "telmisartan": 10, "atorvastatin": 30, "clopidogrel": 20, "pantoprazole": 40, "paracetamol": 80, "amoxicillin + clavulanic acid": 30}},
+  {"id": "P3", "name": "City Pharmacy, Mangaluru", "lat": 12.8710, "lon": 74.8430,
+   "stock": {"metformin": 200, "amlodipine": 150, "telmisartan": 100, "atorvastatin": 100, "clopidogrel": 80, "pantoprazole": 120, "paracetamol": 300, "amoxicillin + clavulanic acid": 60}},
+  {"id": "P4", "name": "Jan Aushadhi Kendra, Bantwal", "lat": 12.8910, "lon": 75.0340,
+   "stock": {"metformin": 50, "amlodipine": 40, "telmisartan": 0, "atorvastatin": 25, "clopidogrel": 10, "pantoprazole": 30, "paracetamol": 90, "amoxicillin + clavulanic acid": 20}},
+  {"id": "P5", "name": "Karavali Medicals, Vittal", "lat": 12.7670, "lon": 75.1160,
+   "stock": {"metformin": 30, "amlodipine": 20, "telmisartan": 15, "atorvastatin": 0, "clopidogrel": 5, "pantoprazole": 25, "paracetamol": 60, "amoxicillin + clavulanic acid": 15}}
+]

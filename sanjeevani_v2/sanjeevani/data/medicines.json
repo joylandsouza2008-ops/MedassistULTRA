@@ -1,0 +1,19 @@
+[
+  {"brand": "Amlopress 5", "salt": "Amlodipine", "strength": "5 mg", "use": "Blood pressure", "price_per_strip": 45, "tabs_per_strip": 10, "generic": false},
+  {"brand": "Amlocare 5", "salt": "Amlodipine", "strength": "5 mg", "use": "Blood pressure", "price_per_strip": 38, "tabs_per_strip": 10, "generic": false},
+  {"brand": "Amlodipine 5 (Jan Aushadhi)", "salt": "Amlodipine", "strength": "5 mg", "use": "Blood pressure", "price_per_strip": 8, "tabs_per_strip": 10, "generic": true},
+  {"brand": "Telmicare 40", "salt": "Telmisartan", "strength": "40 mg", "use": "Blood pressure", "price_per_strip": 90, "tabs_per_strip": 10, "generic": false},
+  {"brand": "Telmisartan 40 (Jan Aushadhi)", "salt": "Telmisartan", "strength": "40 mg", "use": "Blood pressure", "price_per_strip": 12, "tabs_per_strip": 10, "generic": true},
+  {"brand": "Glucora 500", "salt": "Metformin", "strength": "500 mg", "use": "Diabetes", "price_per_strip": 35, "tabs_per_strip": 10, "generic": false},
+  {"brand": "Metformin 500 (Jan Aushadhi)", "salt": "Metformin", "strength": "500 mg", "use": "Diabetes", "price_per_strip": 10, "tabs_per_strip": 10, "generic": true},
+  {"brand": "Atorlin 10", "salt": "Atorvastatin", "strength": "10 mg", "use": "Cholesterol", "price_per_strip": 95, "tabs_per_strip": 10, "generic": false},
+  {"brand": "Atorvastatin 10 (Jan Aushadhi)", "salt": "Atorvastatin", "strength": "10 mg", "use": "Cholesterol", "price_per_strip": 15, "tabs_per_strip": 10, "generic": true},
+  {"brand": "Clopirel 75", "salt": "Clopidogrel", "strength": "75 mg", "use": "Blood thinner", "price_per_strip": 80, "tabs_per_strip": 10, "generic": false},
+  {"brand": "Clopidogrel 75 (Jan Aushadhi)", "salt": "Clopidogrel", "strength": "75 mg", "use": "Blood thinner", "price_per_strip": 14, "tabs_per_strip": 10, "generic": true},
+  {"brand": "Pantoguard 40", "salt": "Pantoprazole", "strength": "40 mg", "use": "Acidity", "price_per_strip": 110, "tabs_per_strip": 10, "generic": false},
+  {"brand": "Pantoprazole 40 (Jan Aushadhi)", "salt": "Pantoprazole", "strength": "40 mg", "use": "Acidity", "price_per_strip": 12, "tabs_per_strip": 10, "generic": true},
+  {"brand": "Moxiclav 625", "salt": "Amoxicillin + Clavulanic acid", "strength": "625 mg", "use": "Antibiotic", "price_per_strip": 200, "tabs_per_strip": 10, "generic": false},
+  {"brand": "Amoxy-Clav 625 (Jan Aushadhi)", "salt": "Amoxicillin + Clavulanic acid", "strength": "625 mg", "use": "Antibiotic", "price_per_strip": 60, "tabs_per_strip": 10, "generic": true},
+  {"brand": "Feverex 650", "salt": "Paracetamol", "strength": "650 mg", "use": "Pain / fever", "price_per_strip": 30, "tabs_per_strip": 15, "generic": false},
+  {"brand": "Paracetamol 650 (Jan Aushadhi)", "salt": "Paracetamol", "strength": "650 mg", "use": "Pain / fever", "price_per_strip": 10, "tabs_per_strip": 15, "generic": true}
+]

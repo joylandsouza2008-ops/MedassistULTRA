@@ -1,0 +1,97 @@
+# 🌿 Sanjeevani
+
+**One voice-first AI agent from emergency to recovery to everyday care.**
+Built by **Team Orbit**, St Joseph Engineering College, Mangaluru, for the *Agentic AI For Billions* track.
+
+## The problem
+
+- India loses tens of thousands of people to snakebite every year, mostly farmers. Many die because the family goes to the nearest clinic, which has no antivenom.
+- After discharge, families get a paper they can't read and medicines they can't afford.
+- Elderly people take tablets from several doctors, forget doses, take the wrong strip, or take the same medicine twice under two brand names.
+
+The common problem: **people don't know where the right medicine is, how to take it, or when something is going wrong.**
+
+## What Sanjeevani does
+
+| Who | What the agent does |
+|---|---|
+| 🚨 **Emergency** (snakebite, dog bite, chest pain) | Understands a voice note in Kannada / Hindi / English, finds the nearest hospital that **actually has** the treatment in stock, alerts the hospital, ambulance and family automatically, and guides safe first aid on the way. |
+| 🏥 **After discharge** | Reads the discharge paper or prescription photo, builds a morning / afternoon / night timetable, shows cheaper Jan Aushadhi generics, reserves medicines at a nearby pharmacy, books the follow-up. |
+| 👵 **Elderly care** | Daily voice check-in at medicine time, photo check of the strip before each tablet (right medicine? expired? already taken?), missed-dose alerts to family, duplicate-medicine detection across doctors, running-out alerts with pharmacy reservation, and a HELP button that switches to emergency mode. |
+
+**Trust by design:** Sanjeevani never diagnoses and never changes a prescription. Anything medical (duplicates, substitutions) is sent to a pharmacist or doctor to confirm. If it can't read a strip, it says so instead of guessing.
+
+## How it works
+
+```
+ WhatsApp voice / photo / phone call          (real product)
+ Web app screens                              (this demo)
+              │
+              ▼
+      ┌──────────────────┐
+      │  Sanjeevani agent │  understand → decide → act → follow up
+      └──────────────────┘
+        │        │       │
+   AI (Claude)  Rules   Shared database
+   - read prescription   - hospitals + antivenom / vaccine stock
+   - read strip photo    - pharmacies + medicine stock
+   - understand voice    - medicines, salts, generic prices
+              │
+              ▼
+   Alerts: hospital, ambulance (108), family, pharmacist
+```
+
+## Run it on your laptop
+
+```bash
+git clone https://github.com/<your-username>/sanjeevani.git
+cd sanjeevani
+pip install -r requirements.txt
+streamlit run app.py
+```
+
+It opens at `http://localhost:8501`. It works **without an API key** in demo mode (sample data instead of AI reading).
+
+### Turn on the AI (optional)
+
+1. Copy `.streamlit/secrets.toml.example` to `.streamlit/secrets.toml`
+2. Paste your Anthropic API key in it.
+
+`secrets.toml` is in `.gitignore`. **Never put your API key in the code or push it to GitHub.**
+
+### Put it online (free)
+
+1. Push this repo to GitHub (public).
+2. Go to [share.streamlit.io](https://share.streamlit.io), pick the repo, main file `app.py`.
+3. Add the API key under *Advanced settings → Secrets*.
+4. Open the link on a phone for the demo.
+
+## Demo script (3 minutes)
+
+1. **Emergency:** village *Kinnigoli* → click *Snakebite (Kannada)*. The nearest centre (Mulki) has no antivenom, so Sanjeevani sends the family to Surathkal and alerts everyone.
+2. **After discharge:** *Use sample discharge paper* → timetable, generic savings, reserve, follow-up.
+3. **Elderly care:** *Photo check* → pick the wrong strip → warning. *Missed doses* → family alerted. *Duplicate medicines* → two amlodipine brands caught. *Running out* → reserve Clopirel. Press **HELP** → emergency mode.
+4. **Dashboard:** show every action the agent took.
+
+## Project structure
+
+```
+app.py                  Home page
+pages/                  Emergency, After discharge, Elderly care, Dashboard
+core/ai.py              All AI calls (with fallback so the demo never breaks)
+core/emergency.py       Emergency detection, hospital matching, first aid
+core/meds.py            Timetable, duplicates, generics, run-out prediction
+core/geo.py             Distance and travel time
+core/state.py           Alert log
+data/                   Fake demo data (hospitals, pharmacies, medicines, patients)
+```
+
+## Future scope
+
+- WhatsApp + phone-call (IVR) interface with speech-to-text and spoken replies in Kannada, Tulu, Hindi
+- Live stock updates from hospitals and Jan Aushadhi Kendras
+- Ayushman Bharat hospital integration, ASHA worker pilots in Dakshina Kannada
+
+## Disclaimer
+
+All hospitals, stock levels, medicine brands, prices and patients in this repo are **made-up demo data**. First-aid text is general guidance only. This is a hackathon prototype, not a medical device.

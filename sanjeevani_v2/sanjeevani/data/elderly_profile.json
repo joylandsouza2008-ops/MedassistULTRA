@@ -1,0 +1,22 @@
+{
+  "name": "Kamala (demo)",
+  "age": 74,
+  "village": "Kinnigoli",
+  "language": "Kannada",
+  "family_contact": {"name": "Suresh (son)", "channel": "WhatsApp"},
+  "medicines": [
+    {"brand": "Amlopress 5", "salt": "Amlodipine", "strength": "5 mg", "pattern": "1-0-0", "doctor": "Dr. Rao (heart)", "tablets_left": 20},
+    {"brand": "Atorlin 10", "salt": "Atorvastatin", "strength": "10 mg", "pattern": "0-0-1", "doctor": "Dr. Rao (heart)", "tablets_left": 18},
+    {"brand": "Clopirel 75", "salt": "Clopidogrel", "strength": "75 mg", "pattern": "0-1-0", "doctor": "Dr. Rao (heart)", "tablets_left": 3},
+    {"brand": "Glucora 500", "salt": "Metformin", "strength": "500 mg", "pattern": "1-0-1", "doctor": "Dr. Shetty (sugar)", "tablets_left": 24},
+    {"brand": "Amlocare 5", "salt": "Amlodipine", "strength": "5 mg", "pattern": "0-0-1", "doctor": "Dr. Pai (general)", "tablets_left": 12},
+    {"brand": "Pantoguard 40", "salt": "Pantoprazole", "strength": "40 mg", "pattern": "1-0-0", "doctor": "Dr. Pai (general)", "tablets_left": 9}
+  ],
+  "dose_log": [
+    {"when": "Tue night", "brand": "Glucora 500", "taken": true},
+    {"when": "Wed morning", "brand": "Glucora 500", "taken": true},
+    {"when": "Wed night", "brand": "Glucora 500", "taken": false},
+    {"when": "Thu morning", "brand": "Glucora 500", "taken": false},
+    {"when": "Thu night", "brand": "Glucora 500", "taken": false}
+  ]
+}
