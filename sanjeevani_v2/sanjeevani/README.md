@@ -17,6 +17,7 @@ The common problem: **people don't know where the right medicine is, how to take
 |---|---|
 | 🚨 **Emergency** (snakebite, dog bite, chest pain) | Understands a voice note in Kannada / Hindi / English, finds the nearest hospital that **actually has** the treatment in stock, alerts the hospital, ambulance and family automatically, and guides safe first aid on the way. |
 | 🏥 **After discharge** | Reads the discharge paper or prescription photo, builds a morning / afternoon / night timetable, shows cheaper Jan Aushadhi generics, reserves medicines at a nearby pharmacy, books the follow-up. |
+| 🌊 **Disaster mode** (floods, landslides) | Reads hundreds of calls, WhatsApp notes and SMS in Kannada / Hindi / English, scores who is in most danger (trapped, unconscious, snakebite, elderly, water rising), groups reports into rescue zones, and tells the control room which teams to send first (boat, NDRF, medical, antivenom, food). An officer confirms every dispatch. |
 | 👵 **Elderly care** | Daily voice check-in at medicine time, photo check of the strip before each tablet (right medicine? expired? already taken?), missed-dose alerts to family, duplicate-medicine detection across doctors, running-out alerts with pharmacy reservation, and a HELP button that switches to emergency mode. |
 
 **Trust by design:** Sanjeevani never diagnoses and never changes a prescription. Anything medical (duplicates, substitutions) is sent to a pharmacist or doctor to confirm. If it can't read a strip, it says so instead of guessing.
@@ -66,6 +67,26 @@ It opens at `http://localhost:8501`. It works **without an API key** in demo mod
 3. Add the API key under *Advanced settings → Secrets*.
 4. Open the link on a phone for the demo.
 
+## Sanjeevani API
+
+The same agent brain as an API, so WhatsApp bots, IVR phone systems, hospital software or a mobile app can use it.
+
+```bash
+python -m uvicorn api.main:app --reload
+```
+
+Open `http://127.0.0.1:8000/docs` to try every endpoint in the browser.
+
+| Endpoint | What it does |
+|---|---|
+| `POST /emergency` | Message + location → emergency type, nearest hospital that has the treatment, first aid |
+| `GET /hospitals?need=antivenom_vials&village=Kinnigoli` | Hospitals nearest first, filtered by what they have |
+| `PATCH /hospitals/{id}/stock` | Hospitals update their stock |
+| `POST /medicines/check` | Timetable, duplicate medicines, generic savings |
+| `POST /sar/reports` | Add a flood/landslide report, get its priority |
+| `GET /sar/zones` | Rescue zones, most urgent first, with teams to send |
+| `POST /webhook/whatsapp` | Ready for a Twilio WhatsApp number: replies with the hospital and first aid |
+
 ## Demo script (3 minutes)
 
 1. **Emergency:** village *Kinnigoli* → click *Snakebite (Kannada)*. The nearest centre (Mulki) has no antivenom, so Sanjeevani sends the family to Surathkal and alerts everyone.
@@ -77,7 +98,9 @@ It opens at `http://localhost:8501`. It works **without an API key** in demo mod
 
 ```
 app.py                  Home page
-pages/                  Emergency, After discharge, Elderly care, Dashboard
+pages/                  Home, Emergency, After discharge, Elderly care, Disaster mode, Dashboard
+api/main.py             Sanjeevani API (FastAPI)
+core/sar.py             Disaster mode: report scoring and rescue zones
 core/ai.py              All AI calls (with fallback so the demo never breaks)
 core/emergency.py       Emergency detection, hospital matching, first aid
 core/meds.py            Timetable, duplicates, generics, run-out prediction

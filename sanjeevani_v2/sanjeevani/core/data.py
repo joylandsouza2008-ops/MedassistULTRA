@@ -2,14 +2,13 @@
 In a real product this would come from a database that hospitals
 and pharmacies update themselves."""
 import json
+from functools import lru_cache
 from pathlib import Path
-
-import streamlit as st
 
 DATA_DIR = Path(__file__).resolve().parent.parent / "data"
 
 
-@st.cache_data
+@lru_cache(maxsize=None)
 def load(name):
     with open(DATA_DIR / f"{name}.json", encoding="utf-8") as f:
         return json.load(f)

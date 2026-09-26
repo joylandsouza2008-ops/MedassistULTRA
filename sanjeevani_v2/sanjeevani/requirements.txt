@@ -3,3 +3,7 @@ pandas>=2.0
 anthropic>=0.40
 gTTS>=2.5
 SpeechRecognition>=3.10
+qrcode[pil]>=7.4
+fastapi>=0.110
+uvicorn>=0.29
+python-multipart>=0.0.9

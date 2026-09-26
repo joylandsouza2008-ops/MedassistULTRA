@@ -90,3 +90,15 @@ def read_strip(file):
 def classify_emergency(text):
     result = _to_json(_ask([{"type": "text", "text": EMERGENCY_PROMPT.format(text=text)}], max_tokens=200))
     return result if isinstance(result, dict) else None
+
+
+SAR_PROMPT = """This is a flood/landslide emergency report from Karnataka, India
+(it may be in Kannada, Hindi or English): "{text}"
+Pick which of these apply: unconscious, trapped, snakebite, injured, landslide,
+water_rising, vulnerable (elderly, child, pregnant, disabled), medicine, food.
+Return ONLY JSON: {{"flags": [..], "people": number of people mentioned or 1}}"""
+
+
+def classify_sar_report(text):
+    result = _to_json(_ask([{"type": "text", "text": SAR_PROMPT.format(text=text)}], max_tokens=200))
+    return result if isinstance(result, dict) else None

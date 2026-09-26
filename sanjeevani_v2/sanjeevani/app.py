@@ -21,6 +21,7 @@ pages = [
     st.Page("pages/1_Emergency.py", title=i18n.t("nav_em"), icon="🚨"),
     st.Page("pages/2_After_Discharge.py", title=i18n.t("nav_dis"), icon="🏥"),
     st.Page("pages/3_Elderly_Care.py", title=i18n.t("nav_eld"), icon="👵"),
+    st.Page("pages/5_Disaster_Mode.py", title=i18n.t("nav_sar"), icon="🌊"),
     st.Page("pages/4_Dashboard.py", title=i18n.t("nav_dash"), icon="📋"),
 ]
 st.navigation(pages).run()
