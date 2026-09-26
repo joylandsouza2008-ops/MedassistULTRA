@@ -102,3 +102,33 @@ Return ONLY JSON: {{"flags": [..], "people": number of people mentioned or 1}}""
 def classify_sar_report(text):
     result = _to_json(_ask([{"type": "text", "text": SAR_PROMPT.format(text=text)}], max_tokens=200))
     return result if isinstance(result, dict) else None
+
+
+LANG_NAMES = {"en": "English", "kn": "Kannada (in Kannada script)", "hi": "Hindi (in Devanagari script)"}
+
+ASSIST_PROMPT = """You are Sanjeevani, a voice-first emergency helper for rural families in Karnataka, India.
+A person near "{place}" said (maybe in Kannada, Tulu, Hindi or English): "{text}"
+
+Rules you must follow:
+- Never diagnose a disease. Never name medicines or doses.
+- Give only standard, widely accepted first aid.
+- If it could be serious, tell them to call 108 and go to a hospital now. If in doubt, treat it as serious.
+- Snakebite needs antivenom at a hospital. Animal bites need the anti-rabies vaccine. Chest pain, stroke signs
+  or breathing trouble need emergency hospital care.
+- If it is clearly not an emergency, give short safe advice and suggest seeing a doctor.
+- Write "reply", "do" and "dont" in {language}, in very simple words an elderly villager understands.
+
+Return ONLY JSON, no other text:
+{{"type": "snakebite" or "dog_bite" or "chest_pain" or "other",
+  "needs": "antivenom_vials" or "anti_rabies_vaccine" or "cardiac_care" or "general",
+  "urgency": "emergency" or "urgent" or "routine",
+  "summary": "one short English sentence describing the situation",
+  "reply": "2 or 3 short sentences to speak aloud to them",
+  "do": ["up to 4 short steps"],
+  "dont": ["up to 3 short warnings"]}}"""
+
+
+def emergency_assistant(text, lang, place):
+    prompt = ASSIST_PROMPT.format(place=place, text=text, language=LANG_NAMES.get(lang, "English"))
+    result = _to_json(_ask([{"type": "text", "text": prompt}], max_tokens=900))
+    return result if isinstance(result, dict) and result.get("reply") else None

@@ -3,11 +3,10 @@ import hashlib
 import pandas as pd
 import streamlit as st
 
-from core import ai, sar, state, voice
+from core import ui, ai, sar, state, voice
 from core.i18n import t
 
-st.title(t("sar_title"))
-st.write(t("sar_intro"))
+ui.header(t("sar_title"), t("sar_intro"))
 
 event, demo_reports = sar.load_demo()
 places = event["places"]

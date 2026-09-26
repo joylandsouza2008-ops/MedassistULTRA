@@ -2,15 +2,14 @@ import hashlib
 
 import streamlit as st
 
-from core import data, emergency, voice
-from core.i18n import t
+from core import ai, data, emergency, live, ui, voice
+from core.i18n import lang, t
 
-st.title(t("em_title"))
-st.write(t("em_intro"))
+ui.header(t("em_title"), t("em_intro"))
 
-SAMPLES = {
+EXAMPLES = {
     "🐍 ಕನ್ನಡ": "ನನ್ನ ಅಪ್ಪನಿಗೆ ಹೊಲದಲ್ಲಿ ಹಾವು ಕಚ್ಚಿದೆ, ಬೇಗ ಸಹಾಯ ಮಾಡಿ",
-    "🐍 हिन्दी": "मेरे पिताजी को खेत में सांप ने काट लिया है, जल्दी मदद करो",
+    "🔥 हिन्दी": "मेरी माँ का हाथ चूल्हे पर बुरी तरह जल गया है",
     "🐕 English": "A stray dog bit my son on the leg near the school",
     "❤️ English": "My grandmother has chest pain and is sweating",
 }
@@ -19,52 +18,68 @@ st.session_state.setdefault("em_text", "")
 st.session_state.setdefault("em_place", data.villages()[0]["name"])
 
 
-def use_sample(text):
+def use_example(text):
     st.session_state.em_text = text
     st.session_state.em_go = True
 
 
-place = st.selectbox(t("where"), [v["name"] for v in data.villages()], key="em_place")
+def resolve_place(name):
+    """Demo villages first (they have partner hospitals nearby), else find the real place on the map."""
+    name = (name or "").strip()
+    for v in data.villages():
+        if v["name"].lower() == name.lower():
+            return {**v, "full": v["name"]}, None
+    if name:
+        try:
+            found = live.geocode(name)
+            if found:
+                return found, None
+        except Exception:
+            pass
+    fallback = data.villages()[0]
+    return {**fallback, "full": fallback["name"]}, t("loc_not_found", place=fallback["name"])
 
-# ---------- 1. Voice ----------
-st.markdown(f"**{t('step_voice')}**")
+
+st.text_input(t("loc_label"), key="em_place")
+
+# ---------- speak ----------
+st.markdown(f"**{t('what_happened')}**")
 audio = st.audio_input(t("record"))
 if audio is not None:
     audio_id = hashlib.md5(audio.getvalue()).hexdigest()
-    if st.session_state.get("last_audio") != audio_id:   # only transcribe a new recording
+    if st.session_state.get("last_audio") != audio_id:
         st.session_state.last_audio = audio_id
         try:
             heard = voice.transcribe(audio)
         except Exception:
             heard = None
-            st.caption(t("voice_offline"))
         if heard:
-            st.session_state.em_text = heard          # set before the text box is drawn
+            st.session_state.em_text = heard
             st.session_state.em_go = True
-            st.session_state.heard = heard
         else:
-            st.session_state.heard = None
             st.warning(t("not_heard"))
-    if st.session_state.get("heard"):
-        st.caption(t("heard", text=st.session_state.heard))
 
-# ---------- 2. Text / examples ----------
-st.markdown(f"**{t('step_text')}**")
-cols = st.columns(len(SAMPLES))
-for col, (label, text) in zip(cols, SAMPLES.items()):
-    col.button(label, on_click=use_sample, args=(text,), use_container_width=True)
-st.text_area(t("message"), key="em_text", height=80)
+st.text_area(t("message"), key="em_text", height=90)
 
-if st.button(t("get_help"), type="primary") or st.session_state.pop("em_go", False):
-    etype, summary = emergency.detect(st.session_state.em_text)
-    st.session_state.em_type = etype
-    st.session_state.em_summary = summary
+with st.expander(t("ex_title")):
+    cols = st.columns(len(EXAMPLES))
+    for col, (label, text) in zip(cols, EXAMPLES.items()):
+        col.button(label, on_click=use_example, args=(text,), use_container_width=True)
 
-etype = st.session_state.get("em_type")
-if etype:
-    if st.session_state.get("em_summary"):
-        st.caption(t("understood", s=st.session_state.em_summary))
-    emergency.render(etype, place)
-elif "em_type" in st.session_state:
-    st.error(t("unknown_em"))
-    voice.say(t("unknown_em"))
+go = st.button(t("get_help"), type="primary", use_container_width=True)
+if (go or st.session_state.pop("em_go", False)) and st.session_state.em_text.strip():
+    loc, note = resolve_place(st.session_state.em_place)
+    with st.spinner(t("thinking")):
+        st.session_state.em_result = emergency.analyze(st.session_state.em_text, lang(), loc["full"])
+    st.session_state.em_loc = loc
+    st.session_state.em_note = note
+
+if not ai.available():
+    st.caption("ℹ️ " + t("ai_needed"))
+
+if st.session_state.get("em_result"):
+    if st.session_state.get("em_note"):
+        st.caption(st.session_state.em_note)
+    loc = st.session_state.em_loc
+    st.caption(f"📍 {loc['full']}")
+    emergency.render_result(st.session_state.em_result, loc)

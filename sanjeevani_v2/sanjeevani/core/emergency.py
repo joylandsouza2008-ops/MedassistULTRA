@@ -1,9 +1,11 @@
 """Emergency agent: understand the message -> find the right hospital ->
 send alerts -> guide first aid (on screen and by voice)."""
+import html
+
 import pandas as pd
 import streamlit as st
 
-from core import ai, data, geo, state, voice
+from core import ai, data, geo, live, state, ui, voice
 from core.i18n import lang, t
 
 # What each emergency needs, and words that point to it (English, Kannada, Hindi)
@@ -100,9 +102,20 @@ def text_for(etype):
     return EM_TEXT[etype].get(lang(), EM_TEXT[etype]["en"])
 
 
+NEEDS = ["antivenom_vials", "anti_rabies_vaccine", "cardiac_care", "general"]
+FAR_KM = 60  # beyond this, a partner hospital is too far to recommend
+
+
+def keyword_detect(text):
+    low = (text or "").lower()
+    for etype, info in EMERGENCIES.items():
+        if any(k in low for k in info["keywords"]):
+            return etype
+    return None
+
+
 def detect(text):
-    """Work out what kind of emergency this is.
-    Uses AI if a key is set, otherwise keyword matching (works for Kannada/Hindi too)."""
+    """Emergency type only (used by the API). AI if available, else keywords."""
     if not text or not text.strip():
         return None, ""
     if ai.available():
@@ -112,82 +125,135 @@ def detect(text):
                 return result["type"], result.get("summary", "")
         except Exception:
             pass
-    low = text.lower()
-    for etype, info in EMERGENCIES.items():
-        if any(k in low for k in info["keywords"]):
-            return etype, ""
-    return None, ""
+    return keyword_detect(text), ""
+
+
+def analyze(text, lang_code, place_name):
+    """Understand ANYTHING the person said and build a tailored answer.
+    With an AI key: Claude answers their exact situation in their language.
+    Without: keyword rules for snakebite / dog bite / chest pain, else 'call 108'."""
+    if ai.available():
+        try:
+            r = ai.emergency_assistant(text, lang_code, place_name)
+            if r:
+                typ = r.get("type") if r.get("type") in EMERGENCIES else "other"
+                needs = r.get("needs") if r.get("needs") in NEEDS else \
+                    (EMERGENCIES[typ]["needs"] if typ in EMERGENCIES else "general")
+                urgency = r.get("urgency") if r.get("urgency") in ("emergency", "urgent", "routine") else "urgent"
+                return {"type": typ, "needs": needs, "urgency": urgency, "summary": r.get("summary", ""),
+                        "reply": str(r["reply"]), "do": [str(x) for x in (r.get("do") or [])][:4],
+                        "dont": [str(x) for x in (r.get("dont") or [])][:3], "source": "ai"}
+        except Exception:
+            pass
+    typ = keyword_detect(text)
+    if typ:
+        tx = text_for(typ)
+        return {"type": typ, "needs": EMERGENCIES[typ]["needs"], "urgency": "emergency", "summary": "",
+                "reply": t("rules_reply", label=tx["label"]), "do": tx["do"], "dont": tx["dont"],
+                "source": "rules"}
+    return {"type": "other", "needs": "general", "urgency": "urgent", "summary": "",
+            "reply": t("unknown_em"), "do": [], "dont": [], "source": "rules"}
+
+
+def find_hospitals(need, lat, lon):
+    """Nearest partner hospital overall vs nearest one that has what is needed."""
+    ranked = geo.sort_by_distance(data.hospitals(), lat, lon)
+    nearest_any = ranked[0]
+    if need == "general":
+        return nearest_any, nearest_any
+    return nearest_any, next((h for h in ranked if h["stock"].get(need, 0) > 0), None)
 
 
 def best_hospitals(etype, lat, lon):
-    """Nearest hospital overall vs nearest one that can actually treat this."""
-    need = EMERGENCIES[etype]["needs"]
-    ranked = geo.sort_by_distance(data.hospitals(), lat, lon)
-    nearest_any = ranked[0]
-    nearest_ok = next((h for h in ranked if h["stock"].get(need, 0) > 0), None)
-    return nearest_any, nearest_ok
+    return find_hospitals(EMERGENCIES[etype]["needs"], lat, lon)
 
 
-def render(etype, village_name, family_contact="Family member"):
-    tx = text_for(etype)
-    en = EM_TEXT[etype]["en"]  # alert log stays in English for hospital staff
-    need_key = EMERGENCIES[etype]["needs"]
-    v = data.village(village_name)
-    nearest_any, ok = best_hospitals(etype, v["lat"], v["lon"])
+def render_result(res, loc, family_contact="Family member"):
+    known = res["type"] in EM_TEXT
+    label = text_for(res["type"])["label"] if known else t("general_label")
+    need = res["needs"]
+    need_label = t("need_" + need)
+    kind = {"emergency": "danger", "urgent": "warn", "routine": "info"}[res["urgency"]]
 
-    st.subheader(t("em_near", label=tx["label"], village=village_name))
+    # 1. The answer to what they actually said
+    ui.card(kind, f"{t('urg_' + res['urgency'])} · {label}", res["reply"])
+    if res["urgency"] != "routine":
+        st.link_button(t("call_108"), "tel:108", use_container_width=True, type="primary")
+    if res["do"] or res["dont"]:
+        c1, c2 = st.columns(2)
+        with c1:
+            if res["do"]:
+                ui.list_card("ok", f"✅ {t('do')}", res["do"])
+        with c2:
+            if res["dont"]:
+                ui.list_card("danger", f"❌ {t('dont')}", res["dont"])
 
-    if ok is None:
-        msg = t("none_have", need=tx["need"])
-        st.error(msg)
-        voice.say(msg)
-        return
+    # 2. Where to go
+    spoken = [res["reply"]]
+    nearest_any, ok = find_hospitals(need, loc["lat"], loc["lon"])
+    if ok is None or ok["km"] > FAR_KM:
+        ui.card("warn", f"🏥 {t('m_hospital')}", t("far_away"))
+        spoken.append(t("far_away"))
+        ok = None
+    else:
+        if need != "general" and nearest_any["id"] != ok["id"]:
+            warn = t("nearest_lacks", name=nearest_any["name"], km=nearest_any["km"], need=need_label)
+            ui.card("warn", f"⚠️ {nearest_any['name']}", warn)
+            spoken.append(warn)
+        if need == "general":
+            go = t("go_to_general", name=ok["name"], km=ok["km"], eta=ok["eta"])
+        else:
+            go = t("go_to", name=ok["name"], km=ok["km"], eta=ok["eta"], need=need_label, stock=t("in_stock"))
+        ui.card("ok", f"🏥 {ok['name']}", go, extra_html=ui.pill(t("partner_label")))
+        spoken.append(go)
 
-    spoken = []
-    if nearest_any["id"] != ok["id"]:
-        warn = t("nearest_lacks", name=nearest_any["name"], km=nearest_any["km"], need=tx["need"])
-        st.warning(warn)
-        spoken.append(warn)
+        if res["urgency"] in ("emergency", "urgent"):
+            key = f"{res['type']}-{loc['name']}-{ok['id']}"
+            state.add_alert("Hospital alert", ok["name"],
+                            f"Patient coming from {loc['name']} ({res['summary'] or label}), ETA {ok['eta']} min.",
+                            key=key + "-h")
+            state.add_alert("Ambulance (108)", "Ambulance control",
+                            f"Pickup at {loc['name']}, drop at {ok['name']}.", key=key + "-a")
+            state.add_alert("Family alert", family_contact,
+                            f"Emergency at {loc['name']}. Going to {ok['name']}.", key=key + "-f")
+            m1, m2, m3 = st.columns(3)
+            m1.metric(t("m_hospital"), t("m_alerted"))
+            m2.metric(t("m_ambulance"), t("m_requested"))
+            m3.metric(t("m_family"), t("m_informed"))
 
-    stock = t("available") if need_key == "cardiac_care" else t("in_stock", n=ok["stock"][need_key])
-    go = t("go_to", name=ok["name"], km=ok["km"], eta=ok["eta"], need=tx["need"], stock=stock)
-    st.success(go)
-    spoken.append(go)
-
-    # The agent ACTS on its own: alerts go out automatically (once).
-    key = f"{etype}-{village_name}-{ok['id']}"
-    state.add_alert("Hospital alert", ok["name"],
-                    f"{en['label']} patient coming from {village_name}, ETA {ok['eta']} min. Keep {en['need']} ready.",
-                    key=key + "-h")
-    state.add_alert("Ambulance (108)", "Ambulance control",
-                    f"Pickup at {village_name} for {en['label'].lower()}, drop at {ok['name']}.", key=key + "-a")
-    state.add_alert("Family alert", family_contact,
-                    f"Emergency: {en['label'].lower()} at {village_name}. Going to {ok['name']}.", key=key + "-f")
-    c1, c2, c3 = st.columns(3)
-    c1.metric(t("m_hospital"), t("m_alerted"))
-    c2.metric(t("m_ambulance"), t("m_requested"))
-    c3.metric(t("m_family"), t("m_informed"))
-
-    points = pd.DataFrame([
-        {"lat": v["lat"], "lon": v["lon"], "color": "#C0392B", "size": 250},
-        {"lat": ok["lat"], "lon": ok["lon"], "color": "#1F6F4A", "size": 400},
-    ])
-    st.map(points, latitude="lat", longitude="lon", color="color", size="size")
+    # 3. Map with real hospitals from OpenStreetMap
+    try:
+        real = live.hospitals_near(loc["lat"], loc["lon"])
+    except Exception:
+        real = []
+    points = [{"lat": loc["lat"], "lon": loc["lon"], "color": "#C0392B", "size": 260}]
+    if ok:
+        points.append({"lat": ok["lat"], "lon": ok["lon"], "color": "#1F6F4A", "size": 420})
+    points += [{"lat": h["lat"], "lon": h["lon"], "color": "#7F8C8D", "size": 160} for h in real]
+    st.map(pd.DataFrame(points), latitude="lat", longitude="lon", color="color", size="size")
     st.caption(t("map_caption"))
 
-    st.markdown(f"#### {t('first_aid')}")
-    col_do, col_dont = st.columns(2)
-    with col_do:
-        st.markdown(f"**✅ {t('do')}**")
-        for line in tx["do"]:
-            st.markdown(f"- {line}")
-    with col_dont:
-        st.markdown(f"**❌ {t('dont')}**")
-        for line in tx["dont"]:
-            st.markdown(f"- {line}")
+    st.markdown(f"#### {t('real_title')}")
+    if real:
+        rows = []
+        for h in real[:6]:
+            phone = f'<a href="tel:{h["phone"]}">📞 {h["phone"]}</a>' if h.get("phone") else ""
+            rows.append(f'<div class="sj-real"><span>🏥 {html.escape(h["name"])}</span>'
+                        f'<span>{h["km"]} km · {phone}</span></div>')
+        st.markdown("".join(rows), unsafe_allow_html=True)
+        st.caption(t("real_note"))
+    else:
+        st.caption(t("real_none"))
+
+    # 4. The pre-checked first aid, as a safety net under the AI answer
+    if known and res["source"] == "ai":
+        with st.expander(t("verified_fa")):
+            tx = text_for(res["type"])
+            for line in tx["do"]:
+                st.markdown(f"- ✅ {line}")
+            for line in tx["dont"]:
+                st.markdown(f"- ❌ {line}")
     st.caption(t("fa_caption"))
 
-    # Speak the key instructions automatically, and offer a replay button
-    full = " ".join(spoken + tx["do"] + tx["dont"])
-    voice.say(" ".join(spoken + tx["do"][:2]))
-    voice.listen_button(full, f"em-{etype}")
+    voice.say(" ".join(spoken))
+    voice.listen_button(" ".join(spoken + res["do"] + res["dont"]), "em-result")

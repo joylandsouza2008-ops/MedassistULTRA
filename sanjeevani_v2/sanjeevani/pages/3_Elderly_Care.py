@@ -3,7 +3,7 @@ from datetime import date
 import pandas as pd
 import streamlit as st
 
-from core import ai, data, meds, state, voice
+from core import ui, ai, data, meds, state, voice
 from core.i18n import slot, t
 
 p = data.load("elderly_profile")
@@ -12,10 +12,9 @@ family = p["family_contact"]["name"]
 v = data.village(p["village"])
 med_list = p["medicines"]
 
-st.title(t("eld_title"))
 profile = t("eld_profile", name=p["name"], age=p["age"], village=p["village"], family=family,
             n=len(med_list), d=len({m["doctor"] for m in med_list}))
-st.write(profile)
+ui.header(t("eld_title"), profile)
 
 # ---------- HELP button ----------
 if st.button(t("help_btn"), type="primary", use_container_width=True):

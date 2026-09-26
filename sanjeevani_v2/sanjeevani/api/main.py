@@ -49,9 +49,15 @@ def first_aid(etype, lang):
     return {"label": tx["label"], "needs": tx["need"], "do": tx["do"], "dont": tx["dont"]}
 
 
+def stock_view(stock):
+    return {item: ("in stock" if qty > 0 else "out of stock") for item, qty in stock.items()}
+
+
 def hospital_out(h):
-    return {"id": h["id"], "name": h["name"], "km": h["km"], "eta_min": h["eta"],
-            "phone": h["phone"], "stock": h["stock"]}
+    out = {"id": h["id"], "name": h["name"], "phone": h["phone"], "stock": stock_view(h["stock"])}
+    if "km" in h:
+        out.update({"km": h["km"], "eta_min": h["eta"]})
+    return out
 
 
 # ---------- models (what the requests look like) ----------
@@ -65,7 +71,7 @@ class EmergencyIn(BaseModel):
 
 class StockIn(BaseModel):
     item: str
-    quantity: int
+    in_stock: bool
 
 
 class MedicineIn(BaseModel):
@@ -124,7 +130,7 @@ def list_hospitals(need: Optional[str] = None, lat: Optional[float] = None,
         if need not in STOCK_ITEMS:
             raise HTTPException(400, f"need must be one of {STOCK_ITEMS}")
         hs = [h for h in hs if h["stock"].get(need, 0) > 0]
-    return hs
+    return [hospital_out(h) for h in hs]
 
 
 @app.patch("/hospitals/{hospital_id}/stock", tags=["hospitals"])
@@ -132,12 +138,10 @@ def update_stock(hospital_id: str, body: StockIn):
     """How hospitals keep their stock up to date (for example after using antivenom vials)."""
     if body.item not in STOCK_ITEMS:
         raise HTTPException(400, f"item must be one of {STOCK_ITEMS}")
-    if body.quantity < 0:
-        raise HTTPException(400, "quantity cannot be negative")
     for h in data.hospitals():
         if h["id"] == hospital_id:
-            h["stock"][body.item] = body.quantity
-            return {"updated": h}
+            h["stock"][body.item] = 1 if body.in_stock else 0
+            return {"updated": hospital_out(h)}
     raise HTTPException(404, "Hospital not found")
 
 
@@ -187,7 +191,7 @@ def whatsapp_webhook(Body: str = Form(""), Latitude: Optional[float] = Form(None
         _, ok = emergency.best_hospitals(etype, Latitude, Longitude)
         fa = first_aid(etype, "en")
         if ok:
-            reply = (f"Sanjeevani: go to {ok['name']} ({ok['km']} km, ~{ok['eta']} min), {fa['needs']} available. "
+            reply = (f"Sanjeevani: go to {ok['name']} ({ok['km']} km, ~{ok['eta']} min), {fa['needs']} in stock. "
                      f"Call 108. {fa['do'][0]} {fa['dont'][0]}")
         else:
             reply = "Sanjeevani: no hospital with this treatment found nearby. Call 108 now."

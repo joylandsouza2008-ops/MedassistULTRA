@@ -2,7 +2,7 @@
 Run with:  python -m streamlit run app.py"""
 import streamlit as st
 
-from core import i18n, state
+from core import i18n, state, ui
 
 st.set_page_config(page_title="Sanjeevani", page_icon="🌿", layout="wide")
 state.init()
@@ -14,6 +14,7 @@ with st.sidebar:
     st.toggle(i18n.t("voice_on"), value=True, key="voice_on")
     st.toggle(i18n.t("big_text"), value=True, key="big_text")
 
+ui.css()
 i18n.big_text_css()
 
 pages = [

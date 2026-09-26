@@ -3,11 +3,10 @@ from datetime import date, timedelta
 import pandas as pd
 import streamlit as st
 
-from core import ai, data, meds, state, voice
+from core import ui, ai, data, meds, state, voice
 from core.i18n import slot, t
 
-st.title(t("dis_title"))
-st.write(t("dis_intro"))
+ui.header(t("dis_title"), t("dis_intro"))
 
 sample = data.load("sample_discharge")
 
