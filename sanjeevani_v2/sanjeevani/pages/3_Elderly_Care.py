@@ -1,10 +1,15 @@
 from datetime import date
 
+import urllib.parse
+
 import pandas as pd
 import streamlit as st
+import streamlit.components.v1 as components
 
-from core import notify, ui, ai, data, meds, state, voice
+from core import notify, reminders, report, ui, ai, data, meds, state, voice
 from core.i18n import slot, t
+
+slot_label = slot
 
 p = data.load("elderly_profile")
 first_name = p["name"].split(" (")[0]
@@ -24,8 +29,8 @@ if st.button(t("help_btn"), type="primary", width="stretch"):
     st.switch_page("pages/1_Emergency.py")
 st.caption(t("help_caption"))
 
-tab_today, tab_photo, tab_missed, tab_dup, tab_stock = st.tabs(
-    [t("tab_today"), t("tab_photo"), t("tab_missed"), t("tab_dup"), t("tab_stock")])
+tab_today, tab_photo, tab_missed, tab_dup, tab_stock, tab_plan = st.tabs(
+    [t("tab_today"), t("tab_photo"), t("tab_missed"), t("tab_dup"), t("tab_stock"), t("tab_plan")])
 
 # ---------- 1. Daily voice check-in ----------
 with tab_today:
@@ -177,3 +182,45 @@ with tab_stock:
                     state.add_alert("Family alert", family,
                                     f"{m['brand']} reserved at {shop['name']}. Please pick it up.")
                     st.success(t("reserved_fam"))
+
+# ---------- 6. Reminders on the phone + doctor visit summary ----------
+with tab_plan:
+    st.markdown(f"#### ⏰ {t('rem_title')}")
+    st.write(t("rem_intro", name=first_name))
+    if not notify.ntfy_ready():
+        st.caption("ℹ️ " + t("rem_off"))
+    else:
+        r1, r2 = st.columns(2)
+        if r1.button(t("rem_schedule"), type="primary", width="stretch"):
+            try:
+                done = reminders.schedule_day(
+                    med_list, first_name,
+                    lambda slot, names: t("rem_body", name=first_name, slot=slot_label(slot), meds=names))
+                times = ", ".join(w.strftime("%a %I:%M %p") for _, w in done)
+                st.success(t("rem_done", n=len(done), times=times))
+                state.add_alert("Reminders scheduled", p["name"], times)
+            except Exception as e:
+                st.error(t("rem_fail", err=str(e)[:100]))
+        if r2.button(t("rem_test"), width="stretch"):
+            try:
+                due = [m["brand"] for m in med_list][:2]
+                reminders.test_reminder(first_name, t("rem_body", name=first_name, slot=slot_label("Morning (8 AM)"),
+                                                     meds=", ".join(due)))
+                st.success(t("rem_test_done"))
+            except Exception as e:
+                st.error(t("rem_fail", err=str(e)[:100]))
+
+    st.divider()
+    st.markdown(f"#### 📋 {t('doc_title')}")
+    st.write(t("doc_intro"))
+    short, page = report.build(p, st.session_state.taken_today, st.session_state.get("chat", []),
+                               st.session_state.get("alerts", []))
+    d1, d2 = st.columns(2)
+    d1.download_button(t("doc_download"), page, file_name=f"sanjeevani_summary_{first_name}.html",
+                       mime="text/html", type="primary", width="stretch")
+    people = notify.contacts()
+    wa = notify.links(people[0]["phone"], short)["whatsapp"] if people else \
+        "https://wa.me/?text=" + urllib.parse.quote(short)
+    d2.link_button(t("doc_send"), wa, width="stretch")
+    with st.expander(t("doc_preview")):
+        components.html(page, height=640, scrolling=True)

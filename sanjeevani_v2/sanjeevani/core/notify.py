@@ -66,15 +66,29 @@ def gateway_sms(phones, text):
     raise RuntimeError(last)
 
 
-def ntfy_alarm(title, text, click_url=""):
-    """Free loud push alarm to every phone subscribed to the topic in the ntfy app."""
+def ntfy_send(title, text, priority="urgent", tags="rotating_light,sos", at=None, click_url="", topic=None):
+    """Push a notification to every phone subscribed to the topic in the ntfy app.
+    at = unix timestamp to deliver it later (ntfy holds it, up to 3 days ahead)."""
     server = (_secret("NTFY_SERVER") or "https://ntfy.sh").rstrip("/")
-    headers = {"Title": title, "Priority": "urgent", "Tags": "rotating_light,sos"}
+    headers = {"Title": title, "Priority": priority, "Tags": tags}
+    if at:
+        headers["At"] = str(int(at))
     if click_url:
         headers["Click"] = click_url
-    req = urllib.request.Request(f"{server}/{_secret('NTFY_TOPIC')}", data=text.encode("utf-8"), headers=headers)
+    topic = topic or _secret("NTFY_TOPIC")
+    req = urllib.request.Request(f"{server}/{topic}", data=text.encode("utf-8"), headers=headers)
     with urllib.request.urlopen(req, timeout=15) as resp:
         return resp.read()
+
+
+def ntfy_alarm(title, text, click_url=""):
+    """Free loud emergency alarm on the family's phones."""
+    return ntfy_send(title, text, "urgent", "rotating_light,sos", click_url=click_url)
+
+
+def reminder_topic():
+    """Reminders can go to the patient's own topic; falls back to the family topic."""
+    return _secret("NTFY_REMINDER_TOPIC") or _secret("NTFY_TOPIC")
 
 
 def normalize(phone):
