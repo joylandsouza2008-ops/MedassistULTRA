@@ -371,6 +371,14 @@ TEXT = {
     "gps_sidebar": {"en": "📍 Location: {place}", "kn": "📍 ಸ್ಥಳ: {place}", "hi": "📍 लोकेशन: {place}"},
     "gps_asking": {"en": "📍 Allow location when the browser asks, so help can find you.", "kn": "📍 ಸಹಾಯ ನಿಮ್ಮನ್ನು ತಲುಪಲು, ಬ್ರೌಸರ್ ಕೇಳಿದಾಗ ಸ್ಥಳಕ್ಕೆ ಅನುಮತಿ ನೀಡಿ.", "hi": "📍 मदद आप तक पहुँचे, इसलिए ब्राउज़र पूछे तो लोकेशन की अनुमति दें।"},
 
+    "gps_retry": {"en": "📍 Try location again", "kn": "📍 ಸ್ಥಳ ಮತ್ತೆ ಪ್ರಯತ್ನಿಸಿ", "hi": "📍 लोकेशन फिर से आज़माएँ"},
+    "gps_refresh": {"en": "🔄 Update location", "kn": "🔄 ಸ್ಥಳ ನವೀಕರಿಸಿ", "hi": "🔄 लोकेशन अपडेट करें"},
+    "gps_denied": {"en": "📍 Location not available ({reason}). Type the village instead, or allow location and try again.",
+                   "kn": "📍 ಸ್ಥಳ ಲಭ್ಯವಿಲ್ಲ ({reason}). ಊರಿನ ಹೆಸರು ಬರೆಯಿರಿ, ಅಥವಾ ಸ್ಥಳಕ್ಕೆ ಅನುಮತಿ ನೀಡಿ ಮತ್ತೆ ಪ್ರಯತ್ನಿಸಿ.",
+                   "hi": "📍 लोकेशन उपलब्ध नहीं ({reason})। गाँव का नाम लिखें, या लोकेशन की अनुमति देकर फिर से कोशिश करें।"},
+    "gps_missing": {"en": "📍 Live location needs the streamlit-js-eval package (pip install streamlit-js-eval).",
+                    "kn": "📍 ನೇರ ಸ್ಥಳಕ್ಕೆ streamlit-js-eval ಪ್ಯಾಕೇಜ್ ಬೇಕು (pip install streamlit-js-eval).",
+                    "hi": "📍 लाइव लोकेशन के लिए streamlit-js-eval पैकेज चाहिए (pip install streamlit-js-eval)।"},
     # ---------- reminders + doctor summary ----------
     "tab_plan": {"en": "⏰ Reminders & doctor", "kn": "⏰ ನೆನಪುಗಳು ಮತ್ತು ವೈದ್ಯರು", "hi": "⏰ रिमाइंडर और डॉक्टर"},
     "rem_title": {"en": "Medicine reminders on the phone", "kn": "ಫೋನಿನಲ್ಲಿ ಔಷಧಿ ನೆನಪುಗಳು", "hi": "फ़ोन पर दवा के रिमाइंडर"},
