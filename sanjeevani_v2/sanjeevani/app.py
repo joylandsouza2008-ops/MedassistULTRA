@@ -2,7 +2,7 @@
 Run with:  python -m streamlit run app.py"""
 import streamlit as st
 
-from core import i18n, location, notify, profile, state, ui
+from core import i18n, location, notify, profile, sos, state, ui
 
 st.set_page_config(page_title="MedX", page_icon="🩺", layout="wide")
 state.init()
@@ -10,8 +10,8 @@ state.init()
 # Settings in the sidebar, shared by every page
 with st.sidebar:
     with st.container(key="side_help"):
-        if st.button(i18n.t("help_btn"), key="side_help_btn", width="stretch"):
-            st.session_state.goto_help = True
+        if st.button(i18n.t("sos_now"), key="side_sos_btn", width="stretch"):
+            st.session_state.sos_pressed = True
     with st.container(key="sb_settings"):
         st.markdown(f'<div class="sj-sb-title">⚙️ {i18n.t("settings")}</div>', unsafe_allow_html=True)
         st.selectbox("🌐 Language / ಭಾಷೆ / भाषा", list(i18n.LANGS),
@@ -46,6 +46,7 @@ with st.sidebar:
                         unsafe_allow_html=True)
         st.page_link("pages/7_Profile.py", label=i18n.t("prof_setup") if not n else i18n.t("nav_profile"), icon="👤")
 
-if st.session_state.pop("goto_help", False):
-    st.switch_page("pages/1_Emergency.py")
+if st.session_state.pop("sos_pressed", False):
+    sos.trigger()
+sos.render_panel()
 pg.run()

@@ -460,6 +460,17 @@ TEXT = {
     "prof_setup": {"en": "👤 Set up my profile and SOS contacts", "kn": "👤 ನನ್ನ ಪ್ರೊಫೈಲ್ ಮತ್ತು SOS ಸಂಪರ್ಕ ಹೊಂದಿಸಿ", "hi": "👤 मेरी प्रोफ़ाइल और SOS संपर्क बनाएँ"},
     "tile_prof": {"en": "Your details and everyone who gets your SOS.", "kn": "ನಿಮ್ಮ ವಿವರಗಳು ಮತ್ತು ನಿಮ್ಮ SOS ಪಡೆಯುವ ಎಲ್ಲರೂ.", "hi": "आपकी जानकारी और आपका SOS पाने वाले सभी।"},
 
+    # ---------- one-press SOS ----------
+    "sos_now": {"en": "🆘 SOS", "kn": "🆘 SOS", "hi": "🆘 SOS"},
+    "sos_home_btn": {"en": "🆘 SOS: alert my family now", "kn": "🆘 SOS: ಈಗಲೇ ನನ್ನ ಕುಟುಂಬಕ್ಕೆ ತಿಳಿಸಿ", "hi": "🆘 SOS: अभी मेरे परिवार को बताएँ"},
+    "sos_sent_title": {"en": "🆘 SOS sent to {n} people", "kn": "🆘 {n} ಜನರಿಗೆ SOS ಕಳುಹಿಸಲಾಗಿದೆ", "hi": "🆘 {n} लोगों को SOS भेजा गया"},
+    "sos_hint": {"en": "SMS, alarm and your live location went to all your emergency contacts.",
+                 "kn": "ನಿಮ್ಮ ಎಲ್ಲಾ ತುರ್ತು ಸಂಪರ್ಕಗಳಿಗೆ SMS, ಎಚ್ಚರಿಕೆ ಮತ್ತು ನಿಮ್ಮ ನೇರ ಸ್ಥಳ ಕಳುಹಿಸಲಾಗಿದೆ.",
+                 "hi": "आपके सभी आपातकालीन संपर्कों को SMS, अलार्म और आपकी लाइव लोकेशन भेजी गई।"},
+    "sos_calling": {"en": "📞 Opening the call to {name}...", "kn": "📞 {name} ಅವರಿಗೆ ಕರೆ ತೆರೆಯಲಾಗುತ್ತಿದೆ...", "hi": "📞 {name} को कॉल खोली जा रही है..."},
+    "sos_safe": {"en": "✅ I'm safe (cancel alert)", "kn": "✅ ನಾನು ಸುರಕ್ಷಿತ (ಎಚ್ಚರಿಕೆ ರದ್ದು)", "hi": "✅ मैं सुरक्षित हूँ (अलर्ट रद्द करें)"},
+    "sos_safe_sent": {"en": "✅ Everyone has been told you're safe.", "kn": "✅ ನೀವು ಸುರಕ್ಷಿತರಾಗಿದ್ದೀರಿ ಎಂದು ಎಲ್ಲರಿಗೂ ತಿಳಿಸಲಾಗಿದೆ.", "hi": "✅ सबको बता दिया गया कि आप सुरक्षित हैं।"},
+
     # ---------- dashboard ----------
     "dash_title": {"en": "📋 Dashboard", "kn": "📋 ಡ್ಯಾಶ್‌ಬೋರ್ಡ್", "hi": "📋 डैशबोर्ड"},
     "dash_intro": {"en": "For hospitals, pharmacies and families: every action the agent took.",

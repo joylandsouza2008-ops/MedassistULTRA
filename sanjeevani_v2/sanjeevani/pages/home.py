@@ -4,7 +4,7 @@ from datetime import datetime
 
 import streamlit as st
 
-from core import ai, profile, voice
+from core import ai, profile, sos, voice
 from core.i18n import t
 from core.reminders import IST
 
@@ -36,6 +36,22 @@ div[class*="st-key-tile_"] [data-testid="stButton"] button p{color:#fff!importan
   border:none!important;min-height:3.6rem;box-shadow:0 6px 16px rgba(0,0,0,.18)}
 .st-key-tile_em .stButton button p, .st-key-tile_em [data-testid="stButton"] button p{color:#C0392B!important;
   font-size:1.35rem!important}
+/* decorations never block clicks */
+.sj-t-bg,.sj-t-go,.sj-t-icon,.sj-hero:after{pointer-events:none}
+/* the link button inside each tile */
+div[class*="st-key-tile_"] [data-testid="stPageLink"],div[class*="st-key-tile_"] .stPageLink{position:relative;z-index:3}
+div[class*="st-key-tile_"] a[data-testid="stPageLink-NavLink"],div[class*="st-key-tile_"] [data-testid="stPageLink"] a{
+  display:flex!important;justify-content:center;align-items:center;width:100%;min-height:3.1rem;margin-top:.6rem;
+  background:rgba(255,255,255,.22)!important;border:2px solid rgba(255,255,255,.6);border-radius:14px!important;
+  text-decoration:none!important}
+div[class*="st-key-tile_"] [data-testid="stPageLink"] a:hover{background:rgba(255,255,255,.36)!important}
+div[class*="st-key-tile_"] [data-testid="stPageLink"] a *{color:#fff!important;font-weight:800!important;font-size:1.1rem!important}
+.st-key-tile_em [data-testid="stPageLink"] a{background:#fff!important;border:none;min-height:3.5rem}
+.st-key-tile_em [data-testid="stPageLink"] a *{color:#C0392B!important;font-size:1.3rem!important}
+/* giant instant SOS button */
+.st-key-home_sos button{background:linear-gradient(135deg,#E74C3C,#922B21)!important;border:none!important;
+  border-radius:22px!important;min-height:4.4rem;box-shadow:0 10px 24px rgba(192,57,43,.35);animation:sjpulse 2.2s infinite}
+.st-key-home_sos button p{color:#fff!important;font-size:1.6rem!important;font-weight:800!important}
 .sj-t-bg{position:absolute;right:-8px;bottom:-26px;font-size:7.5rem;opacity:.18;line-height:1}
 .sj-t-icon{width:62px;height:62px;border-radius:18px;background:rgba(255,255,255,.2);display:flex;align-items:center;
   justify-content:center;font-size:2.1rem;margin-bottom:.7rem}
@@ -80,7 +96,7 @@ st.markdown(f"""
 
 
 def tile(key, icon, title, sub, page, arrow=True, button_label=None):
-    """A big colourful card with one big button."""
+    """A big colourful card with one big link button (page links always work)."""
     button_label = button_label or f"{t('open')} ➜"
     with st.container(key=f"tile_{key}"):
         st.markdown(
@@ -88,9 +104,14 @@ def tile(key, icon, title, sub, page, arrow=True, button_label=None):
             f'<div class="sj-t-title">{html.escape(title)}</div><div class="sj-t-sub">{html.escape(sub)}</div>'
             + ('<div class="sj-t-go">→</div>' if arrow else ""),
             unsafe_allow_html=True)
-        if st.button(button_label, key=f"go_{key}", width="stretch"):
-            st.switch_page(page)
+        st.page_link(page, label=button_label)
 
+
+# ---------- instant SOS ----------
+with st.container(key="home_sos"):
+    if st.button(t("sos_home_btn"), key="home_sos_btn", width="stretch"):
+        sos.trigger()
+        st.rerun()
 
 # ---------- the tiles ----------
 tile("em", "🆘", t("tile_em_title"), t("tile_em"), "pages/1_Emergency.py", button_label=f"🆘 {t('get_help')}")
