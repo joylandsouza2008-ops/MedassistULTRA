@@ -76,9 +76,10 @@ section[data-testid="stSidebar"] div[data-testid="stCaptionContainer"], section[
 .sj-sb-title {color: #E8A33D; font-weight: 800; letter-spacing: .06em; text-transform: uppercase; font-size: .85rem;}
 section[data-testid="stSidebar"] [data-baseweb="select"] > div,
 section[data-testid="stSidebar"] [data-baseweb="input"], section[data-testid="stSidebar"] [data-baseweb="base-input"] {
-  background: rgba(255,255,255,.12) !important; border-color: rgba(255,255,255,.28) !important;}
-section[data-testid="stSidebar"] input {color: #FFFFFF !important; -webkit-text-fill-color: #FFFFFF;}
-section[data-testid="stSidebar"] [data-baseweb="select"] svg {fill: #FFFFFF;}
+  background: #FFFFFF !important; border-color: rgba(255,255,255,.4) !important; border-radius: 12px !important;}
+section[data-testid="stSidebar"] [data-baseweb="select"] *, section[data-testid="stSidebar"] input {
+  color: #16241C !important; -webkit-text-fill-color: #16241C;}
+section[data-testid="stSidebar"] [data-baseweb="select"] svg {fill: #16241C !important;}
 section[data-testid="stSidebar"] .stButton > button {background: rgba(255,255,255,.14); border: 1px solid rgba(255,255,255,.3);}
 section[data-testid="stSidebar"] div[data-testid="stExpander"] details {background: rgba(255,255,255,.06);
   border-color: rgba(255,255,255,.2);}
