@@ -63,7 +63,7 @@ section[data-testid="stSidebar"] div[data-testid="stCaptionContainer"], section[
 [data-testid="stSidebarNav"] a[href$="/Emergency"] {background: rgba(231,76,60,.45);}
 [data-testid="stSidebarNav"] a[href$="/Emergency"]:hover {background: rgba(231,76,60,.65);}
 [data-testid="stSidebarNavSeparator"] {border-color: rgba(255,255,255,.2);}
-[data-testid="stSidebarNav"]::before {content: "🌿 Sanjeevani"; display: block; color: #FFFFFF; font-size: 1.6rem;
+[data-testid="stSidebarNav"]::before {content: "🩺 MedX"; display: block; color: #FFFFFF; font-size: 1.6rem;
   font-weight: 800; padding: .3rem .9rem .9rem;}
 .st-key-side_help button {background: linear-gradient(135deg, #E74C3C, #A93226) !important; border: none !important;
   border-radius: 16px !important; min-height: 3.4rem; box-shadow: 0 6px 16px rgba(0,0,0,.28);
@@ -107,7 +107,7 @@ THEMES = {
     "sar": ("#3498DB", "#1A5276", "🌊"),
     "dash": ("#5D6D7E", "#283747", "📋"),
     "prof": ("#E86A8A", "#943155", "👤"),
-    "home": ("#1F6F4A", "#0F3D2E", "🌿"),
+    "home": ("#1F6F4A", "#0F3D2E", "🩺"),
 }
 
 

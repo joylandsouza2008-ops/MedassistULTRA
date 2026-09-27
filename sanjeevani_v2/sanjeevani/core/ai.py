@@ -160,7 +160,7 @@ def classify_sar_report(text):
 
 LANG_NAMES = {"en": "English", "kn": "Kannada (in Kannada script)", "hi": "Hindi (in Devanagari script)"}
 
-ASSIST_PROMPT = """You are Sanjeevani, a voice-first emergency helper for rural families in Karnataka, India.
+ASSIST_PROMPT = """You are MedX, a voice-first emergency helper for rural families in Karnataka, India.
 A person near "{place}" said (maybe in Kannada, Tulu, Hindi or English): "{text}"
 
 Rules you must follow:

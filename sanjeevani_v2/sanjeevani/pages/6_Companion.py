@@ -26,14 +26,14 @@ def act_on(level, user_text, msg_id):
     loc = location.current(p["village"])
     maps = notify.maps_link(loc["lat"], loc["lon"])
     if level == "emergency":
-        text = f"SANJEEVANI SOS: {p['name']} said: \"{user_text[:100]}\". Location: {maps} Please call now."
-        spoken = f"Emergency alert from Sanjeevani. {first} may need urgent help. Please call her now."
+        text = f"MEDX SOS: {p['name']} said: \"{user_text[:100]}\". Location: {maps} Please call now."
+        spoken = f"Emergency alert from MedX. {first} may need urgent help. Please call her now."
         call = True
     elif level == "crisis":
-        text = f"Sanjeevani: {p['name']} may need emotional support right now. Please call her. Location: {maps}"
+        text = f"MedX: {p['name']} may need emotional support right now. Please call her. Location: {maps}"
         spoken, call = "", False
     else:
-        text = f"Sanjeevani daily check-in: {p['name']} said: \"{user_text[:100]}\". Please give her a call today."
+        text = f"MedX daily check-in: {p['name']} said: \"{user_text[:100]}\". Please give her a call today."
         spoken, call = "", False
     state.add_alert(f"Companion: {level}", family, text, key=f"comp-{msg_id}")
     if notify.auto_ready() and f"comp-sos-{msg_id}" not in st.session_state.sent_keys:
@@ -54,7 +54,7 @@ def handle(user_text):
 # ---------- the conversation ----------
 user_avatar = profile.photo_bytes()
 for i, m in enumerate(st.session_state.chat):
-    with st.chat_message(m["role"], avatar="🌿" if m["role"] == "assistant" else (user_avatar or "👵")):
+    with st.chat_message(m["role"], avatar="🩺" if m["role"] == "assistant" else (user_avatar or "👵")):
         st.write(m["content"])
         if m["level"] == "emergency":
             ui.card("danger", t("chat_danger"))

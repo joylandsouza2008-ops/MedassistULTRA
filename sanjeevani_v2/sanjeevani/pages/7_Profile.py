@@ -95,7 +95,7 @@ if st.button(t("prof_test"), width="stretch"):
     elif not notify.auto_ready():
         st.caption("ℹ️ " + t("sos_auto_off"))
     else:
-        results = notify.send_sos("SANJEEVANI TEST: this is only a test of the emergency alert. No action needed.",
+        results = notify.send_sos("MEDX TEST: this is only a test of the emergency alert. No action needed.",
                                   "", call=False)
         for who, kind, good, err in results:
             if good:
@@ -105,7 +105,7 @@ if st.button(t("prof_test"), width="stretch"):
 
 # one-tap buttons for every contact
 for c in people:
-    lk = notify.links(c["phone"], "Hello from Sanjeevani")
+    lk = notify.links(c["phone"], "Hello from MedX")
     b1, b2 = st.columns(2)
     b1.link_button(t("sos_call_btn", name=c["name"]), lk["call"], width="stretch")
     b2.link_button(f"🟢 WhatsApp {c['name']}", lk["whatsapp"], width="stretch")

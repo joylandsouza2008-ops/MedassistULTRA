@@ -1,4 +1,4 @@
-"""Sanjeevani API: the same agent brain, usable by other systems.
+"""MedX API: the same agent brain, usable by other systems.
 
 WhatsApp bots, hospital software, IVR phone systems or a mobile app can all
 call these endpoints instead of using the website.
@@ -21,7 +21,7 @@ from pydantic import BaseModel  # noqa: E402
 from core import data, emergency, geo, meds, sar  # noqa: E402
 
 app = FastAPI(
-    title="Sanjeevani API",
+    title="MedX API",
     version="0.1.0",
     description="Voice-first medicine agent: emergencies, medicine checks and disaster rescue. "
                 "All data is demo data.",
@@ -96,7 +96,7 @@ class ReportIn(BaseModel):
 # ---------- endpoints ----------
 @app.get("/", tags=["info"])
 def root():
-    return {"name": "Sanjeevani API", "docs": "/docs", "status": "ok"}
+    return {"name": "MedX API", "docs": "/docs", "status": "ok"}
 
 
 @app.post("/emergency", tags=["emergency"])
@@ -181,19 +181,19 @@ def rescue_zones():
 def whatsapp_webhook(Body: str = Form(""), Latitude: Optional[float] = Form(None),
                      Longitude: Optional[float] = Form(None)):
     """Ready for a Twilio WhatsApp number: a voice note's text or a message comes in,
-    Sanjeevani replies with the hospital to go to and the first two first-aid steps."""
+    MedX replies with the hospital to go to and the first two first-aid steps."""
     etype, _ = emergency.detect(Body)
     if not etype:
-        reply = "Sanjeevani: please tell us what happened (snakebite, dog bite, chest pain) and share your location. In danger? Call 108."
+        reply = "MedX: please tell us what happened (snakebite, dog bite, chest pain) and share your location. In danger? Call 108."
     elif Latitude is None or Longitude is None:
-        reply = "Sanjeevani: we understood the emergency. Please share your location so we can find the right hospital. Call 108 now."
+        reply = "MedX: we understood the emergency. Please share your location so we can find the right hospital. Call 108 now."
     else:
         _, ok = emergency.best_hospitals(etype, Latitude, Longitude)
         fa = first_aid(etype, "en")
         if ok:
-            reply = (f"Sanjeevani: go to {ok['name']} ({ok['km']} km, ~{ok['eta']} min), {fa['needs']} in stock. "
+            reply = (f"MedX: go to {ok['name']} ({ok['km']} km, ~{ok['eta']} min), {fa['needs']} in stock. "
                      f"Call 108. {fa['do'][0]} {fa['dont'][0]}")
         else:
-            reply = "Sanjeevani: no hospital with this treatment found nearby. Call 108 now."
+            reply = "MedX: no hospital with this treatment found nearby. Call 108 now."
     xml = f'<?xml version="1.0" encoding="UTF-8"?><Response><Message>{escape(reply)}</Message></Response>'
     return Response(content=xml, media_type="application/xml")

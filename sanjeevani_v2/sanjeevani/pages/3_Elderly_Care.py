@@ -135,7 +135,7 @@ with tab_missed:
                         key="missed-streak")
         if notify.auto_ready() and "missed-sms" not in st.session_state.sent_keys:
             st.session_state.sent_keys.add("missed-sms")
-            notify.send_sos(f"Sanjeevani: {p['name']} has missed {streak} doses of {log[-1]['brand']} in a row. "
+            notify.send_sos(f"MedX: {p['name']} has missed {streak} doses of {log[-1]['brand']} in a row. "
                             f"Please call her.", "", call=False)
         st.success(t("missed_sent", family=family))
     else:
@@ -216,7 +216,7 @@ with tab_plan:
     short, page = report.build(p, st.session_state.taken_today, st.session_state.get("chat", []),
                                st.session_state.get("alerts", []))
     d1, d2 = st.columns(2)
-    d1.download_button(t("doc_download"), page, file_name=f"sanjeevani_summary_{first_name}.html",
+    d1.download_button(t("doc_download"), page, file_name=f"medx_summary_{first_name}.html",
                        mime="text/html", type="primary", width="stretch")
     people = notify.contacts()
     wa = notify.links(people[0]["phone"], short)["whatsapp"] if people else \

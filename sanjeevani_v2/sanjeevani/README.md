@@ -1,4 +1,4 @@
-# 🌿 Sanjeevani
+# 🌿 MedX
 
 **One voice-first AI agent from emergency to recovery to everyday care.**
 Built by **Team Orbit**, St Joseph Engineering College, Mangaluru, for the *Agentic AI For Billions* track.
@@ -11,7 +11,7 @@ Built by **Team Orbit**, St Joseph Engineering College, Mangaluru, for the *Agen
 
 The common problem: **people don't know where the right medicine is, how to take it, or when something is going wrong.**
 
-## What Sanjeevani does
+## What MedX does
 
 | Who | What the agent does |
 |---|---|
@@ -22,7 +22,7 @@ The common problem: **people don't know where the right medicine is, how to take
 | 🌊 **Disaster mode** (floods, landslides) | Reads hundreds of calls, WhatsApp notes and SMS in Kannada / Hindi / English, scores who is in most danger (trapped, unconscious, snakebite, elderly, water rising), groups reports into rescue zones, and tells the control room which teams to send first (boat, NDRF, medical, antivenom, food). An officer confirms every dispatch. |
 | 👵 **Elderly care** | Daily voice check-in at medicine time, photo check of the strip before each tablet (right medicine? expired? already taken?), missed-dose alerts to family, duplicate-medicine detection across doctors, running-out alerts with pharmacy reservation, and a HELP button that switches to emergency mode. |
 
-**Trust by design:** Sanjeevani never diagnoses and never changes a prescription. Anything medical (duplicates, substitutions) is sent to a pharmacist or doctor to confirm. If it can't read a strip, it says so instead of guessing.
+**Trust by design:** MedX never diagnoses and never changes a prescription. Anything medical (duplicates, substitutions) is sent to a pharmacist or doctor to confirm. If it can't read a strip, it says so instead of guessing.
 
 ## How it works
 
@@ -32,7 +32,7 @@ The common problem: **people don't know where the right medicine is, how to take
               │
               ▼
       ┌──────────────────┐
-      │  Sanjeevani agent │  understand → decide → act → follow up
+      │  MedX agent │  understand → decide → act → follow up
       └──────────────────┘
         │        │       │
    AI (NVIDIA NIM)  Rules   Shared database
@@ -75,7 +75,7 @@ The app asks for location permission as soon as it opens (one tap on **Allow**).
 
 ## Family SOS (SMS, alarms, calls)
 
-When an emergency is detected, Sanjeevani reaches the family automatically, with a Google Maps link to the location:
+When an emergency is detected, MedX reaches the family automatically, with a Google Maps link to the location:
 
 | Channel | Cost | Setup |
 |---|---|---|
@@ -86,7 +86,7 @@ When an emergency is detected, Sanjeevani reaches the family automatically, with
 
 Family numbers go in the sidebar under **🆘 SOS contacts** (or `SOS_CONTACTS` in secrets). See `.streamlit/secrets.toml.example`.
 
-## Sanjeevani API
+## MedX API
 
 The same agent brain as an API, so WhatsApp bots, IVR phone systems, hospital software or a mobile app can use it.
 
@@ -108,7 +108,7 @@ Open `http://127.0.0.1:8000/docs` to try every endpoint in the browser.
 
 ## Demo script (3 minutes)
 
-1. **Emergency:** village *Kinnigoli* → click *Snakebite (Kannada)*. The nearest centre (Mulki) has no antivenom, so Sanjeevani sends the family to Surathkal and alerts everyone.
+1. **Emergency:** village *Kinnigoli* → click *Snakebite (Kannada)*. The nearest centre (Mulki) has no antivenom, so MedX sends the family to Surathkal and alerts everyone.
 2. **After discharge:** *Use sample discharge paper* → timetable, generic savings, reserve, follow-up.
 3. **Elderly care:** *Photo check* → pick the wrong strip → warning. *Missed doses* → family alerted. *Duplicate medicines* → two amlodipine brands caught. *Running out* → reserve Clopirel. Press **HELP** → emergency mode.
 4. **Dashboard:** show every action the agent took.
@@ -118,7 +118,7 @@ Open `http://127.0.0.1:8000/docs` to try every endpoint in the browser.
 ```
 app.py                  Home page
 pages/                  Home, Emergency, After discharge, Elderly care, Disaster mode, Dashboard
-api/main.py             Sanjeevani API (FastAPI)
+api/main.py             MedX API (FastAPI)
 core/sar.py             Disaster mode: report scoring and rescue zones
 core/ai.py              All AI calls (with fallback so the demo never breaks)
 core/emergency.py       Emergency detection, hospital matching, first aid

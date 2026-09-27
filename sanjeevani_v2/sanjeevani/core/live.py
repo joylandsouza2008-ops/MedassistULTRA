@@ -10,7 +10,7 @@ import streamlit as st
 
 from core import geo
 
-HEADERS = {"User-Agent": "Sanjeevani-hackathon/0.1 (Team Orbit, St Joseph Engineering College)"}
+HEADERS = {"User-Agent": "MedX-hackathon/0.1 (Team Orbit, St Joseph Engineering College)"}
 
 
 def _get_json(url, data=None, timeout=15):

@@ -271,8 +271,8 @@ def render_sos(res, loc, ok, label):
     situation = res["summary"] or (EM_TEXT[res["type"]]["en"]["label"] if res["type"] in EM_TEXT else "Medical emergency")
     where = f"Going to {ok['name']} ({ok['km']} km)." if ok else "Please call 108."
     maps = notify.maps_link(loc["lat"], loc["lon"])
-    message = f"SANJEEVANI SOS: {situation} at {loc['name']}. {where} Location: {maps} Please call now."
-    spoken = (f"This is an emergency alert from Sanjeevani. {situation} at {loc['name']}. {where} "
+    message = f"MEDX SOS: {situation} at {loc['name']}. {where} Location: {maps} Please call now."
+    spoken = (f"This is an emergency alert from MedX. {situation} at {loc['name']}. {where} "
               f"Please call your family member now.")
 
     if notify.auto_ready():

@@ -3,7 +3,7 @@
 1. FREE real SMS from your own Android phone's SIM (SMS Gateway for Android app):
        SMSGATE_USER = "..."      SMSGATE_PASS = "..."
 2. FREE loud alarm on the family's phones (ntfy app, no account needed):
-       NTFY_TOPIC = "sanjeevani-sos-some-secret-words"
+       NTFY_TOPIC = "medx-sos-some-secret-words"
 3. Paid/trial automatic phone calls + SMS (Twilio):
        TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN, TWILIO_FROM_NUMBER
 Plus one-tap Call / SMS / WhatsApp buttons that always work with no setup.
@@ -189,7 +189,7 @@ def send_sos(message, spoken, call=True, click_url=""):
 
     # 1. Loud alarm on the family app (free, one message reaches everyone subscribed)
     if ntfy_ready():
-        attempt("family app", "alarm", lambda: ntfy_alarm("SANJEEVANI SOS", message, click_url), "ntfy")
+        attempt("family app", "alarm", lambda: ntfy_alarm("MEDX SOS", message, click_url), "ntfy")
 
     for c in people:
         # 2. SMS: free phone gateway first, Twilio if that isn't set up

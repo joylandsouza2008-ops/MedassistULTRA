@@ -43,7 +43,7 @@ def build(profile, taken_today, chat, alerts):
     recent = [a for a in (alerts or []) if not a["type"].startswith("Pharmacy")][:6]
 
     # ---------- short text (for WhatsApp / SMS) ----------
-    lines = [f"Sanjeevani summary for {name}, {today}",
+    lines = [f"MedX summary for {name}, {today}",
              f"Medicines: {len(med_list)} from {len({m['doctor'] for m in med_list})} doctors.",
              f"Doses taken (recent log): {taken}/{len(log)}."]
     lines += [f"- {r}" for r in review]
@@ -60,7 +60,7 @@ def build(profile, taken_today, chat, alerts):
         or "<li>No worrying messages.</li>"
     alert_html = "".join(f"<li>{e(a['time'])} &middot; {e(a['type'])} &middot; {e(a['message'][:110])}</li>"
                          for a in recent) or "<li>None.</li>"
-    page = f"""<!doctype html><html><head><meta charset="utf-8"><title>Sanjeevani summary - {e(name)}</title>
+    page = f"""<!doctype html><html><head><meta charset="utf-8"><title>MedX summary - {e(name)}</title>
 <style>
 body{{font-family:'Noto Sans',system-ui,sans-serif;color:#16241C;max-width:820px;margin:24px auto;padding:0 16px}}
 h1{{color:#0F3D2E;margin-bottom:0}} h2{{color:#1F6F4A;border-bottom:2px solid #E3EDE7;padding-bottom:4px}}
@@ -68,14 +68,14 @@ table{{border-collapse:collapse;width:100%}} th,td{{border:1px solid #CFE3D8;pad
 th{{background:#EEF5F0}} .meta{{color:#5B6B63}} .flag li{{color:#A93226}} footer{{color:#5B6B63;font-size:.85rem;margin-top:28px}}
 </style></head><body>
 <h1>Doctor visit summary</h1>
-<p class="meta">{e(name)} &middot; {profile['age']} years &middot; {e(profile['village'])} &middot; prepared {today} by Sanjeevani</p>
+<p class="meta">{e(name)} &middot; {profile['age']} years &middot; {e(profile['village'])} &middot; prepared {today} by MedX</p>
 <h2>Current medicines</h2>
 <table><tr><th>Medicine</th><th>Salt</th><th>Morning-Afternoon-Night</th><th>Prescribed by</th><th>Days left</th></tr>{rows}</table>
 <h2>Please review</h2><ul class="flag">{review_html}</ul>
 <h2>Adherence</h2>
 <p>Recent doses taken: <b>{taken} of {len(log)}</b>. Longest current gap: {streak} missed in a row.<br>
 Confirmed today: {e(', '.join(today_ok)) or 'none yet'}.</p>
-<h2>What the patient told Sanjeevani</h2><ul>{concern_html}</ul>
+<h2>What the patient told MedX</h2><ul>{concern_html}</ul>
 <h2>Recent alerts</h2><ul>{alert_html}</ul>
 <footer>Generated automatically from reminders, photo checks and daily conversations. Not a diagnosis.
 All prescribing decisions remain with the treating doctor.</footer>

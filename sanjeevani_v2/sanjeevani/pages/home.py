@@ -13,7 +13,7 @@ st.markdown("""
 <style>
 .sj-hero{background:linear-gradient(135deg,#0F3D2E 0%,#1F6F4A 100%);border-radius:24px;padding:2rem 2.2rem;
   margin-bottom:1.2rem;position:relative;overflow:hidden}
-.sj-hero:after{content:"🌿";position:absolute;right:-10px;bottom:-40px;font-size:11rem;opacity:.12}
+.sj-hero:after{content:"🩺";position:absolute;right:-10px;bottom:-40px;font-size:11rem;opacity:.12}
 .sj-greet{color:#E8A33D;font-size:1.25rem;font-weight:700}
 .sj-title{color:#fff;font-size:2.9rem;font-weight:800;line-height:1.1;margin:.25rem 0 .5rem}
 .sj-tag{color:#CFE3D8;font-size:1.15rem;max-width:720px}
@@ -73,7 +73,7 @@ chip = f'<div class="sj-chip">📍 {html.escape(gps["name"])}</div>' if gps else
 st.markdown(f"""
 <div class="sj-hero">
 <div style="display:flex;align-items:center;gap:1rem">{avatar}<div class="sj-greet">{html.escape(greet_line)} 🙏</div></div>
-<div class="sj-title">Sanjeevani</div>
+<div class="sj-title">MedX</div>
 <div class="sj-tag">{html.escape(t('how_help'))}</div>
 {chip}
 </div>""", unsafe_allow_html=True)

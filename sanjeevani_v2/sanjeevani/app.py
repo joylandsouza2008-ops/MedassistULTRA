@@ -1,10 +1,10 @@
-"""Sanjeevani: one voice-first AI agent from emergency to recovery to everyday care.
+"""MedX: one voice-first AI agent from emergency to recovery to everyday care.
 Run with:  python -m streamlit run app.py"""
 import streamlit as st
 
 from core import i18n, location, notify, profile, state, ui
 
-st.set_page_config(page_title="Sanjeevani", page_icon="🌿", layout="wide")
+st.set_page_config(page_title="MedX", page_icon="🩺", layout="wide")
 state.init()
 
 # Settings in the sidebar, shared by every page
@@ -25,7 +25,7 @@ ui.css()
 i18n.big_text_css()
 
 pages = [
-    st.Page("pages/home.py", title=i18n.t("nav_home"), icon="🌿", default=True),
+    st.Page("pages/home.py", title=i18n.t("nav_home"), icon="🏠", default=True),
     st.Page("pages/1_Emergency.py", title=i18n.t("nav_em"), icon="🚨"),
     st.Page("pages/7_Profile.py", title=i18n.t("nav_profile"), icon="👤"),
     st.Page("pages/2_After_Discharge.py", title=i18n.t("nav_dis"), icon="🏥"),
