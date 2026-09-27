@@ -19,7 +19,7 @@ med_list = p["medicines"]
 
 profile = t("eld_profile", name=p["name"], age=p["age"], village=p["village"], family=family,
             n=len(med_list), d=len({m["doctor"] for m in med_list}))
-ui.header(t("eld_title"), profile)
+ui.header(t("eld_title"), profile, "eld")
 
 # ---------- HELP button ----------
 if st.button(t("help_btn"), type="primary", width="stretch"):

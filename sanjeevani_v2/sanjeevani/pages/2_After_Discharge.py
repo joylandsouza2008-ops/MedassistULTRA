@@ -6,7 +6,7 @@ import streamlit as st
 from core import ui, ai, data, meds, state, voice
 from core.i18n import slot, t
 
-ui.header(t("dis_title"), t("dis_intro"))
+ui.header(t("dis_title"), t("dis_intro"), "dis")
 
 sample = data.load("sample_discharge")
 

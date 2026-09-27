@@ -6,7 +6,7 @@ import streamlit as st
 from core import ui, ai, sar, state, voice
 from core.i18n import t
 
-ui.header(t("sar_title"), t("sar_intro"))
+ui.header(t("sar_title"), t("sar_intro"), "sar")
 
 event, demo_reports = sar.load_demo()
 places = event["places"]

@@ -9,7 +9,7 @@ p = companion.patient()
 first = p["name"].split(" (")[0]
 family = p["family_contact"]["name"]
 
-ui.header(t("chat_title"), t("chat_intro", name=first))
+ui.header(t("chat_title"), t("chat_intro", name=first), "chat")
 if not ai.available():
     st.caption("ℹ️ " + t("chat_no_ai"))
 

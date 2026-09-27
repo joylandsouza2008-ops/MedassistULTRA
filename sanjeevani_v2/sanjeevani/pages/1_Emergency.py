@@ -5,7 +5,7 @@ import streamlit as st
 from core import ai, data, emergency, live, ui, voice
 from core.i18n import lang, t
 
-ui.header(t("em_title"), t("em_intro"))
+ui.header(t("em_title"), t("em_intro"), "em")
 
 EXAMPLES = {
     "🐍 ಕನ್ನಡ": "ನನ್ನ ಅಪ್ಪನಿಗೆ ಹೊಲದಲ್ಲಿ ಹಾವು ಕಚ್ಚಿದೆ, ಬೇಗ ಸಹಾಯ ಮಾಡಿ",

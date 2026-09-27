@@ -28,6 +28,32 @@ div[data-testid="stExpander"] details {border-radius: 14px;}
 .sj-real {display: flex; justify-content: space-between; gap: 1rem; padding: .55rem .2rem;
   border-bottom: 1px solid #E3EDE7; color: #16241C;}
 .sj-real a {color: #1F6F4A; font-weight: 700; text-decoration: none;}
+
+/* ---------- shared page style (colour comes from the page header) ---------- */
+.sj-head {position: relative; overflow: hidden; border-radius: 24px; padding: 1.6rem 1.8rem;
+  background: linear-gradient(135deg, var(--sj-a2, #0F3D2E), var(--sj-a1, #1F6F4A));
+  box-shadow: 0 10px 26px rgba(0,0,0,.14);}
+.sj-head-icon {position: absolute; right: -6px; bottom: -34px; font-size: 8.5rem; opacity: .16; line-height: 1;}
+.stApp h3, .stApp h4 {border-left: 6px solid var(--sj-a1, #1F6F4A); padding-left: .65rem;}
+.stButton > button[kind="primary"], .stDownloadButton > button[kind="primary"], .stLinkButton > a[kind="primary"] {
+  background: linear-gradient(135deg, var(--sj-a2, #0F3D2E), var(--sj-a1, #1F6F4A)) !important;
+  border: none !important; color: #fff !important; box-shadow: 0 6px 16px rgba(0,0,0,.14);}
+.stButton > button, .stDownloadButton > button, .stLinkButton > a {transition: transform .12s ease, box-shadow .12s ease;}
+.stButton > button:hover, .stDownloadButton > button:hover, .stLinkButton > a:hover {transform: translateY(-2px);
+  box-shadow: 0 10px 20px rgba(0,0,0,.14);}
+.stButton > button[kind="secondary"], .stLinkButton > a[kind="secondary"] {border: 2px solid var(--sj-a1, #1F6F4A);}
+.stTabs [data-baseweb="tab-list"] {gap: .4rem; flex-wrap: wrap;}
+.stTabs [data-baseweb="tab"] {border-radius: 999px; padding: .45rem 1rem; background: #F2F5F3; font-weight: 700;}
+.stTabs [aria-selected="true"] {background: var(--sj-a1, #1F6F4A) !important; color: #fff !important;}
+.stTabs [data-baseweb="tab-highlight"], .stTabs [data-baseweb="tab-border"] {display: none;}
+div[data-testid="stVerticalBlockBorderWrapper"] {border-radius: 20px;}
+div[data-testid="stMetric"] {border-top: 5px solid var(--sj-a1, #1F6F4A);}
+div[data-testid="stChatMessage"] {border-radius: 20px; padding: .8rem 1rem; background: #F7F9F8;}
+div[data-testid="stExpander"] details {border-radius: 16px; border-color: #E3EDE7;}
+div[data-testid="stDataFrame"] {border-radius: 14px; overflow: hidden;}
+.stTextInput input, .stTextArea textarea {border-radius: 14px; font-size: 1.1rem;}
+section[data-testid="stSidebar"] {background: linear-gradient(180deg, #EEF5F0, #FFFFFF);}
+.st-key-home_link a {border-radius: 999px; background: #F2F5F3; font-weight: 700; padding: .25rem .9rem;}
 </style>
 """
 
@@ -43,9 +69,28 @@ def css():
     st.markdown(CSS, unsafe_allow_html=True)
 
 
-def header(title, subtitle=""):
+THEMES = {
+    "em": ("#E74C3C", "#A93226", "🚨"),
+    "dis": ("#1ABC9C", "#117864", "🏥"),
+    "eld": ("#F39C12", "#BA4A00", "👵"),
+    "chat": ("#A569BD", "#5B2C6F", "💬"),
+    "sar": ("#3498DB", "#1A5276", "🌊"),
+    "dash": ("#5D6D7E", "#283747", "📋"),
+    "home": ("#1F6F4A", "#0F3D2E", "🌿"),
+}
+
+
+def header(title, subtitle="", theme="home"):
+    """Coloured page banner. Also sets the page's accent colour for buttons, tabs and headings."""
+    a1, a2, icon = THEMES.get(theme, THEMES["home"])
+    st.markdown(f"<style>:root{{--sj-a1:{a1};--sj-a2:{a2};}}</style>", unsafe_allow_html=True)
+    if theme != "home":
+        from core.i18n import t
+        with st.container(key="home_link"):
+            st.page_link("pages/home.py", label=t("nav_home"), icon="🏠")
     sub = f'<div class="sj-head-sub">{html.escape(subtitle)}</div>' if subtitle else ""
-    st.markdown(f'<div class="sj-head"><div class="sj-head-title">{html.escape(title)}</div>{sub}</div>',
+    st.markdown(f'<div class="sj-head"><div class="sj-head-icon">{icon}</div>'
+                f'<div class="sj-head-title">{html.escape(title)}</div>{sub}</div>',
                 unsafe_allow_html=True)
 
 

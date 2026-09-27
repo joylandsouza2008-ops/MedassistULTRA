@@ -4,7 +4,7 @@ import streamlit as st
 from core import ui, data, state
 from core.i18n import t
 
-ui.header(t("dash_title"), t("dash_intro"))
+ui.header(t("dash_title"), t("dash_intro"), "dash")
 
 st.markdown(f"### {t('actions')}")
 if st.session_state.alerts:
