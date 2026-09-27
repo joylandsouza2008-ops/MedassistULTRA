@@ -42,7 +42,17 @@ ALERT: crisis      (talk of self-harm)"""
 
 
 def patient():
-    p = data.load("elderly_profile")
+    """The demo patient, personalised with the user's own profile when they've filled it in."""
+    p = dict(data.load("elderly_profile"))
+    try:
+        from core import profile
+        me = profile.get()
+        if me.get("name"):
+            p["name"] = me["name"]
+            p["age"] = me.get("age") or p["age"]
+            p["village"] = me.get("village") or p["village"]
+    except Exception:
+        pass
     return p
 
 

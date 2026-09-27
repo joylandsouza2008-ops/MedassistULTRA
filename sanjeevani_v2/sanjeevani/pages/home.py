@@ -50,6 +50,7 @@ div[class*="st-key-tile_"] [data-testid="stButton"] button p{color:#fff!importan
 .st-key-tile_eld{background:linear-gradient(135deg,#BA4A00,#F39C12)}
 .st-key-tile_chat{background:linear-gradient(135deg,#5B2C6F,#A569BD)}
 .st-key-tile_sar{background:linear-gradient(135deg,#1A5276,#3498DB)}
+.st-key-tile_prof{background:linear-gradient(135deg,#943155,#E86A8A)}
 .st-key-tile_dash{background:linear-gradient(135deg,#283747,#5D6D7E)}
 @keyframes sjpulse{0%{box-shadow:0 0 0 0 rgba(231,76,60,.55)}70%{box-shadow:0 0 0 18px rgba(231,76,60,0)}
   100%{box-shadow:0 0 0 0 rgba(231,76,60,0)}}
@@ -99,7 +100,9 @@ with row1[1]:
 with row1[2]:
     tile("chat", "💬", t("nav_chat"), t("tile_chat"), "pages/6_Companion.py")
 
-row2 = st.columns(2)
+row2 = st.columns(3)
+with row2[2]:
+    tile("prof", "👤", t("nav_profile"), t("tile_prof"), "pages/7_Profile.py", button_label=f"{t('open')} ➜")
 with row2[0]:
     tile("sar", "🌊", t("nav_sar"), t("tile_sar"), "pages/5_Disaster_Mode.py")
 with row2[1]:

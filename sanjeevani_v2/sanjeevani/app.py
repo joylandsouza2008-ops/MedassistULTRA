@@ -2,7 +2,7 @@
 Run with:  python -m streamlit run app.py"""
 import streamlit as st
 
-from core import i18n, location, notify, state, ui
+from core import i18n, location, notify, profile, state, ui
 
 st.set_page_config(page_title="Sanjeevani", page_icon="🌿", layout="wide")
 state.init()
@@ -19,13 +19,7 @@ with st.sidebar:
         st.toggle(i18n.t("voice_on"), value=True, key="voice_on")
         st.toggle(i18n.t("big_text"), value=True, key="big_text")
         location.auto_detect()
-    with st.expander(i18n.t("sos_contacts")):
-        defaults = notify.default_contacts()
-        for i in (1, 2):
-            d = defaults[i - 1] if len(defaults) >= i else {"name": "", "phone": ""}
-            c1, c2 = st.columns([2, 3])
-            c1.text_input(i18n.t("sos_name"), value=d["name"], key=f"sos_name_{i}")
-            c2.text_input(i18n.t("sos_phone"), value=d["phone"], key=f"sos_phone_{i}")
+    profile.load_once()
 
 ui.css()
 i18n.big_text_css()
@@ -33,6 +27,7 @@ i18n.big_text_css()
 pages = [
     st.Page("pages/home.py", title=i18n.t("nav_home"), icon="🌿", default=True),
     st.Page("pages/1_Emergency.py", title=i18n.t("nav_em"), icon="🚨"),
+    st.Page("pages/7_Profile.py", title=i18n.t("nav_profile"), icon="👤"),
     st.Page("pages/2_After_Discharge.py", title=i18n.t("nav_dis"), icon="🏥"),
     st.Page("pages/3_Elderly_Care.py", title=i18n.t("nav_eld"), icon="👵"),
     st.Page("pages/6_Companion.py", title=i18n.t("nav_chat"), icon="💬"),
@@ -40,6 +35,14 @@ pages = [
     st.Page("pages/4_Dashboard.py", title=i18n.t("nav_dash"), icon="📋"),
 ]
 pg = st.navigation(pages)
+with st.sidebar:
+    with st.container(key="sb_profile"):
+        me = profile.get()
+        n = len(notify.contacts())
+        if me.get("name") or n:
+            st.caption(i18n.t("prof_sidebar", name=me.get("name") or "—", n=n))
+        st.page_link("pages/7_Profile.py", label=i18n.t("prof_setup") if not n else i18n.t("nav_profile"), icon="👤")
+
 if st.session_state.pop("goto_help", False):
     st.switch_page("pages/1_Emergency.py")
 pg.run()

@@ -1,12 +1,12 @@
-"""All AI calls live here, using NVIDIA NIM (build.nvidia.com).
-NVIDIA's API is OpenAI-compatible, so we just send HTTP requests to it.
-If no key is set, the pages use sample data or keyword rules instead,
-so the demo never breaks on stage.
+"""All AI calls live here.
+Uses Groq (very fast, free) first and NVIDIA NIM as an automatic backup.
+Both are OpenAI-compatible, so we just send HTTP requests.
+If no key is set, the pages use sample data or keyword rules instead.
 
-Secrets (in .streamlit/secrets.toml or Streamlit Cloud -> Settings -> Secrets):
-    NVIDIA_API_KEY = "nvapi-..."
-    NVIDIA_TEXT_MODEL = "sarvamai/sarvam-m"                              # optional
-    NVIDIA_VISION_MODEL = "meta/llama-4-maverick-17b-128e-instruct"      # optional
+Secrets (.streamlit/secrets.toml or Streamlit Cloud -> Settings -> Secrets):
+    GROQ_API_KEY = "gsk_..."          # from console.groq.com (free, no card)
+    NVIDIA_API_KEY = "nvapi-..."      # optional backup
+Optional model overrides: GROQ_TEXT_MODEL, GROQ_VISION_MODEL, NVIDIA_MODEL
 """
 import base64
 import json
@@ -16,11 +16,13 @@ import urllib.request
 
 import streamlit as st
 
-API_URL = "https://integrate.api.nvidia.com/v1/chat/completions"
-# Text (understanding what people say, replying in Kannada/Hindi/English)
-# and vision (reading prescriptions and medicine strips) can use different models.
-DEFAULT_VISION_MODEL = "meta/llama-4-maverick-17b-128e-instruct"
-DEFAULT_TEXT_MODEL = DEFAULT_VISION_MODEL
+# ---------- providers: Groq (fast, free) first, NVIDIA as backup ----------
+PROVIDERS = {
+    "groq": {"url": "https://api.groq.com/openai/v1/chat/completions", "key": "GROQ_API_KEY",
+             "text": "llama-3.3-70b-versatile", "vision": "meta-llama/llama-4-scout-17b-16e-instruct"},
+    "nvidia": {"url": "https://integrate.api.nvidia.com/v1/chat/completions", "key": "NVIDIA_API_KEY",
+               "text": "meta/llama-3.2-11b-vision-instruct", "vision": "meta/llama-3.2-11b-vision-instruct"},
+}
 
 
 def _secret(name):
@@ -32,36 +34,44 @@ def _secret(name):
     return os.getenv(name)
 
 
+def _ready_providers():
+    return [name for name, p in PROVIDERS.items() if _secret(p["key"])]
+
+
 def available():
-    return bool(_secret("NVIDIA_API_KEY"))
+    return bool(_ready_providers())
 
 
-def _model(has_image):
-    if has_image:
-        return _secret("NVIDIA_VISION_MODEL") or _secret("NVIDIA_MODEL") or DEFAULT_VISION_MODEL
-    return _secret("NVIDIA_TEXT_MODEL") or _secret("NVIDIA_MODEL") or DEFAULT_TEXT_MODEL
+def _model(provider, has_image):
+    """Model for this provider. Override in secrets, e.g. GROQ_TEXT_MODEL / NVIDIA_VISION_MODEL / NVIDIA_MODEL."""
+    prefix = provider.upper()
+    kind = "VISION" if has_image else "TEXT"
+    return (_secret(f"{prefix}_{kind}_MODEL") or _secret(f"{prefix}_MODEL")
+            or PROVIDERS[provider]["vision" if has_image else "text"])
 
 
-def _complete(messages, max_tokens=1000, has_image=False, temperature=0.2):
-    """Send a list of chat messages to NVIDIA and return the reply text."""
-    body = {
-        "model": _model(has_image),
-        "messages": messages,
-        "max_tokens": max_tokens,
-        "temperature": temperature,
-    }
+def _call(provider, messages, max_tokens, has_image, temperature):
+    p = PROVIDERS[provider]
+    body = {"model": _model(provider, has_image), "messages": messages,
+            "max_tokens": max_tokens, "temperature": temperature}
     req = urllib.request.Request(
-        API_URL,
-        data=json.dumps(body).encode("utf-8"),
-        headers={
-            "Authorization": f"Bearer {_secret('NVIDIA_API_KEY')}",
-            "Content-Type": "application/json",
-            "Accept": "application/json",
-        },
-    )
+        p["url"], data=json.dumps(body).encode("utf-8"),
+        headers={"Authorization": f"Bearer {_secret(p['key'])}",
+                 "Content-Type": "application/json", "Accept": "application/json"})
     with urllib.request.urlopen(req, timeout=20) as resp:
         data = json.loads(resp.read().decode("utf-8"))
     return data["choices"][0]["message"]["content"] or ""
+
+
+def _complete(messages, max_tokens=1000, has_image=False, temperature=0.2):
+    """Try each provider that has a key (Groq first); if one fails, the next one answers."""
+    last = None
+    for provider in _ready_providers():
+        try:
+            return _call(provider, messages, max_tokens, has_image, temperature)
+        except Exception as e:
+            last = e
+    raise last or RuntimeError("No AI key set")
 
 
 def _ask(content, max_tokens=1000):

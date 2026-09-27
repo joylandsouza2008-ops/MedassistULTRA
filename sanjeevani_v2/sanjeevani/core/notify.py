@@ -117,13 +117,14 @@ def default_contacts():
 
 
 def contacts():
-    """Family contacts entered in the sidebar (up to 2)."""
-    out = []
-    for i in (1, 2):
-        name = (st.session_state.get(f"sos_name_{i}") or "").strip()
-        phone = normalize(st.session_state.get(f"sos_phone_{i}"))
-        if phone:
-            out.append({"name": name or f"Family {i}", "phone": phone})
+    """Every emergency contact from the user's profile (no limit)."""
+    from core import profile
+    out, seen = [], set()
+    for c in profile.get().get("contacts", []):
+        phone = normalize(c.get("phone"))
+        if phone and phone not in seen:
+            seen.add(phone)
+            out.append({"name": (c.get("name") or "").strip() or "Family", "phone": phone})
     return out
 
 
@@ -171,9 +172,12 @@ def place_call(to, spoken):
 def send_sos(message, spoken, call=True, click_url=""):
     """Reach the family through every channel that is set up.
     Returns a list of (name, kind, ok, error) where kind is sms / call / alarm."""
-    from core import state
+    from core import profile, state
     results = []
     people = contacts()
+    who = profile.info_line()
+    if who and who not in message:
+        message = f"{message} [{who}]"
 
     def attempt(name, kind, fn, to):
         try:
