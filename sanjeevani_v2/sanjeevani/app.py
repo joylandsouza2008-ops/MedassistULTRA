@@ -9,11 +9,16 @@ state.init()
 
 # Settings in the sidebar, shared by every page
 with st.sidebar:
-    st.selectbox("🌐 Language / ಭಾಷೆ / भाषा", list(i18n.LANGS),
-                 format_func=lambda k: i18n.LANGS[k], key="lang")
-    st.toggle(i18n.t("voice_on"), value=True, key="voice_on")
-    st.toggle(i18n.t("big_text"), value=True, key="big_text")
-    location.auto_detect()
+    with st.container(key="side_help"):
+        if st.button(i18n.t("help_btn"), key="side_help_btn", width="stretch"):
+            st.session_state.goto_help = True
+    with st.container(key="sb_settings"):
+        st.markdown(f'<div class="sj-sb-title">⚙️ {i18n.t("settings")}</div>', unsafe_allow_html=True)
+        st.selectbox("🌐 Language / ಭಾಷೆ / भाषा", list(i18n.LANGS),
+                     format_func=lambda k: i18n.LANGS[k], key="lang")
+        st.toggle(i18n.t("voice_on"), value=True, key="voice_on")
+        st.toggle(i18n.t("big_text"), value=True, key="big_text")
+        location.auto_detect()
     with st.expander(i18n.t("sos_contacts")):
         defaults = notify.default_contacts()
         for i in (1, 2):
@@ -34,4 +39,7 @@ pages = [
     st.Page("pages/5_Disaster_Mode.py", title=i18n.t("nav_sar"), icon="🌊"),
     st.Page("pages/4_Dashboard.py", title=i18n.t("nav_dash"), icon="📋"),
 ]
-st.navigation(pages).run()
+pg = st.navigation(pages)
+if st.session_state.pop("goto_help", False):
+    st.switch_page("pages/1_Emergency.py")
+pg.run()

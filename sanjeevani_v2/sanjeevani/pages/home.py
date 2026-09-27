@@ -24,8 +24,18 @@ st.markdown("""
 div[class*="st-key-tile_"]{position:relative;border-radius:24px;padding:1.3rem 1.4rem 1.1rem;min-height:185px;
   overflow:hidden;box-shadow:0 8px 22px rgba(15,61,46,.16);transition:transform .15s ease, box-shadow .15s ease}
 div[class*="st-key-tile_"]:hover{transform:translateY(-5px);box-shadow:0 16px 32px rgba(15,61,46,.24)}
-div[class*="st-key-tile_"] .stButton{position:absolute;inset:0;z-index:5;margin:0}
-div[class*="st-key-tile_"] .stButton button{width:100%;height:100%;opacity:0;cursor:pointer}
+div[class*="st-key-tile_"] .stButton button{background:rgba(255,255,255,.2)!important;color:#fff!important;
+  border:1.5px solid rgba(255,255,255,.55)!important;border-radius:14px!important;font-weight:800!important;
+  font-size:1.08rem!important;min-height:3rem;margin-top:.5rem;position:relative;z-index:2}
+div[class*="st-key-tile_"] .stButton button:hover{background:rgba(255,255,255,.34)!important}
+div[class*="st-key-tile_"] .stButton button p{color:#fff!important;font-weight:800!important}
+div[class*="st-key-tile_"] [data-testid="stButton"] button{background:rgba(255,255,255,.2)!important;
+  border:1.5px solid rgba(255,255,255,.55)!important;border-radius:14px!important;min-height:3rem}
+div[class*="st-key-tile_"] [data-testid="stButton"] button p{color:#fff!important;font-weight:800!important}
+.st-key-tile_em .stButton button, .st-key-tile_em [data-testid="stButton"] button{background:#fff!important;
+  border:none!important;min-height:3.6rem;box-shadow:0 6px 16px rgba(0,0,0,.18)}
+.st-key-tile_em .stButton button p, .st-key-tile_em [data-testid="stButton"] button p{color:#C0392B!important;
+  font-size:1.35rem!important}
 .sj-t-bg{position:absolute;right:-8px;bottom:-26px;font-size:7.5rem;opacity:.18;line-height:1}
 .sj-t-icon{width:62px;height:62px;border-radius:18px;background:rgba(255,255,255,.2);display:flex;align-items:center;
   justify-content:center;font-size:2.1rem;margin-bottom:.7rem}
@@ -65,20 +75,21 @@ st.markdown(f"""
 </div>""", unsafe_allow_html=True)
 
 
-def tile(key, icon, title, sub, page, arrow=True):
-    """A big colourful card; the whole card is clickable."""
+def tile(key, icon, title, sub, page, arrow=True, button_label=None):
+    """A big colourful card with one big button."""
+    button_label = button_label or f"{t('open')} ➜"
     with st.container(key=f"tile_{key}"):
         st.markdown(
             f'<div class="sj-t-bg">{icon}</div><div class="sj-t-icon">{icon}</div>'
             f'<div class="sj-t-title">{html.escape(title)}</div><div class="sj-t-sub">{html.escape(sub)}</div>'
             + ('<div class="sj-t-go">→</div>' if arrow else ""),
             unsafe_allow_html=True)
-        if st.button(title, key=f"go_{key}"):
+        if st.button(button_label, key=f"go_{key}", width="stretch"):
             st.switch_page(page)
 
 
 # ---------- the tiles ----------
-tile("em", "🆘", t("tile_em_title"), t("tile_em"), "pages/1_Emergency.py")
+tile("em", "🆘", t("tile_em_title"), t("tile_em"), "pages/1_Emergency.py", button_label=f"🆘 {t('get_help')}")
 
 row1 = st.columns(3)
 with row1[0]:

@@ -403,6 +403,7 @@ TEXT = {
     "doc_preview": {"en": "See the summary", "kn": "ಸಾರಾಂಶ ನೋಡಿ", "hi": "सारांश देखें"},
 
     # ---------- home tiles ----------
+    "settings": {"en": "Settings", "kn": "ಸೆಟ್ಟಿಂಗ್‌ಗಳು", "hi": "सेटिंग्स"},
     "greet_morning": {"en": "Good morning", "kn": "ಶುಭೋದಯ", "hi": "सुप्रभात"},
     "greet_afternoon": {"en": "Good afternoon", "kn": "ಶುಭ ಮಧ್ಯಾಹ್ನ", "hi": "नमस्कार"},
     "greet_evening": {"en": "Good evening", "kn": "ಶುಭ ಸಂಜೆ", "hi": "शुभ संध्या"},

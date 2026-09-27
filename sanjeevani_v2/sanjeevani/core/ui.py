@@ -52,7 +52,36 @@ div[data-testid="stChatMessage"] {border-radius: 20px; padding: .8rem 1rem; back
 div[data-testid="stExpander"] details {border-radius: 16px; border-color: #E3EDE7;}
 div[data-testid="stDataFrame"] {border-radius: 14px; overflow: hidden;}
 .stTextInput input, .stTextArea textarea {border-radius: 14px; font-size: 1.1rem;}
-section[data-testid="stSidebar"] {background: linear-gradient(180deg, #EEF5F0, #FFFFFF);}
+/* ---------- sidebar: dark green, rounded menu, settings card ---------- */
+section[data-testid="stSidebar"] {background: linear-gradient(180deg, #0F3D2E 0%, #17583A 100%) !important;}
+section[data-testid="stSidebar"] p, section[data-testid="stSidebar"] span, section[data-testid="stSidebar"] label,
+section[data-testid="stSidebar"] div[data-testid="stCaptionContainer"], section[data-testid="stSidebar"] summary {color: #EAF4EE !important;}
+[data-testid="stSidebarNav"] a {border-radius: 14px; margin: 4px 6px; padding: .55rem .9rem; transition: background .12s;}
+[data-testid="stSidebarNav"] a:hover {background: rgba(255,255,255,.12);}
+[data-testid="stSidebarNav"] a[aria-current="page"] {background: rgba(255,255,255,.2); box-shadow: inset 5px 0 0 #E8A33D;}
+[data-testid="stSidebarNav"] a span {color: #FFFFFF !important; font-weight: 600;}
+[data-testid="stSidebarNav"] a[href$="/Emergency"] {background: rgba(231,76,60,.45);}
+[data-testid="stSidebarNav"] a[href$="/Emergency"]:hover {background: rgba(231,76,60,.65);}
+[data-testid="stSidebarNavSeparator"] {border-color: rgba(255,255,255,.2);}
+[data-testid="stSidebarNav"]::before {content: "🌿 Sanjeevani"; display: block; color: #FFFFFF; font-size: 1.6rem;
+  font-weight: 800; padding: .3rem .9rem .9rem;}
+.st-key-side_help button {background: linear-gradient(135deg, #E74C3C, #A93226) !important; border: none !important;
+  border-radius: 16px !important; min-height: 3.4rem; box-shadow: 0 6px 16px rgba(0,0,0,.28);
+  animation: sjpulse 2.2s infinite;}
+.st-key-side_help button p {color: #FFFFFF !important; font-size: 1.3rem !important; font-weight: 800 !important;}
+@keyframes sjpulse {0% {box-shadow: 0 0 0 0 rgba(231,76,60,.55);} 70% {box-shadow: 0 0 0 14px rgba(231,76,60,0);}
+  100% {box-shadow: 0 0 0 0 rgba(231,76,60,0);}}
+.st-key-sb_settings {background: rgba(255,255,255,.08); border: 1px solid rgba(255,255,255,.15);
+  border-radius: 18px; padding: .9rem .9rem .6rem;}
+.sj-sb-title {color: #E8A33D; font-weight: 800; letter-spacing: .06em; text-transform: uppercase; font-size: .85rem;}
+section[data-testid="stSidebar"] [data-baseweb="select"] > div,
+section[data-testid="stSidebar"] [data-baseweb="input"], section[data-testid="stSidebar"] [data-baseweb="base-input"] {
+  background: rgba(255,255,255,.12) !important; border-color: rgba(255,255,255,.28) !important;}
+section[data-testid="stSidebar"] input {color: #FFFFFF !important; -webkit-text-fill-color: #FFFFFF;}
+section[data-testid="stSidebar"] [data-baseweb="select"] svg {fill: #FFFFFF;}
+section[data-testid="stSidebar"] .stButton > button {background: rgba(255,255,255,.14); border: 1px solid rgba(255,255,255,.3);}
+section[data-testid="stSidebar"] div[data-testid="stExpander"] details {background: rgba(255,255,255,.06);
+  border-color: rgba(255,255,255,.2);}
 .st-key-home_link a {border-radius: 999px; background: #F2F5F3; font-weight: 700; padding: .25rem .9rem;}
 </style>
 """
