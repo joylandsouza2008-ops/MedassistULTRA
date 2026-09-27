@@ -1,62 +1,108 @@
+import html
 import io
+from datetime import datetime
 
 import streamlit as st
 
 from core import ai, voice
 from core.i18n import t
+from core.reminders import IST
 
+# ---------- look and feel ----------
 st.markdown("""
 <style>
-.sj-hero{background:#0F3D2E;border-radius:20px;padding:2.4rem 2.2rem;margin-bottom:1.2rem}
-.sj-kicker{color:#9FC2B1;text-transform:uppercase;letter-spacing:.08em;font-size:.85rem;margin-bottom:.4rem}
-.sj-title{color:#FFFFFF;font-size:3.2rem;font-weight:800;line-height:1.1;margin-bottom:.6rem}
-.sj-tag{color:#E8A33D;font-size:1.4rem;font-style:italic;margin-bottom:.7rem}
-.sj-sub{color:#CFE3D8;font-size:1.1rem;max-width:760px}
-.sj-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:14px;margin:.4rem 0 1.4rem 0}
-.sj-stat{background:#EEF5F0;border-radius:16px;padding:1.2rem 1.1rem}
-.sj-num{color:#1F6F4A;font-size:2.4rem;font-weight:800;line-height:1.1}
-.sj-lbl{color:#34463C;font-size:1rem;margin-top:.3rem}
+.sj-hero{background:linear-gradient(135deg,#0F3D2E 0%,#1F6F4A 100%);border-radius:24px;padding:2rem 2.2rem;
+  margin-bottom:1.2rem;position:relative;overflow:hidden}
+.sj-hero:after{content:"🌿";position:absolute;right:-10px;bottom:-40px;font-size:11rem;opacity:.12}
+.sj-greet{color:#E8A33D;font-size:1.25rem;font-weight:700}
+.sj-title{color:#fff;font-size:2.9rem;font-weight:800;line-height:1.1;margin:.25rem 0 .5rem}
+.sj-tag{color:#CFE3D8;font-size:1.15rem;max-width:720px}
+.sj-chip{display:inline-block;margin-top:.9rem;background:rgba(255,255,255,.14);color:#fff;border-radius:999px;
+  padding:.3rem .9rem;font-weight:600;font-size:.95rem}
+
+/* big clickable tiles: the whole card is one button */
+div[class*="st-key-tile_"]{position:relative;border-radius:24px;padding:1.3rem 1.4rem 1.1rem;min-height:185px;
+  overflow:hidden;box-shadow:0 8px 22px rgba(15,61,46,.16);transition:transform .15s ease, box-shadow .15s ease}
+div[class*="st-key-tile_"]:hover{transform:translateY(-5px);box-shadow:0 16px 32px rgba(15,61,46,.24)}
+div[class*="st-key-tile_"] .stButton{position:absolute;inset:0;z-index:5;margin:0}
+div[class*="st-key-tile_"] .stButton button{width:100%;height:100%;opacity:0;cursor:pointer}
+.sj-t-bg{position:absolute;right:-8px;bottom:-26px;font-size:7.5rem;opacity:.18;line-height:1}
+.sj-t-icon{width:62px;height:62px;border-radius:18px;background:rgba(255,255,255,.2);display:flex;align-items:center;
+  justify-content:center;font-size:2.1rem;margin-bottom:.7rem}
+.sj-t-title{color:#fff;font-size:1.45rem;font-weight:800;line-height:1.2}
+.sj-t-sub{color:rgba(255,255,255,.9);font-size:1rem;margin-top:.35rem;line-height:1.45;max-width:92%}
+.sj-t-go{position:absolute;right:1.1rem;top:1rem;color:#fff;font-size:1.6rem;font-weight:800;opacity:.85}
+
+.st-key-tile_em{background:linear-gradient(135deg,#A93226,#E74C3C);min-height:160px!important;
+  animation:sjpulse 2.2s infinite}
+.st-key-tile_em .sj-t-title{font-size:2.1rem}
+.st-key-tile_dis{background:linear-gradient(135deg,#117864,#1ABC9C)}
+.st-key-tile_eld{background:linear-gradient(135deg,#BA4A00,#F39C12)}
+.st-key-tile_chat{background:linear-gradient(135deg,#5B2C6F,#A569BD)}
+.st-key-tile_sar{background:linear-gradient(135deg,#1A5276,#3498DB)}
+.st-key-tile_dash{background:linear-gradient(135deg,#283747,#5D6D7E)}
+@keyframes sjpulse{0%{box-shadow:0 0 0 0 rgba(231,76,60,.55)}70%{box-shadow:0 0 0 18px rgba(231,76,60,0)}
+  100%{box-shadow:0 0 0 0 rgba(231,76,60,0)}}
+
+.sj-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:14px;margin:.4rem 0 1.2rem}
+.sj-stat{background:#EEF5F0;border-radius:18px;padding:1.1rem}
+.sj-num{color:#1F6F4A;font-size:2.2rem;font-weight:800;line-height:1.1}
+.sj-lbl{color:#34463C;font-size:.98rem;margin-top:.3rem}
 </style>
 """, unsafe_allow_html=True)
 
-# ---------- hero ----------
+# ---------- greeting ----------
+hour = datetime.now(IST).hour
+greet = t("greet_morning") if hour < 12 else t("greet_afternoon") if hour < 17 else t("greet_evening")
+gps = st.session_state.get("gps")
+chip = f'<div class="sj-chip">📍 {html.escape(gps["name"])}</div>' if gps else ""
 st.markdown(f"""
 <div class="sj-hero">
-<div class="sj-kicker">Team Orbit · Agentic AI For Billions</div>
-<div class="sj-title">🌿 Sanjeevani</div>
-<div class="sj-tag">{t('home_tag')}</div>
-<div class="sj-sub">{t('home_intro')}</div>
-</div>
-""", unsafe_allow_html=True)
+<div class="sj-greet">{html.escape(greet)} 🙏</div>
+<div class="sj-title">Sanjeevani</div>
+<div class="sj-tag">{html.escape(t('how_help'))}</div>
+{chip}
+</div>""", unsafe_allow_html=True)
 
-c1, c2 = st.columns([1, 3])
-with c1:
-    st.page_link("pages/1_Emergency.py", label=t("hero_try"), icon="🚨")
-with c2:
-    voice.listen_button(f"{t('home_tag')} {t('home_intro')}", "home")
 
-# ---------- impact numbers ----------
+def tile(key, icon, title, sub, page, arrow=True):
+    """A big colourful card; the whole card is clickable."""
+    with st.container(key=f"tile_{key}"):
+        st.markdown(
+            f'<div class="sj-t-bg">{icon}</div><div class="sj-t-icon">{icon}</div>'
+            f'<div class="sj-t-title">{html.escape(title)}</div><div class="sj-t-sub">{html.escape(sub)}</div>'
+            + ('<div class="sj-t-go">→</div>' if arrow else ""),
+            unsafe_allow_html=True)
+        if st.button(title, key=f"go_{key}"):
+            st.switch_page(page)
+
+
+# ---------- the tiles ----------
+tile("em", "🆘", t("tile_em_title"), t("tile_em"), "pages/1_Emergency.py")
+
+row1 = st.columns(3)
+with row1[0]:
+    tile("dis", "🏥", t("nav_dis"), t("tile_dis"), "pages/2_After_Discharge.py")
+with row1[1]:
+    tile("eld", "👵", t("nav_eld"), t("tile_eld"), "pages/3_Elderly_Care.py")
+with row1[2]:
+    tile("chat", "💬", t("nav_chat"), t("tile_chat"), "pages/6_Companion.py")
+
+row2 = st.columns(2)
+with row2[0]:
+    tile("sar", "🌊", t("nav_sar"), t("tile_sar"), "pages/5_Disaster_Mode.py")
+with row2[1]:
+    tile("dash", "📋", t("nav_dash"), t("tile_dash"), "pages/4_Dashboard.py")
+
+voice.listen_button(" ".join([greet, t("how_help"), t("tile_em_title"), t("nav_dis"), t("nav_eld"),
+                              t("nav_chat"), t("nav_sar")]), "home")
+
+# ---------- why it matters ----------
 st.markdown(f"### {t('impact_title')}")
 stats = [("~58,000", t("imp1")), ("13+ crore", t("imp2")), ("₹351", t("imp3")), ("3", t("imp4"))]
 st.markdown('<div class="sj-grid">' + "".join(
-    f'<div class="sj-stat"><div class="sj-num">{n}</div><div class="sj-lbl">{l}</div></div>' for n, l in stats
-) + "</div>", unsafe_allow_html=True)
-
-# ---------- what it does ----------
-st.markdown(f"### {t('what_title')}")
-cards = [
-    ("🚨", "nav_em", "card_em", "pages/1_Emergency.py"),
-    ("🏥", "nav_dis", "card_dis", "pages/2_After_Discharge.py"),
-    ("👵", "nav_eld", "card_eld", "pages/3_Elderly_Care.py"),
-    ("🌊", "nav_sar", "card_sar", "pages/5_Disaster_Mode.py"),
-]
-cols = st.columns(4)
-for col, (icon, title, text, page) in zip(cols, cards):
-    with col:
-        with st.container(border=True):
-            st.markdown(f"#### {icon} {t(title)}")
-            st.write(t(text))
-            st.page_link(page, label=t("open"), icon="➡️")
+    f'<div class="sj-stat"><div class="sj-num">{n}</div><div class="sj-lbl">{html.escape(l)}</div></div>'
+    for n, l in stats) + "</div>", unsafe_allow_html=True)
 
 # ---------- live counter + QR ----------
 left, right = st.columns([2, 1])
@@ -66,7 +112,6 @@ with left:
         st.success(t("ai_on"))
     else:
         st.caption(t("ai_off"))
-    st.page_link("pages/4_Dashboard.py", label=t("see_dash"), icon="📋")
 
 
 def app_url():

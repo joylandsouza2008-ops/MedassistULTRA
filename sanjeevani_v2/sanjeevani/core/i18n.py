@@ -402,6 +402,21 @@ TEXT = {
     "doc_send": {"en": "🟢 Send to family on WhatsApp", "kn": "🟢 ವಾಟ್ಸಾಪ್‌ನಲ್ಲಿ ಕುಟುಂಬಕ್ಕೆ ಕಳುಹಿಸಿ", "hi": "🟢 व्हाट्सऐप पर परिवार को भेजें"},
     "doc_preview": {"en": "See the summary", "kn": "ಸಾರಾಂಶ ನೋಡಿ", "hi": "सारांश देखें"},
 
+    # ---------- home tiles ----------
+    "greet_morning": {"en": "Good morning", "kn": "ಶುಭೋದಯ", "hi": "सुप्रभात"},
+    "greet_afternoon": {"en": "Good afternoon", "kn": "ಶುಭ ಮಧ್ಯಾಹ್ನ", "hi": "नमस्कार"},
+    "greet_evening": {"en": "Good evening", "kn": "ಶುಭ ಸಂಜೆ", "hi": "शुभ संध्या"},
+    "how_help": {"en": "How can Sanjeevani help you today?", "kn": "ಇಂದು ಸಂಜೀವಿನಿ ನಿಮಗೆ ಹೇಗೆ ಸಹಾಯ ಮಾಡಲಿ?", "hi": "आज संजीवनी आपकी कैसे मदद करे?"},
+    "tile_em_title": {"en": "Emergency? Tap here", "kn": "ತುರ್ತು? ಇಲ್ಲಿ ಒತ್ತಿ", "hi": "आपातकाल? यहाँ दबाएँ"},
+    "tile_em": {"en": "Snakebite, dog bite, chest pain or a fall. Tap and speak. Help and family are alerted.",
+                "kn": "ಹಾವು, ನಾಯಿ ಕಡಿತ, ಎದೆ ನೋವು ಅಥವಾ ಬಿದ್ದರೆ. ಒತ್ತಿ ಮಾತನಾಡಿ. ಸಹಾಯ ಮತ್ತು ಕುಟುಂಬಕ್ಕೆ ತಿಳಿಸಲಾಗುತ್ತದೆ.",
+                "hi": "साँप, कुत्ते का काटना, सीने में दर्द या गिरना। दबाएँ और बोलें। मदद और परिवार को सूचना जाएगी।"},
+    "tile_dis": {"en": "Read the prescription, get a timetable and cheaper medicines.", "kn": "ಔಷಧಿ ಚೀಟಿ ಓದಿ, ವೇಳಾಪಟ್ಟಿ ಮತ್ತು ಕಡಿಮೆ ಬೆಲೆಯ ಔಷಧಿ ಪಡೆಯಿರಿ.", "hi": "पर्ची पढ़ें, समय-सारणी और सस्ती दवाएँ पाएँ।"},
+    "tile_eld": {"en": "Tablet photo check, phone reminders, doctor summary.", "kn": "ಮಾತ್ರೆ ಫೋಟೋ ಪರಿಶೀಲನೆ, ಫೋನ್ ನೆನಪುಗಳು, ವೈದ್ಯರ ಸಾರಾಂಶ.", "hi": "गोली की फोटो जाँच, फ़ोन रिमाइंडर, डॉक्टर सारांश।"},
+    "tile_chat": {"en": "Talk every day. Sanjeevani listens and cares.", "kn": "ಪ್ರತಿದಿನ ಮಾತನಾಡಿ. ಸಂಜೀವಿನಿ ಕೇಳುತ್ತದೆ, ಕಾಳಜಿ ವಹಿಸುತ್ತದೆ.", "hi": "रोज़ बात करें। संजीवनी सुनती है और ध्यान रखती है।"},
+    "tile_sar": {"en": "Floods and landslides: who to rescue first.", "kn": "ಪ್ರವಾಹ ಮತ್ತು ಭೂಕುಸಿತ: ಮೊದಲು ಯಾರನ್ನು ರಕ್ಷಿಸಬೇಕು.", "hi": "बाढ़ और भूस्खलन: पहले किसे बचाना है।"},
+    "tile_dash": {"en": "Everything the agent did, live.", "kn": "ಏಜೆಂಟ್ ಮಾಡಿದ ಎಲ್ಲವೂ, ನೇರವಾಗಿ.", "hi": "एजेंट ने जो कुछ किया, लाइव।"},
+
     # ---------- dashboard ----------
     "dash_title": {"en": "📋 Dashboard", "kn": "📋 ಡ್ಯಾಶ್‌ಬೋರ್ಡ್", "hi": "📋 डैशबोर्ड"},
     "dash_intro": {"en": "For hospitals, pharmacies and families: every action the agent took.",
