@@ -4,7 +4,7 @@ from datetime import datetime
 
 import streamlit as st
 
-from core import ai, voice
+from core import ai, profile, voice
 from core.i18n import t
 from core.reminders import IST
 
@@ -66,10 +66,13 @@ div[class*="st-key-tile_"] [data-testid="stButton"] button p{color:#fff!importan
 hour = datetime.now(IST).hour
 greet = t("greet_morning") if hour < 12 else t("greet_afternoon") if hour < 17 else t("greet_evening")
 gps = st.session_state.get("gps")
+me = profile.get()
+greet_line = f"{greet}, {me['name'].split()[0]}" if me.get("name") else greet
+avatar = profile.avatar_html(64) if (me.get("photo") or me.get("name")) else ""
 chip = f'<div class="sj-chip">📍 {html.escape(gps["name"])}</div>' if gps else ""
 st.markdown(f"""
 <div class="sj-hero">
-<div class="sj-greet">{html.escape(greet)} 🙏</div>
+<div style="display:flex;align-items:center;gap:1rem">{avatar}<div class="sj-greet">{html.escape(greet_line)} 🙏</div></div>
 <div class="sj-title">Sanjeevani</div>
 <div class="sj-tag">{html.escape(t('how_help'))}</div>
 {chip}

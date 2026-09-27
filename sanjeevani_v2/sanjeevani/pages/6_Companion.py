@@ -2,7 +2,7 @@ import hashlib
 
 import streamlit as st
 
-from core import ai, companion, location, notify, state, ui, voice
+from core import ai, companion, location, notify, profile, state, ui, voice
 from core.i18n import lang, t
 
 p = companion.patient()
@@ -52,8 +52,9 @@ def handle(user_text):
 
 
 # ---------- the conversation ----------
+user_avatar = profile.photo_bytes()
 for i, m in enumerate(st.session_state.chat):
-    with st.chat_message(m["role"], avatar="🌿" if m["role"] == "assistant" else "👵"):
+    with st.chat_message(m["role"], avatar="🌿" if m["role"] == "assistant" else (user_avatar or "👵")):
         st.write(m["content"])
         if m["level"] == "emergency":
             ui.card("danger", t("chat_danger"))

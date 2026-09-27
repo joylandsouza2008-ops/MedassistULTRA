@@ -40,7 +40,10 @@ with st.sidebar:
         me = profile.get()
         n = len(notify.contacts())
         if me.get("name") or n:
-            st.caption(i18n.t("prof_sidebar", name=me.get("name") or "—", n=n))
+            st.markdown(f'<div style="display:flex;align-items:center;gap:.7rem;margin-bottom:.3rem">'
+                        f'{profile.avatar_html(46)}<div style="color:#EAF4EE;font-weight:700;line-height:1.3">'
+                        f'{i18n.t("prof_sidebar", name=me.get("name") or "—", n=n)}</div></div>',
+                        unsafe_allow_html=True)
         st.page_link("pages/7_Profile.py", label=i18n.t("prof_setup") if not n else i18n.t("nav_profile"), icon="👤")
 
 if st.session_state.pop("goto_help", False):
