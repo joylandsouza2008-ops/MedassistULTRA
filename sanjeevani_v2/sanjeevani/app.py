@@ -37,6 +37,7 @@ pages = [
     st.Page("pages/6_Companion.py", title=i18n.t("nav_chat"), icon="💬"),
     st.Page("pages/5_Disaster_Mode.py", title=i18n.t("nav_sar"), icon="🌊"),
     st.Page("pages/4_Dashboard.py", title=i18n.t("nav_dash"), icon="📋"),
+    st.Page("pages/8_About.py", title=i18n.t("nav_about"), icon="ℹ️"),
 ]
 pg = st.navigation(pages)
 with st.sidebar:

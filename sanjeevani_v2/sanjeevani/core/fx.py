@@ -59,23 +59,21 @@ body::after{content:"";position:fixed;inset:0;z-index:-2;pointer-events:none;opa
 .stApp h1,.stApp h2,.stApp h3,.stApp h4,.stApp h5{color:var(--mx-text)}
 .stApp [data-testid="stCaptionContainer"]{color:var(--mx-muted)!important}
 .stApp [data-testid="stAlert"] [data-testid="stMarkdownContainer"],.stApp [data-testid="stAlert"] p{color:var(--mx-text)!important}
-.stApp [data-testid="stAlert"]>div{border-radius:16px;backdrop-filter:blur(6px)}
+.stApp [data-testid="stAlert"]>div{border-radius:4px}
 
-/* ---- glass surfaces ---- */
+/* ---- flat surfaces ---- */
 .stApp [data-testid^="stBaseButton-secondary"],.stApp [data-testid^="stBaseLinkButton-secondary"],
 .stApp .stButton>button[kind="secondary"],.stApp .stLinkButton>a[kind="secondary"],
-.stApp .stDownloadButton>button[kind="secondary"]{background:var(--mx-glass)!important;color:var(--mx-text)!important;
-  backdrop-filter:blur(8px)}
+.stApp .stDownloadButton>button[kind="secondary"]{background:var(--mx-glass)!important;color:var(--mx-text)!important}
 .stApp [data-testid^="stBaseButton-secondary"] *,.stApp [data-testid^="stBaseLinkButton-secondary"] *{color:var(--mx-text)!important}
 .stApp [data-testid^="stBaseButton-secondary"]:hover,.stApp [data-testid^="stBaseLinkButton-secondary"]:hover{background:var(--mx-glass-2)!important}
 .stApp [data-testid="stFileUploaderDropzone"],.stApp [data-testid="stAudioInput"]>div,.stApp [data-testid="stChatInput"],
-.stApp [data-testid="stChatInput"]>div{background:var(--mx-glass)!important;border:1px dashed var(--mx-line)!important;border-radius:18px!important}
+.stApp [data-testid="stChatInput"]>div{background:var(--mx-glass)!important;border:1px solid var(--mx-line)!important;border-radius:4px!important}
 .stApp [data-testid="stFileUploaderDropzone"] *,.stApp [data-testid="stChatInput"] textarea{color:var(--mx-text)!important;
   -webkit-text-fill-color:var(--mx-text)}
 .stApp [data-testid="stChatInput"] textarea{background:transparent!important}
-.stApp [data-testid="stVerticalBlockBorderWrapper"]{border-color:var(--mx-line)!important;background:rgba(255,255,255,.035);
-  backdrop-filter:blur(6px)}
-.stApp [data-testid="stExpander"] details{background:rgba(255,255,255,.035);border-color:var(--mx-line)!important;backdrop-filter:blur(6px)}
+.stApp [data-testid="stVerticalBlockBorderWrapper"]{border-color:var(--mx-line)!important;background:rgba(255,255,255,.03)}
+.stApp [data-testid="stExpander"] details{background:rgba(255,255,255,.03);border-color:var(--mx-line)!important}
 .stApp [data-testid="stExpander"] summary *{color:var(--mx-text)!important}
 
 /* ---- motion: entrance animations ---- */
@@ -87,10 +85,8 @@ body::after{content:"";position:fixed;inset:0;z-index:-2;pointer-events:none;opa
 @keyframes mxBob{0%,100%{transform:translateY(0) rotate(-3deg)}50%{transform:translateY(-10px) rotate(3deg)}}
 @keyframes mxSpin{to{--mx-ang:360deg}}
 @keyframes mxBeat{0%,40%,100%{transform:scale(1)}10%{transform:scale(1.16)}20%{transform:scale(.97)}30%{transform:scale(1.1)}}
-.sj-head{animation:mxDrop .55s cubic-bezier(.2,.8,.2,1) both}
-.sj-head::after{content:"";position:absolute;top:0;bottom:0;left:0;width:35%;pointer-events:none;
-  background:linear-gradient(90deg,transparent,rgba(255,255,255,.16),transparent);animation:mxSheen 6s ease-in-out infinite 1s}
-.sj-head-icon{animation:mxBob 6s ease-in-out infinite}
+.mx-head{animation:mxDrop .5s cubic-bezier(.2,.8,.2,1) both}
+.mx-pict{animation:mxPop .5s cubic-bezier(.2,.8,.2,1) both .1s}
 .sj-card{animation:mxPop .4s ease both}
 .stApp [data-testid="stChatMessage"]{animation:mxRise .45s ease both}
 .mx-word{display:inline-block;animation:mxFadeWord .6s cubic-bezier(.2,.8,.2,1) both}
@@ -102,7 +98,7 @@ body::after{content:"";position:fixed;inset:0;z-index:-2;pointer-events:none;opa
 @keyframes mxRipple{0%{opacity:.9;transform:scale(.4)}100%{opacity:0;transform:scale(5.5)}}
 #mx-fireflies{position:fixed;inset:0;width:100vw;height:100vh;z-index:-1;pointer-events:none}
 #mx-silk{position:fixed;inset:0;width:100vw!important;height:100vh!important;z-index:-2;pointer-events:none;
-  filter:blur(6px) saturate(1.1)}
+  filter:blur(6px);opacity:.7}
 
 /* ---- button effects: fill from the centre, neon glow, scale, dashed ring ---- */
 .stApp .stButton>button,.stApp .stDownloadButton>button,.stApp .stLinkButton>a,.stApp [data-testid="stPageLink"] a{
@@ -116,21 +112,12 @@ body::after{content:"";position:fixed;inset:0;z-index:-2;pointer-events:none;opa
 .stApp .stButton>button:hover::before,.stApp .stDownloadButton>button:hover::before,.stApp .stLinkButton>a:hover::before,
 .stApp [data-testid="stPageLink"] a:hover::before{transform:translate(-50%,-50%) scale(1)}
 .stApp .stButton>button:hover,.stApp .stDownloadButton>button:hover,.stApp .stLinkButton>a:hover{
-  transform:translateY(-2px) scale(1.02);border-color:rgba(62,224,170,.8)!important;
-  box-shadow:0 0 0 1px rgba(62,224,170,.55),0 0 18px rgba(62,224,170,.45),0 0 40px rgba(62,224,170,.18)!important}
+  border-color:rgba(94,227,180,.8)!important;box-shadow:0 0 14px rgba(62,224,170,.28)!important}
 .stApp .stButton>button[kind="primary"]:hover,.stApp .stLinkButton>a[kind="primary"]:hover,
 .stApp .stDownloadButton>button[kind="primary"]:hover{--mx-fill:rgba(255,255,255,.30);
-  box-shadow:0 0 0 1px rgba(255,255,255,.35),0 0 22px var(--sj-a1,#3EE0AA),0 10px 30px rgba(0,0,0,.35)!important}
+  box-shadow:0 0 16px var(--sj-a1,#3EE0AA)!important}
 .stApp .stButton>button:active,.stApp .stLinkButton>a:active,.stApp [data-testid="stPageLink"] a:active{transform:scale(.97)}
-div[class*="st-key-tile_"] [data-testid="stPageLink"] a{--mx-fill:rgba(255,255,255,.45)}
-div[class*="st-key-tile_"] [data-testid="stPageLink"] a:hover{box-shadow:0 0 0 2px rgba(255,255,255,.55),0 0 24px rgba(255,255,255,.35)}
 section[data-testid="stSidebar"] .stButton>button:hover{transform:none}
-.sj-t-icon{position:relative}
-.sj-t-icon::after{content:"";position:absolute;inset:-8px;border-radius:50%;border:2px dashed rgba(255,255,255,.8);
-  opacity:0;transform:scale(.7);transition:opacity .3s ease,transform .3s ease}
-div[class*="st-key-tile_"]:hover .sj-t-icon::after{opacity:1;transform:scale(1);animation:mxRingSpin 7s linear infinite}
-@keyframes mxRingSpin{to{transform:scale(1) rotate(360deg)}}
-.sj-chip{transition:box-shadow .25s ease}.sj-chip:hover{box-shadow:0 0 18px rgba(62,224,170,.45)}
 
 /* ---- calm mode: phone setting or the sidebar toggle ---- */
 @media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
@@ -407,17 +394,10 @@ def hero_scene():
 
 HERO_CSS = """
 <style>
-.sj-hero{position:relative;overflow:hidden;border-radius:28px;padding:2rem 2.2rem 170px;margin-bottom:1.2rem;
-  background:linear-gradient(170deg,#0B2E40 0%,#0C3A3C 45%,#0A4034 100%);border:1px solid rgba(255,255,255,.08);
-  box-shadow:0 20px 50px rgba(0,0,0,.35);animation:mxDrop .6s cubic-bezier(.2,.8,.2,1) both}
-.sj-hero .mx-scene{position:absolute;left:0;right:0;bottom:0;width:100%;height:240px;overflow:visible;pointer-events:none}
-.sj-hero>.sj-hero-in{position:relative;z-index:1}
-.sj-greet{color:#F6C25B;font-size:1.25rem;font-weight:700}
-.sj-title{font-size:3.4rem;font-weight:800;line-height:1.05;margin:.35rem 0 .5rem;letter-spacing:-.01em;
-  background:linear-gradient(90deg,#FFFFFF 0%,#BFF7E2 45%,#3EE0AA 100%);-webkit-background-clip:text;background-clip:text;color:transparent}
-.sj-tag{color:#D6EDE6;font-size:1.2rem;max-width:620px;line-height:1.5}
-.sj-chip{display:inline-flex;gap:.35rem;margin-top:.9rem;background:rgba(255,255,255,.12);color:#fff;border-radius:999px;
-  padding:.3rem .9rem;font-weight:600;font-size:.95rem;border:1px solid rgba(255,255,255,.18);backdrop-filter:blur(6px)}
+/* the village horizon at the bottom of the home page */
+.mx-horizon{position:relative;height:210px;margin:2.2rem 0 .5rem;overflow:hidden;border-bottom:1px solid rgba(255,255,255,.14)}
+.mx-horizon .mx-scene{position:absolute;left:0;right:0;bottom:0;width:100%;height:100%;overflow:visible;pointer-events:none}
+@media (max-width:640px){.mx-horizon{height:160px}}
 .mx-ecg-base{fill:none;stroke:rgba(62,224,170,.18);stroke-width:2}
 .mx-ecg{fill:none;stroke:#3EE0AA;stroke-width:3;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:180 2400;
   filter:drop-shadow(0 0 6px #3EE0AA);animation:mxEcg 4.2s linear infinite}
@@ -429,6 +409,5 @@ HERO_CSS = """
 .mx-st{fill:#fff;animation:mxBlink 4s ease-in-out infinite}
 .mx-glow{animation:mxLamp 3.5s ease-in-out infinite}
 @keyframes mxLamp{0%,100%{opacity:.75}50%{opacity:1}}
-@media (max-width:640px){.sj-title{font-size:2.6rem}.sj-hero{padding:1.5rem 1.3rem 150px}.sj-hero .mx-scene{height:175px}}
 </style>
 """

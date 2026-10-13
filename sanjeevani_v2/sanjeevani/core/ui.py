@@ -5,97 +5,91 @@ import streamlit as st
 
 CSS = """
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;600;800&family=Noto+Sans+Kannada:wght@400;700&family=Noto+Sans+Devanagari:wght@400;700&display=swap');
-.stApp, .stApp p, .stApp li, .stApp label, .stApp input, .stApp textarea, .stApp button,
-.stApp h1, .stApp h2, .stApp h3, .stApp h4 {
-  font-family: 'Noto Sans', 'Noto Sans Kannada', 'Noto Sans Devanagari', system-ui, sans-serif;
+/* MedX design: hospital and road signage. Flat colour, nearly square corners, big clear type, no pills. */
+@import url('https://fonts.googleapis.com/css2?family=Anek+Latin:wdth,wght@75..125,400..800&family=Anek+Kannada:wdth,wght@75..125,400..800&family=Anek+Devanagari:wdth,wght@75..125,400..800&display=swap');
+:root {--r: 4px; --line: rgba(255,255,255,.14); --txt: #EEF3F1; --mut: #A3B8B1;}
+.stApp, .stApp p, .stApp li, .stApp label, .stApp input, .stApp textarea, .stApp button, .stApp a,
+.stApp h1, .stApp h2, .stApp h3, .stApp h4, .stApp div {
+  font-family: 'Anek Latin', 'Anek Kannada', 'Anek Devanagari', 'Noto Sans', system-ui, sans-serif;
 }
+.stApp p, .stApp li {line-height: 1.6;}
 #MainMenu, footer, .stAppDeployButton {visibility: hidden;}
-.stButton > button, .stLinkButton > a {border-radius: 12px; font-weight: 700; min-height: 3rem;}
-.stTextInput input, .stTextArea textarea {border-radius: 12px;}
-div[data-testid="stMetric"] {background: rgba(255,255,255,.06); border-radius: 16px; padding: .8rem 1rem;
-  border: 1px solid rgba(255,255,255,.12); backdrop-filter: blur(6px);}
-div[data-testid="stExpander"] details {border-radius: 14px;}
-.sj-head {background: linear-gradient(135deg, #0F3D2E, #1F6F4A); border-radius: 18px;
-  padding: 1.4rem 1.6rem; margin-bottom: 1rem;}
-.sj-head-title {color: #FFFFFF; font-size: 2rem; font-weight: 800; line-height: 1.2;}
-.sj-head-sub {color: #CFE3D8; font-size: 1.05rem; margin-top: .4rem; line-height: 1.5;}
-.sj-card {border: 1px solid; border-radius: 16px; padding: 1rem 1.2rem; margin: .6rem 0;}
-.sj-card-title {font-weight: 800; font-size: 1.25rem; margin-bottom: .35rem;}
-.sj-card-body {color: #16241C !important; font-size: 1.08rem; line-height: 1.55;}
-.sj-list, .sj-list li {margin: .2rem 0 0 1.1rem; color: #16241C !important; line-height: 1.6;}
-.sj-list li {margin-left: 0;}
-.sj-pill {display: inline-block; border-radius: 999px; padding: .15rem .75rem; font-weight: 700;
-  font-size: .9rem; margin-top: .5rem; background: #1F6F4A; color: #FFFFFF;}
-.sj-real {display: flex; justify-content: space-between; gap: 1rem; padding: .55rem .2rem;
-  border-bottom: 1px solid rgba(255,255,255,.12); color: #E9F6F2;}
-.sj-real a {color: #3EE0AA; font-weight: 700; text-decoration: none;}
 
-/* ---------- shared page style (colour comes from the page header) ---------- */
-.sj-head {position: relative; overflow: hidden; border-radius: 24px; padding: 1.6rem 1.8rem;
-  background: linear-gradient(135deg, var(--sj-a2, #0F3D2E), var(--sj-a1, #1F6F4A));
-  box-shadow: 0 14px 36px rgba(0,0,0,.35); border: 1px solid rgba(255,255,255,.10);}
-.sj-head-icon {position: absolute; right: -6px; bottom: -34px; font-size: 8.5rem; opacity: .16; line-height: 1;}
-.stApp h3, .stApp h4 {border-left: 6px solid var(--sj-a1, #1F6F4A); padding-left: .65rem;}
+/* ---------- page header: a coloured sign square + a big condensed title ---------- */
+.mx-head {display: flex; align-items: center; gap: 1.1rem; padding: .4rem 0 1.1rem; margin-bottom: 1rem;
+  border-bottom: 1px solid var(--line);}
+.mx-pict {width: 76px; height: 76px; flex-shrink: 0; border-radius: var(--r); background: var(--sj-a1, #2BB98A);
+  display: flex; align-items: center; justify-content: center; font-size: 2.5rem; line-height: 1;}
+.mx-title {color: #FFFFFF; font-size: 2.7rem; font-weight: 800; line-height: 1.05; font-variation-settings: "wdth" 82;
+  margin: 0;}
+.mx-sub {color: var(--mut); font-size: 1.12rem; margin-top: .35rem; line-height: 1.5; max-width: 760px;}
+@media (max-width: 640px) {.mx-pict {width: 58px; height: 58px; font-size: 1.9rem} .mx-title {font-size: 2.05rem}}
+.stApp h3, .stApp h4 {font-weight: 800; font-variation-settings: "wdth" 88; color: #FFFFFF; margin-top: 1.2rem;}
+.st-key-home_link a {padding: 0 !important; background: none !important; border: none !important; min-height: 0 !important;}
+.st-key-home_link a * {color: var(--mut) !important; font-weight: 600;}
+.st-key-home_link a:hover * {color: #FFFFFF !important;}
+
+/* ---------- result cards (status colours, flat) ---------- */
+.sj-card {border: 1px solid; border-radius: var(--r); padding: 1rem 1.2rem; margin: .6rem 0;}
+.sj-card-title {font-weight: 800; font-size: 1.3rem; margin-bottom: .35rem;}
+.sj-card-body {color: #16241C !important; font-size: 1.1rem; line-height: 1.55;}
+.sj-list, .sj-list li {color: #16241C !important; line-height: 1.6;}
+.sj-list {margin: .2rem 0 0 1.1rem;}
+.sj-pill {display: inline-block; border-radius: var(--r); padding: .15rem .6rem; font-weight: 700; font-size: .9rem;
+  margin-top: .5rem; background: #0F6B50; color: #FFFFFF;}
+.sj-real {display: flex; justify-content: space-between; gap: 1rem; padding: .6rem 0; border-bottom: 1px solid var(--line);
+  color: var(--txt);}
+.sj-real a {color: #5EE3B4; font-weight: 700; text-decoration: none;}
+
+/* ---------- controls ---------- */
+.stButton > button, .stLinkButton > a, .stDownloadButton > button {border-radius: var(--r) !important; font-weight: 700;
+  min-height: 3rem;}
 .stButton > button[kind="primary"], .stDownloadButton > button[kind="primary"], .stLinkButton > a[kind="primary"] {
-  background: linear-gradient(135deg, var(--sj-a2, #0F3D2E), var(--sj-a1, #1F6F4A)) !important;
-  border: none !important; color: #fff !important; box-shadow: 0 8px 22px rgba(0,0,0,.35), 0 0 0 1px rgba(255,255,255,.08) inset;}
-.stButton > button[kind="primary"] *, .stDownloadButton > button[kind="primary"] *, .stLinkButton > a[kind="primary"] * {color: #fff !important;}
-.stButton > button, .stDownloadButton > button, .stLinkButton > a {transition: transform .12s ease, box-shadow .12s ease;}
-.stButton > button:hover, .stDownloadButton > button:hover, .stLinkButton > a:hover {transform: translateY(-2px);
-  box-shadow: 0 10px 20px rgba(0,0,0,.14);}
-.stButton > button[kind="secondary"], .stLinkButton > a[kind="secondary"] {border: 2px solid var(--sj-a1, #1F6F4A);}
-.stTabs [data-baseweb="tab-list"] {gap: .4rem; flex-wrap: wrap;}
-.stTabs [data-baseweb="tab"] {border-radius: 999px; padding: .45rem 1rem; background: rgba(255,255,255,.07);
-  border: 1px solid rgba(255,255,255,.12); font-weight: 700; color: #E9F6F2;}
+  background: var(--sj-a1, #0F6B50) !important; border: none !important; color: #fff !important;}
+.stButton > button[kind="primary"] *, .stDownloadButton > button[kind="primary"] *, .stLinkButton > a[kind="primary"] * {
+  color: #fff !important;}
+.stButton > button[kind="secondary"], .stLinkButton > a[kind="secondary"], .stDownloadButton > button[kind="secondary"] {
+  border: 1.5px solid var(--line) !important;}
+.stTextInput input, .stTextArea textarea, [data-baseweb="select"] > div {border-radius: var(--r) !important; font-size: 1.1rem;}
+.stTabs [data-baseweb="tab-list"] {gap: 1.4rem; flex-wrap: wrap; border-bottom: 1px solid var(--line);}
+.stTabs [data-baseweb="tab"] {background: none !important; border-top: 0 !important; border-left: 0 !important; border-right: 0 !important; padding: .55rem 0; font-weight: 700; color: var(--mut);
+  border-bottom: 3px solid transparent; border-radius: 0;}
 .stTabs [data-baseweb="tab"] * {color: inherit !important;}
-.stTabs [aria-selected="true"] {background: var(--sj-a1, #1F6F4A) !important; color: #fff !important;}
+.stTabs [aria-selected="true"] {color: #FFFFFF !important; border-bottom-color: var(--sj-a1, #2BB98A) !important;}
 .stTabs [data-baseweb="tab-highlight"], .stTabs [data-baseweb="tab-border"] {display: none;}
-div[data-testid="stVerticalBlockBorderWrapper"] {border-radius: 20px;}
-div[data-testid="stMetric"] {border-top: 5px solid var(--sj-a1, #1F6F4A);}
-div[data-testid="stChatMessage"] {border-radius: 20px; padding: .8rem 1rem; background: rgba(255,255,255,.06);
-  border: 1px solid rgba(255,255,255,.10); backdrop-filter: blur(8px);}
-div[data-testid="stExpander"] details {border-radius: 16px;}
-div[data-testid="stDataFrame"] {border-radius: 14px; overflow: hidden;}
-.stTextInput input, .stTextArea textarea {border-radius: 14px; font-size: 1.1rem;}
-/* ---------- sidebar: dark green, rounded menu, settings card ---------- */
-section[data-testid="stSidebar"] {background: linear-gradient(180deg, rgba(5,36,31,.93) 0%, rgba(8,34,52,.90) 100%) !important;
-  backdrop-filter: blur(14px); border-right: 1px solid rgba(255,255,255,.08);}
-[data-testid="stSidebarNav"] a {transition: background .15s, transform .15s !important;}
-[data-testid="stSidebarNav"] a:hover {transform: translateX(4px);}
+div[data-testid="stMetric"] {background: rgba(255,255,255,.04); border-radius: var(--r); padding: .8rem 1rem;
+  border: 1px solid var(--line); border-top: 4px solid var(--sj-a1, #2BB98A);}
+div[data-testid="stChatMessage"] {border-radius: var(--r); padding: .9rem 1rem; background: rgba(255,255,255,.045);
+  border: 1px solid var(--line);}
+div[data-testid="stExpander"] details {border-radius: var(--r) !important;}
+div[data-testid="stVerticalBlockBorderWrapper"] {border-radius: var(--r) !important;}
+div[data-testid="stDataFrame"] {border-radius: var(--r); overflow: hidden;}
+
+/* ---------- sidebar: plain and solid ---------- */
+section[data-testid="stSidebar"] {background: #061C19 !important; border-right: 1px solid var(--line);}
 section[data-testid="stSidebar"] p, section[data-testid="stSidebar"] span, section[data-testid="stSidebar"] label,
-section[data-testid="stSidebar"] div[data-testid="stCaptionContainer"], section[data-testid="stSidebar"] summary {color: #EAF4EE !important;}
-[data-testid="stSidebarNav"] a {border-radius: 14px; margin: 4px 6px; padding: .55rem .9rem; transition: background .12s;}
-[data-testid="stSidebarNav"] a:hover {background: rgba(255,255,255,.12);}
-[data-testid="stSidebarNav"] a[aria-current="page"] {background: rgba(255,255,255,.2); box-shadow: inset 5px 0 0 #E8A33D;}
+section[data-testid="stSidebar"] div[data-testid="stCaptionContainer"], section[data-testid="stSidebar"] summary {color: #E4EEEA !important;}
+[data-testid="stSidebarNav"]::before {content: "MedX"; display: block; color: #FFFFFF; font-size: 1.9rem; font-weight: 800;
+  font-variation-settings: "wdth" 80; padding: .2rem .9rem .8rem;}
+[data-testid="stSidebarNav"] a {border-radius: var(--r); margin: 2px 6px; padding: .5rem .8rem; transition: background .12s;}
+[data-testid="stSidebarNav"] a:hover {background: rgba(255,255,255,.07);}
+[data-testid="stSidebarNav"] a[aria-current="page"] {background: rgba(255,255,255,.12);}
 [data-testid="stSidebarNav"] a span {color: #FFFFFF !important; font-weight: 600;}
-[data-testid="stSidebarNav"] a[href$="/Emergency"] {background: rgba(231,76,60,.45);}
-[data-testid="stSidebarNav"] a[href$="/Emergency"]:hover {background: rgba(231,76,60,.65);}
-[data-testid="stSidebarNavSeparator"] {border-color: rgba(255,255,255,.2);}
-[data-testid="stSidebarNav"]::before {content: "🩺 MedX"; display: block; font-size: 1.7rem; font-weight: 800;
-  padding: .3rem .9rem .9rem; background: linear-gradient(90deg, #FFFFFF, #3EE0AA); -webkit-background-clip: text;
-  background-clip: text; color: transparent;}
-.st-key-side_help button {background: linear-gradient(135deg, #E74C3C, #A93226) !important; border: none !important;
-  border-radius: 16px !important; min-height: 3.4rem; box-shadow: 0 6px 16px rgba(0,0,0,.28);
-  animation: sjpulse 2.2s infinite;}
-.st-key-side_help button p {color: #FFFFFF !important; font-size: 1.3rem !important; font-weight: 800 !important;}
-@keyframes sjpulse {0% {box-shadow: 0 0 0 0 rgba(231,76,60,.55);} 70% {box-shadow: 0 0 0 14px rgba(231,76,60,0);}
-  100% {box-shadow: 0 0 0 0 rgba(231,76,60,0);}}
-.st-key-sb_settings {background: rgba(255,255,255,.08); border: 1px solid rgba(255,255,255,.15);
-  border-radius: 18px; padding: .9rem .9rem .6rem;}
-.sj-sb-title {color: #E8A33D; font-weight: 800; letter-spacing: .06em; text-transform: uppercase; font-size: .85rem;}
+[data-testid="stSidebarNavSeparator"] {border-color: var(--line);}
+.st-key-side_help button {background: #D7263D !important; border: none !important; min-height: 3.4rem;}
+.st-key-side_help button p {color: #FFFFFF !important; font-size: 1.35rem !important; font-weight: 800 !important;}
+@keyframes sjpulse {0% {box-shadow: 0 0 0 0 rgba(215,38,61,.55);} 70% {box-shadow: 0 0 0 14px rgba(215,38,61,0);}
+  100% {box-shadow: 0 0 0 0 rgba(215,38,61,0);}}
+.st-key-sb_settings {border-top: 1px solid var(--line); padding-top: .8rem;}
+.sj-sb-title {color: var(--mut); font-weight: 700; font-size: .95rem;}
 section[data-testid="stSidebar"] [data-baseweb="select"] > div,
 section[data-testid="stSidebar"] [data-baseweb="input"], section[data-testid="stSidebar"] [data-baseweb="base-input"] {
-  background: #FFFFFF !important; border-color: rgba(255,255,255,.4) !important; border-radius: 12px !important;}
+  background: #FFFFFF !important; border-color: transparent !important;}
 section[data-testid="stSidebar"] [data-baseweb="select"] *, section[data-testid="stSidebar"] input {
   color: #16241C !important; -webkit-text-fill-color: #16241C;}
 section[data-testid="stSidebar"] [data-baseweb="select"] svg {fill: #16241C !important;}
-section[data-testid="stSidebar"] .stButton > button {background: rgba(255,255,255,.14); border: 1px solid rgba(255,255,255,.3);}
-section[data-testid="stSidebar"] div[data-testid="stExpander"] details {background: rgba(255,255,255,.06);
-  border-color: rgba(255,255,255,.2);}
-.st-key-home_link a {border-radius: 999px; background: rgba(255,255,255,.08); border: 1px solid rgba(255,255,255,.14);
-  font-weight: 700; padding: .25rem .9rem;}
-.st-key-home_link a * {color: #E9F6F2 !important;}
+section[data-testid="stSidebar"] .stButton > button {background: rgba(255,255,255,.08); border: 1px solid var(--line);}
+section[data-testid="stSidebar"] div[data-testid="stExpander"] details {background: none; border-color: var(--line);}
 </style>
 """
 
@@ -112,28 +106,36 @@ def css():
 
 
 THEMES = {
-    "em": ("#E74C3C", "#A93226", "🚨"),
-    "dis": ("#1ABC9C", "#117864", "🏥"),
-    "eld": ("#F39C12", "#BA4A00", "👵"),
-    "chat": ("#A569BD", "#5B2C6F", "💬"),
-    "sar": ("#3498DB", "#1A5276", "🌊"),
-    "dash": ("#5D6D7E", "#283747", "📋"),
-    "prof": ("#E86A8A", "#943155", "👤"),
-    "home": ("#2BB98A", "#0F3D2E", "🩺"),
+    "em": ("#D7263D", "#D7263D", "🚨"),
+    "dis": ("#0F8B6F", "#0F8B6F", "🏥"),
+    "eld": ("#B8641A", "#B8641A", "👵"),
+    "chat": ("#7B4FC9", "#7B4FC9", "💬"),
+    "sar": ("#1F6FC5", "#1F6FC5", "🌊"),
+    "dash": ("#4E6475", "#4E6475", "📋"),
+    "prof": ("#C2416E", "#C2416E", "👤"),
+    "about": ("#3E8E5E", "#3E8E5E", "ℹ️"),
+    "home": ("#0F6B50", "#0F6B50", "🩺"),
 }
 
 
+def _strip_icon(title):
+    """Titles in the translations start with an emoji; the sign square shows it instead."""
+    first, _, rest = str(title).partition(" ")
+    return rest if rest and not any(ch.isalnum() for ch in first) else str(title)
+
+
 def header(title, subtitle="", theme="home"):
-    """Coloured page banner. Also sets the page's accent colour for buttons, tabs and headings."""
+    """Page header: a coloured sign square with the page's icon, and a big title.
+    Also sets the page's accent colour for buttons, tabs and headings."""
     a1, a2, icon = THEMES.get(theme, THEMES["home"])
     st.markdown(f"<style>:root{{--sj-a1:{a1};--sj-a2:{a2};}}</style>", unsafe_allow_html=True)
     if theme != "home":
         from core.i18n import t
         with st.container(key="home_link"):
-            st.page_link("pages/home.py", label=t("nav_home"), icon="🏠")
-    sub = f'<div class="sj-head-sub">{html.escape(subtitle)}</div>' if subtitle else ""
-    st.markdown(f'<div class="sj-head"><div class="sj-head-icon">{icon}</div>'
-                f'<div class="sj-head-title">{html.escape(title)}</div>{sub}</div>',
+            st.page_link("pages/home.py", label=t("nav_home"), icon=":material/arrow_back:")
+    sub = f'<div class="mx-sub">{html.escape(subtitle)}</div>' if subtitle else ""
+    st.markdown(f'<div class="mx-head"><div class="mx-pict">{icon}</div><div>'
+                f'<div class="mx-title">{html.escape(_strip_icon(title))}</div>{sub}</div></div>',
                 unsafe_allow_html=True)
 
 
