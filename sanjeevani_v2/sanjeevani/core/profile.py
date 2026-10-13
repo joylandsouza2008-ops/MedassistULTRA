@@ -1,6 +1,7 @@
 """The user's profile + emergency contacts, saved in the browser (localStorage)
 on their own phone, so it survives refreshes and restarts and stays on their device."""
 import json
+import re
 
 import streamlit as st
 
@@ -35,7 +36,7 @@ def load_once():
         st.session_state.profile = _defaults()
         return
     try:
-        p = {**EMPTY, **json.loads(raw)}
+        p = clean({**EMPTY, **json.loads(raw)})
     except Exception:
         p = _defaults()
     st.session_state.profile = p
@@ -47,6 +48,7 @@ def get():
 
 def save(p):
     """Keep it for this session and write it to the browser's storage."""
+    p = clean(p)
     st.session_state.profile = p
     if streamlit_js_eval is None:
         return False
@@ -101,9 +103,26 @@ def avatar_html(size=56, photo=None, name=None):
     name = (p.get("name") if name is None else name) or "?"
     style = (f"width:{size}px;height:{size}px;border-radius:50%;border:3px solid rgba(255,255,255,.9);"
              "box-shadow:0 4px 12px rgba(0,0,0,.2);flex-shrink:0;")
-    if photo:
+    # the photo comes from browser storage, so only accept a plain base64 picture
+    if photo and re.fullmatch(r"data:image/(jpeg|png|webp);base64,[A-Za-z0-9+/=]+", photo or ""):
         return f'<img src="{photo}" style="{style}object-fit:cover" alt="">'
     initials = "".join(w[0] for w in name.split()[:2]).upper() or "?"
     return (f'<div style="{style}display:flex;align-items:center;justify-content:center;'
             f'background:linear-gradient(135deg,#943155,#E86A8A);color:#fff;font-weight:800;'
             f'font-size:{int(size * .38)}px">{_html.escape(initials)}</div>')
+
+
+LIMITS = {"name": 60, "age": 3, "phone": 16, "village": 100, "blood": 3, "notes": 300}
+
+
+def clean(p):
+    """Keep only expected fields, as short plain text (browser storage can be edited by anyone with the phone)."""
+    out = dict(EMPTY)
+    for k, n in LIMITS.items():
+        out[k] = str(p.get(k) or "")[:n].strip()
+    photo = str(p.get("photo") or "")
+    out["photo"] = photo if len(photo) < 200_000 and photo.startswith("data:image/") else ""
+    out["contacts"] = [{"name": str(c.get("name") or "")[:40], "relation": str(c.get("relation") or "")[:30],
+                        "phone": str(c.get("phone") or "")[:16]}
+                       for c in (p.get("contacts") or [])[:20] if isinstance(c, dict)]
+    return out

@@ -4,22 +4,13 @@ from datetime import datetime
 
 import streamlit as st
 
-from core import ai, profile, sos, voice
+from core import ai, fx, profile, sos, voice
 from core.i18n import t
 from core.reminders import IST
 
 # ---------- look and feel ----------
 st.markdown("""
 <style>
-.sj-hero{background:linear-gradient(135deg,#0F3D2E 0%,#1F6F4A 100%);border-radius:24px;padding:2rem 2.2rem;
-  margin-bottom:1.2rem;position:relative;overflow:hidden}
-.sj-hero:after{content:"🩺";position:absolute;right:-10px;bottom:-40px;font-size:11rem;opacity:.12}
-.sj-greet{color:#E8A33D;font-size:1.25rem;font-weight:700}
-.sj-title{color:#fff;font-size:2.9rem;font-weight:800;line-height:1.1;margin:.25rem 0 .5rem}
-.sj-tag{color:#CFE3D8;font-size:1.15rem;max-width:720px}
-.sj-chip{display:inline-block;margin-top:.9rem;background:rgba(255,255,255,.14);color:#fff;border-radius:999px;
-  padding:.3rem .9rem;font-weight:600;font-size:.95rem}
-
 /* big clickable tiles: the whole card is one button */
 div[class*="st-key-tile_"]{position:relative;border-radius:24px;padding:1.3rem 1.4rem 1.1rem;min-height:185px;
   overflow:hidden;box-shadow:0 8px 22px rgba(15,61,46,.16);transition:transform .15s ease, box-shadow .15s ease}
@@ -37,7 +28,7 @@ div[class*="st-key-tile_"] [data-testid="stButton"] button p{color:#fff!importan
 .st-key-tile_em .stButton button p, .st-key-tile_em [data-testid="stButton"] button p{color:#C0392B!important;
   font-size:1.35rem!important}
 /* decorations never block clicks */
-.sj-t-bg,.sj-t-go,.sj-t-icon,.sj-hero:after{pointer-events:none}
+.sj-t-bg,.sj-t-go,.sj-t-icon{pointer-events:none}
 /* the link button inside each tile */
 div[class*="st-key-tile_"] [data-testid="stPageLink"],div[class*="st-key-tile_"] .stPageLink{position:relative;z-index:3}
 div[class*="st-key-tile_"] a[data-testid="stPageLink-NavLink"],div[class*="st-key-tile_"] [data-testid="stPageLink"] a{
@@ -46,8 +37,9 @@ div[class*="st-key-tile_"] a[data-testid="stPageLink-NavLink"],div[class*="st-ke
   text-decoration:none!important}
 div[class*="st-key-tile_"] [data-testid="stPageLink"] a:hover{background:rgba(255,255,255,.36)!important}
 div[class*="st-key-tile_"] [data-testid="stPageLink"] a *{color:#fff!important;font-weight:800!important;font-size:1.1rem!important}
-.st-key-tile_em [data-testid="stPageLink"] a{background:#fff!important;border:none;min-height:3.5rem}
-.st-key-tile_em [data-testid="stPageLink"] a *{color:#C0392B!important;font-size:1.3rem!important}
+div.st-key-tile_em [data-testid="stPageLink"] a,div.st-key-tile_em a[data-testid="stPageLink-NavLink"]{background:#fff!important;
+  border:none!important;min-height:3.5rem;box-shadow:0 8px 20px rgba(0,0,0,.25)}
+div.st-key-tile_em [data-testid="stPageLink"] a *,div.st-key-tile_em a[data-testid="stPageLink-NavLink"] *{color:#C0392B!important;font-size:1.3rem!important}
 /* giant instant SOS button */
 .st-key-home_sos button{background:linear-gradient(135deg,#E74C3C,#922B21)!important;border:none!important;
   border-radius:22px!important;min-height:4.4rem;box-shadow:0 10px 24px rgba(192,57,43,.35);animation:sjpulse 2.2s infinite}
@@ -71,10 +63,32 @@ div[class*="st-key-tile_"] [data-testid="stPageLink"] a *{color:#fff!important;f
 @keyframes sjpulse{0%{box-shadow:0 0 0 0 rgba(231,76,60,.55)}70%{box-shadow:0 0 0 18px rgba(231,76,60,0)}
   100%{box-shadow:0 0 0 0 rgba(231,76,60,0)}}
 
+/* night-theme polish: coloured glow, staggered entrance, light trail, shimmer */
+div[class*="st-key-tile_"]{box-shadow:0 14px 34px rgba(0,0,0,.38),inset 0 1px 0 rgba(255,255,255,.18)!important;
+  animation:mxRise .6s cubic-bezier(.2,.8,.2,1) both;transition:transform .18s ease,box-shadow .18s ease!important;
+  will-change:transform}
+div[class*="st-key-tile_"]:hover{box-shadow:0 22px 44px rgba(0,0,0,.45),0 0 0 1px rgba(255,255,255,.25) inset!important}
+.st-key-tile_em{animation:mxRise .6s cubic-bezier(.2,.8,.2,1) both .05s,sjpulse 2.2s infinite .7s!important}
+.st-key-tile_dis{animation-delay:.12s}.st-key-tile_eld{animation-delay:.19s}.st-key-tile_chat{animation-delay:.26s}
+.st-key-tile_sar{animation-delay:.33s}.st-key-tile_dash{animation-delay:.4s}.st-key-tile_prof{animation-delay:.47s}
+.st-key-tile_em::before{content:"";position:absolute;inset:0;border-radius:24px;padding:2px;pointer-events:none;
+  background:conic-gradient(from var(--mx-ang),transparent 0 70%,rgba(255,255,255,.95) 82%,transparent 92%);
+  -webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;
+  mask-composite:exclude;animation:mxSpin 4s linear infinite}
+.st-key-tile_em .sj-t-icon{animation:mxBeat 1.6s ease-in-out infinite}
+div[class*="st-key-tile_"]:hover .sj-t-bg{transform:scale(1.12) rotate(-6deg)}
+.sj-t-bg{transition:transform .4s ease}
+.st-key-home_sos button{position:relative;overflow:hidden;animation:mxRise .5s ease both,sjpulse 2.2s infinite .6s!important}
+.st-key-home_sos button::after{content:"";position:absolute;top:0;bottom:0;left:0;width:30%;pointer-events:none;
+  background:linear-gradient(90deg,transparent,rgba(255,255,255,.35),transparent);animation:mxSheen 3.2s ease-in-out infinite}
 .sj-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:14px;margin:.4rem 0 1.2rem}
-.sj-stat{background:#EEF5F0;border-radius:18px;padding:1.1rem}
-.sj-num{color:#1F6F4A;font-size:2.2rem;font-weight:800;line-height:1.1}
-.sj-lbl{color:#34463C;font-size:.98rem;margin-top:.3rem}
+.sj-stat{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);border-radius:20px;padding:1.2rem;
+  backdrop-filter:blur(8px);animation:mxRise .6s ease both;transition:transform .2s ease,border-color .2s ease}
+.sj-stat:hover{transform:translateY(-4px);border-color:rgba(62,224,170,.5)}
+.sj-stat:nth-child(2){animation-delay:.08s}.sj-stat:nth-child(3){animation-delay:.16s}.sj-stat:nth-child(4){animation-delay:.24s}
+.sj-num{font-size:2.4rem;font-weight:800;line-height:1.1;background:linear-gradient(90deg,#3EE0AA,#F6C25B);
+  -webkit-background-clip:text;background-clip:text;color:transparent}
+.sj-lbl{color:#C9E2DB;font-size:.98rem;margin-top:.3rem}
 </style>
 """, unsafe_allow_html=True)
 
@@ -86,13 +100,15 @@ me = profile.get()
 greet_line = f"{greet}, {me['name'].split()[0]}" if me.get("name") else greet
 avatar = profile.avatar_html(64) if (me.get("photo") or me.get("name")) else ""
 chip = f'<div class="sj-chip">📍 {html.escape(gps["name"])}</div>' if gps else ""
+st.markdown(fx.HERO_CSS, unsafe_allow_html=True)
 st.markdown(f"""
-<div class="sj-hero">
-<div style="display:flex;align-items:center;gap:1rem">{avatar}<div class="sj-greet">{html.escape(greet_line)} 🙏</div></div>
+<div class="sj-hero">{fx.hero_scene()}
+<div class="sj-hero-in">
+<div style="display:flex;align-items:center;gap:1rem">{avatar}<div class="sj-greet">{fx.words(greet_line + " 🙏", .1)}</div></div>
 <div class="sj-title">MedX</div>
-<div class="sj-tag">{html.escape(t('how_help'))}</div>
+<div class="sj-tag">{fx.words(t('how_help'), .35)}</div>
 {chip}
-</div>""", unsafe_allow_html=True)
+</div></div>""", unsafe_allow_html=True)
 
 
 def tile(key, icon, title, sub, page, arrow=True, button_label=None):
@@ -137,7 +153,8 @@ voice.listen_button(" ".join([greet, t("how_help"), t("tile_em_title"), t("nav_d
 
 # ---------- why it matters ----------
 st.markdown(f"### {t('impact_title')}")
-stats = [("~58,000", t("imp1")), ("13+ crore", t("imp2")), ("₹351", t("imp3")), ("3", t("imp4"))]
+stats = [(fx.count("~58,000", 58000, pre="~"), t("imp1")), (fx.count("13+ crore", 13, suf="+ crore"), t("imp2")),
+         (fx.count("₹351", 351, pre="₹"), t("imp3")), (fx.count("3", 3), t("imp4"))]
 st.markdown('<div class="sj-grid">' + "".join(
     f'<div class="sj-stat"><div class="sj-num">{n}</div><div class="sj-lbl">{html.escape(l)}</div></div>'
     for n, l in stats) + "</div>", unsafe_allow_html=True)
@@ -185,3 +202,4 @@ with right:
 
 st.divider()
 st.caption(t("disclaimer"))
+st.caption(f"{t('footer')} · [{t('footer_code')}](https://github.com/joylandsouza2008-ops/MedassistULTRA)")

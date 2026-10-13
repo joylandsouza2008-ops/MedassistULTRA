@@ -55,6 +55,6 @@ def transcribe(audio_file):
     with sr.AudioFile(io.BytesIO(audio_file.getvalue())) as source:
         audio = recognizer.record(source)
     try:
-        return recognizer.recognize_google(audio, language=STT_LANG.get(i18n.lang(), "en-IN"))
+        return recognizer.recognize_google(audio, language=STT_LANG.get(i18n.lang(), "en-IN"))[:500]
     except (sr.UnknownValueError, sr.RequestError):
         return None

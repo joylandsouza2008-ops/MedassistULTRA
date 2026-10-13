@@ -1,6 +1,7 @@
 """Emergency agent: understand the message -> find the right hospital ->
 send alerts -> guide first aid (on screen and by voice)."""
 import html
+import re
 
 import pandas as pd
 import streamlit as st
@@ -240,7 +241,8 @@ def render_result(res, loc, family_contact="Family member"):
     if real:
         rows = []
         for h in real[:6]:
-            phone = f'<a href="tel:{h["phone"]}">📞 {h["phone"]}</a>' if h.get("phone") else ""
+            num = re.sub(r"[^\d+]", "", str(h.get("phone") or ""))[:16]   # map data is outside text: digits only
+            phone = f'<a href="tel:{num}">📞 {html.escape(str(h["phone"]))[:30]}</a>' if num else ""
             rows.append(f'<div class="sj-real"><span>🏥 {html.escape(h["name"])}</span>'
                         f'<span>{h["km"]} km · {phone}</span></div>')
         st.markdown("".join(rows), unsafe_allow_html=True)

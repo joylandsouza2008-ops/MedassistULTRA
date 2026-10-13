@@ -73,7 +73,8 @@ def render_panel():
         if not panel["safe"] and people and a.button(t("sos_safe"), width="stretch", key=f"sos_safe_{panel['id']}"):
             who = profile.get().get("name") or "The MedX user"
             if notify.auto_ready():
-                notify.send_sos(f"MEDX: {who} is safe now. The SOS was a false alarm. Sorry for the worry.", "", call=False)
+                notify.send_sos(f"MEDX: {who} is safe now. The SOS was a false alarm. Sorry for the worry.", "",
+                                call=False, limit=False)
             state.add_alert("SOS cancelled", "All emergency contacts", f"{who} is safe")
             panel["safe"] = True
             st.rerun()

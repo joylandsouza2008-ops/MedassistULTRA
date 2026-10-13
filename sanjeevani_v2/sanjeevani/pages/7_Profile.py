@@ -41,13 +41,13 @@ with ph2:
 # ---------- about you ----------
 st.markdown(f"### {t('prof_about')}")
 c1, c2, c3 = st.columns([3, 1, 2])
-name = c1.text_input(t("prof_name"), value=p.get("name", ""))
-age = c2.text_input(t("prof_age"), value=str(p.get("age", "")))
-phone = c3.text_input(t("prof_phone"), value=p.get("phone", ""))
+name = c1.text_input(t("prof_name"), value=p.get("name", ""), max_chars=60)
+age = c2.text_input(t("prof_age"), value=str(p.get("age", "")), max_chars=3)
+phone = c3.text_input(t("prof_phone"), value=p.get("phone", ""), max_chars=16)
 c4, c5 = st.columns([3, 1])
-village = c4.text_input(t("prof_village"), value=p.get("village", ""))
+village = c4.text_input(t("prof_village"), value=p.get("village", ""), max_chars=100)
 blood = c5.selectbox(t("prof_blood"), BLOOD, index=BLOOD.index(p.get("blood", "")) if p.get("blood", "") in BLOOD else 0)
-notes = st.text_area(t("prof_notes"), value=p.get("notes", ""), height=80)
+notes = st.text_area(t("prof_notes"), value=p.get("notes", ""), height=80, max_chars=300)
 
 # ---------- emergency contacts (no limit) ----------
 st.markdown(f"### 🆘 {t('prof_contacts')}")

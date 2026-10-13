@@ -1,10 +1,12 @@
 """MedX: one voice-first AI agent from emergency to recovery to everyday care.
 Run with:  python -m streamlit run app.py"""
+import html
+
 import streamlit as st
 
-from core import i18n, location, notify, profile, sos, state, ui
+from core import fx, i18n, location, notify, profile, sos, state, ui
 
-st.set_page_config(page_title="MedX", page_icon="🩺", layout="wide")
+st.set_page_config(page_title="MedX · Emergency and medicine help", page_icon="🩺", layout="wide")
 state.init()
 
 # Settings in the sidebar, shared by every page
@@ -18,10 +20,12 @@ with st.sidebar:
                      format_func=lambda k: i18n.LANGS[k], key="lang")
         st.toggle(i18n.t("voice_on"), value=True, key="voice_on")
         st.toggle(i18n.t("big_text"), value=True, key="big_text")
+        st.toggle(i18n.t("fx_on"), value=True, key="fx_on")
         location.auto_detect()
     profile.load_once()
 
 ui.css()
+fx.inject()
 i18n.big_text_css()
 
 pages = [
@@ -42,7 +46,7 @@ with st.sidebar:
         if me.get("name") or n:
             st.markdown(f'<div style="display:flex;align-items:center;gap:.7rem;margin-bottom:.3rem">'
                         f'{profile.avatar_html(46)}<div style="color:#EAF4EE;font-weight:700;line-height:1.3">'
-                        f'{i18n.t("prof_sidebar", name=me.get("name") or "—", n=n)}</div></div>',
+                        f'{html.escape(i18n.t("prof_sidebar", name=me.get("name") or "—", n=n))}</div></div>',
                         unsafe_allow_html=True)
         st.page_link("pages/7_Profile.py", label=i18n.t("prof_setup") if not n else i18n.t("nav_profile"), icon="👤")
 

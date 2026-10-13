@@ -47,7 +47,7 @@ if st.session_state.get("gps") and st.session_state.get("em_place") == st.sessio
     g = st.session_state.gps
     st.success(t("gps_ok", place=g["name"], acc=g["acc"] or "?"))
 
-st.text_input(t("loc_label"), key="em_place")
+st.text_input(t("loc_label"), key="em_place", max_chars=100)
 
 # ---------- speak ----------
 st.markdown(f"**{t('what_happened')}**")
@@ -66,7 +66,7 @@ if audio is not None:
         else:
             st.warning(t("not_heard"))
 
-st.text_area(t("message"), key="em_text", height=90)
+st.text_area(t("message"), key="em_text", height=90, max_chars=500)
 
 with st.expander(t("ex_title")):
     cols = st.columns(len(EXAMPLES))

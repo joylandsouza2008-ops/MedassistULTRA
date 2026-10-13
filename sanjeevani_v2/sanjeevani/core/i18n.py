@@ -16,10 +16,7 @@ TEXT = {
     "nav_dis": {"en": "After discharge", "kn": "ಡಿಸ್ಚಾರ್ಜ್ ನಂತರ", "hi": "छुट्टी के बाद"},
     "nav_eld": {"en": "Elderly care", "kn": "ಹಿರಿಯರ ಆರೈಕೆ", "hi": "बुज़ुर्गों की देखभाल"},
     "nav_dash": {"en": "Dashboard", "kn": "ಡ್ಯಾಶ್‌ಬೋರ್ಡ್", "hi": "डैशबोर्ड"},
-    "disclaimer": {
-        "en": "MedX never diagnoses and never changes a prescription. Medical decisions always go to a doctor or pharmacist. All data here is demo data.",
-        "kn": "ಮೆಡ್‌ಎಕ್ಸ್ ಯಾವತ್ತೂ ರೋಗ ನಿರ್ಧರಿಸುವುದಿಲ್ಲ, ಔಷಧಿ ಚೀಟಿಯನ್ನು ಬದಲಾಯಿಸುವುದಿಲ್ಲ. ವೈದ್ಯಕೀಯ ನಿರ್ಧಾರಗಳು ಯಾವಾಗಲೂ ವೈದ್ಯರು ಅಥವಾ ಫಾರ್ಮಸಿಸ್ಟ್‌ಗೆ ಹೋಗುತ್ತವೆ. ಇಲ್ಲಿರುವ ಎಲ್ಲಾ ಮಾಹಿತಿ ಡೆಮೊ ಮಾಹಿತಿ.",
-        "hi": "मेडएक्स कभी बीमारी का निदान नहीं करती और कभी दवा की पर्ची नहीं बदलती। चिकित्सा फैसले हमेशा डॉक्टर या फार्मासिस्ट के पास जाते हैं। यहाँ का सारा डेटा डेमो डेटा है।"},
+    "disclaimer": {"en": "MedX never diagnoses and never changes a prescription. Medical decisions always go to a doctor or pharmacist. Hospital stock, pharmacies, medicine prices and the sample patients are demo data; maps and nearby hospitals are live from OpenStreetMap.", "kn": "ಮೆಡ್‌ಎಕ್ಸ್ ಯಾವತ್ತೂ ರೋಗ ನಿರ್ಧರಿಸುವುದಿಲ್ಲ, ಔಷಧಿ ಚೀಟಿಯನ್ನು ಬದಲಾಯಿಸುವುದಿಲ್ಲ. ವೈದ್ಯಕೀಯ ನಿರ್ಧಾರಗಳು ಯಾವಾಗಲೂ ವೈದ್ಯರು ಅಥವಾ ಫಾರ್ಮಸಿಸ್ಟ್‌ಗೆ ಹೋಗುತ್ತವೆ. ಆಸ್ಪತ್ರೆ ದಾಸ್ತಾನು, ಔಷಧಾಲಯಗಳು, ಔಷಧಿ ಬೆಲೆಗಳು ಮತ್ತು ಮಾದರಿ ರೋಗಿಗಳು ಡೆಮೊ ಮಾಹಿತಿ; ನಕ್ಷೆ ಮತ್ತು ಹತ್ತಿರದ ಆಸ್ಪತ್ರೆಗಳು OpenStreetMap ನಿಂದ ನೇರವಾಗಿ ಬರುತ್ತವೆ.", "hi": "मेडएक्स कभी बीमारी का निदान नहीं करती और कभी दवा की पर्ची नहीं बदलती। चिकित्सा फैसले हमेशा डॉक्टर या फार्मासिस्ट के पास जाते हैं। अस्पताल स्टॉक, दवा दुकानें, दवाओं के दाम और नमूना मरीज़ डेमो डेटा हैं; नक्शा और पास के अस्पताल OpenStreetMap से लाइव आते हैं।"},
     "slot_m": {"en": "Morning (8 AM)", "kn": "ಬೆಳಿಗ್ಗೆ (8 ಗಂಟೆ)", "hi": "सुबह (8 बजे)"},
     "slot_a": {"en": "Afternoon (2 PM)", "kn": "ಮಧ್ಯಾಹ್ನ (2 ಗಂಟೆ)", "hi": "दोपहर (2 बजे)"},
     "slot_n": {"en": "Night (9 PM)", "kn": "ರಾತ್ರಿ (9 ಗಂಟೆ)", "hi": "रात (9 बजे)"},
@@ -272,10 +269,10 @@ TEXT = {
     # ---------- new home page ----------
     "hero_try": {"en": "Try the emergency demo", "kn": "ತುರ್ತು ಡೆಮೊ ಪ್ರಯತ್ನಿಸಿ", "hi": "आपातकाल डेमो आज़माएँ"},
     "impact_title": {"en": "Why it matters", "kn": "ಇದು ಏಕೆ ಮುಖ್ಯ", "hi": "यह क्यों ज़रूरी है"},
-    "imp1": {"en": "snakebite deaths in India every year (2020 study estimate)", "kn": "ಭಾರತದಲ್ಲಿ ಪ್ರತಿ ವರ್ಷ ಹಾವು ಕಡಿತದ ಸಾವುಗಳು (2020 ಅಧ್ಯಯನದ ಅಂದಾಜು)", "hi": "भारत में हर साल साँप के काटने से मौतें (2020 अध्ययन का अनुमान)"},
-    "imp2": {"en": "Indians aged 60 and above", "kn": "60 ವರ್ಷ ಮೇಲ್ಪಟ್ಟ ಭಾರತೀಯರು", "hi": "60 साल से ऊपर के भारतीय"},
-    "imp3": {"en": "saved on one discharge course by switching to generics (demo)", "kn": "ಜನರಿಕ್ ಔಷಧಿಯಿಂದ ಒಂದು ಕೋರ್ಸ್‌ನಲ್ಲಿ ಉಳಿತಾಯ (ಡೆಮೊ)", "hi": "जेनेरिक दवा से एक कोर्स में बचत (डेमो)"},
-    "imp4": {"en": "languages, fully voice-first", "kn": "ಭಾಷೆಗಳು, ಸಂಪೂರ್ಣ ಧ್ವನಿ ಆಧಾರಿತ", "hi": "भाषाएँ, पूरी तरह आवाज़ पर आधारित"},
+    "imp1": {"en": "snakebite deaths in India every year (Million Death Study, eLife 2020)", "kn": "ಭಾರತದಲ್ಲಿ ಪ್ರತಿ ವರ್ಷ ಹಾವು ಕಡಿತದ ಸಾವುಗಳು (Million Death Study, eLife 2020)", "hi": "भारत में हर साल साँप के काटने से मौतें (Million Death Study, eLife 2020)"},
+    "imp2": {"en": "Indians aged 60 and above (NSO, Elderly in India 2021)", "kn": "60 ವರ್ಷ ಮೇಲ್ಪಟ್ಟ ಭಾರತೀಯರು (NSO, Elderly in India 2021)", "hi": "60 साल से ऊपर के भारतीय (NSO, Elderly in India 2021)"},
+    "imp3": {"en": "saved on one sample discharge course by switching to Jan Aushadhi generics (demo prices)", "kn": "ಜನ ಔಷಧಿ ಜನರಿಕ್ ಔಷಧಿಯಿಂದ ಒಂದು ಮಾದರಿ ಕೋರ್ಸ್‌ನಲ್ಲಿ ಉಳಿತಾಯ (ಡೆಮೊ ಬೆಲೆಗಳು)", "hi": "जन औषधि जेनेरिक दवा से एक नमूना कोर्स में बचत (डेमो दाम)"},
+    "imp4": {"en": "languages: Kannada, Hindi and English, by voice or text", "kn": "ಭಾಷೆಗಳು: ಕನ್ನಡ, ಹಿಂದಿ ಮತ್ತು ಇಂಗ್ಲಿಷ್, ಧ್ವನಿ ಅಥವಾ ಬರಹದಲ್ಲಿ", "hi": "भाषाएँ: कन्नड़, हिंदी और अंग्रेज़ी, बोलकर या लिखकर"},
     "what_title": {"en": "What MedX does", "kn": "ಮೆಡ್‌ಎಕ್ಸ್ ಏನು ಮಾಡುತ್ತದೆ", "hi": "मेडएक्स क्या करती है"},
     "card_sar": {"en": "Floods and landslides: turns hundreds of calls and voice notes into a rescue priority map.",
                  "kn": "ಪ್ರವಾಹ ಮತ್ತು ಭೂಕುಸಿತ: ನೂರಾರು ಕರೆಗಳು ಮತ್ತು ಧ್ವನಿ ಸಂದೇಶಗಳನ್ನು ರಕ್ಷಣಾ ಆದ್ಯತೆಯ ನಕ್ಷೆಯಾಗಿ ಮಾಡುತ್ತದೆ.",
@@ -463,13 +460,24 @@ TEXT = {
     # ---------- one-press SOS ----------
     "sos_now": {"en": "🆘 SOS", "kn": "🆘 SOS", "hi": "🆘 SOS"},
     "sos_home_btn": {"en": "🆘 SOS: alert my family now", "kn": "🆘 SOS: ಈಗಲೇ ನನ್ನ ಕುಟುಂಬಕ್ಕೆ ತಿಳಿಸಿ", "hi": "🆘 SOS: अभी मेरे परिवार को बताएँ"},
-    "sos_sent_title": {"en": "🆘 SOS sent to {n} people", "kn": "🆘 {n} ಜನರಿಗೆ SOS ಕಳುಹಿಸಲಾಗಿದೆ", "hi": "🆘 {n} लोगों को SOS भेजा गया"},
+    "sos_sent_title": {"en": "🆘 SOS sent to your emergency contacts ({n})", "kn": "🆘 ನಿಮ್ಮ ತುರ್ತು ಸಂಪರ್ಕಗಳಿಗೆ SOS ಕಳುಹಿಸಲಾಗಿದೆ ({n})", "hi": "🆘 आपके आपातकालीन संपर्कों को SOS भेजा गया ({n})"},
     "sos_hint": {"en": "SMS, alarm and your live location went to all your emergency contacts.",
                  "kn": "ನಿಮ್ಮ ಎಲ್ಲಾ ತುರ್ತು ಸಂಪರ್ಕಗಳಿಗೆ SMS, ಎಚ್ಚರಿಕೆ ಮತ್ತು ನಿಮ್ಮ ನೇರ ಸ್ಥಳ ಕಳುಹಿಸಲಾಗಿದೆ.",
                  "hi": "आपके सभी आपातकालीन संपर्कों को SMS, अलार्म और आपकी लाइव लोकेशन भेजी गई।"},
     "sos_calling": {"en": "📞 Opening the call to {name}...", "kn": "📞 {name} ಅವರಿಗೆ ಕರೆ ತೆರೆಯಲಾಗುತ್ತಿದೆ...", "hi": "📞 {name} को कॉल खोली जा रही है..."},
     "sos_safe": {"en": "✅ I'm safe (cancel alert)", "kn": "✅ ನಾನು ಸುರಕ್ಷಿತ (ಎಚ್ಚರಿಕೆ ರದ್ದು)", "hi": "✅ मैं सुरक्षित हूँ (अलर्ट रद्द करें)"},
     "sos_safe_sent": {"en": "✅ Everyone has been told you're safe.", "kn": "✅ ನೀವು ಸುರಕ್ಷಿತರಾಗಿದ್ದೀರಿ ಎಂದು ಎಲ್ಲರಿಗೂ ತಿಳಿಸಲಾಗಿದೆ.", "hi": "✅ सबको बता दिया गया कि आप सुरक्षित हैं।"},
+
+    "fx_on": {"en": "✨ Animations", "kn": "✨ ಅನಿಮೇಷನ್‌ಗಳು", "hi": "✨ एनिमेशन"},
+
+    "sos_wait": {"en": "An alert was just sent. You can send another in {s} seconds. If it's urgent, call 108 or use the call buttons.",
+                 "kn": "ಈಗಷ್ಟೇ ಎಚ್ಚರಿಕೆ ಕಳುಹಿಸಲಾಗಿದೆ. {s} ಸೆಕೆಂಡುಗಳ ನಂತರ ಮತ್ತೊಂದು ಕಳುಹಿಸಬಹುದು. ತುರ್ತು ಇದ್ದರೆ 108ಕ್ಕೆ ಕರೆ ಮಾಡಿ ಅಥವಾ ಕರೆ ಬಟನ್ ಬಳಸಿ.",
+                 "hi": "अभी-अभी अलर्ट भेजा गया है। {s} सेकंड बाद दूसरा भेज सकते हैं। ज़रूरी हो तो 108 पर कॉल करें या कॉल बटन दबाएँ।"},
+
+    "footer": {"en": "Built by Team Orbit, St Joseph Engineering College, Mangaluru.",
+               "kn": "ಟೀಮ್ ಆರ್ಬಿಟ್, ಸೇಂಟ್ ಜೋಸೆಫ್ ಎಂಜಿನಿಯರಿಂಗ್ ಕಾಲೇಜು, ಮಂಗಳೂರು ನಿರ್ಮಿಸಿದೆ.",
+               "hi": "टीम ऑर्बिट, सेंट जोसेफ इंजीनियरिंग कॉलेज, मंगलुरु द्वारा बनाया गया।"},
+    "footer_code": {"en": "Source code", "kn": "ಮೂಲ ಕೋಡ್", "hi": "सोर्स कोड"},
 
     # ---------- dashboard ----------
     "dash_title": {"en": "📋 Dashboard", "kn": "📋 ಡ್ಯಾಶ್‌ಬೋರ್ಡ್", "hi": "📋 डैशबोर्ड"},

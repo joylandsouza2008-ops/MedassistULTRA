@@ -1,6 +1,13 @@
 [theme]
-primaryColor = "#1F6F4A"
-backgroundColor = "#FFFFFF"
-secondaryBackgroundColor = "#EEF5F0"
-textColor = "#16241C"
+base = "dark"
+primaryColor = "#3EE0AA"
+backgroundColor = "#051C19"
+secondaryBackgroundColor = "#0E3330"
+textColor = "#E9F6F2"
 font = "sans serif"
+
+[server]
+# small photos are plenty for prescriptions and medicine strips
+maxUploadSize = 10
+# protects buttons and uploads from being triggered by other websites (cross-site request forgery)
+enableXsrfProtection = true

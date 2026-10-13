@@ -88,7 +88,7 @@ if audio is not None:
             st.warning(t("not_heard"))
 
 # ---------- type ----------
-typed = st.chat_input(t("chat_placeholder"))
+typed = st.chat_input(t("chat_placeholder"), max_chars=500)
 if typed:
     handle(typed)
     st.rerun()

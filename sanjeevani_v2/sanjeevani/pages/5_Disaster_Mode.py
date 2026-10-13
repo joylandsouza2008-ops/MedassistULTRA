@@ -89,7 +89,7 @@ if audio is not None:
 a, b = st.columns(2)
 place_name = a.selectbox(t("sar_where"), [p["name"] for p in places])
 source = b.selectbox(t("sar_source"), ["call", "whatsapp", "sms"], format_func=lambda s: t("src_" + s))
-text = st.text_area(t("sar_text"), key="sar_text", height=80)
+text = st.text_area(t("sar_text"), key="sar_text", height=80, max_chars=500)
 
 if st.button(t("sar_add_btn"), type="primary") and text.strip():
     flags = people = None

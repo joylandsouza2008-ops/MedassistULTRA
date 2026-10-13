@@ -86,6 +86,33 @@ When an emergency is detected, MedX reaches the family automatically, with a Goo
 
 Family numbers go in the sidebar under **🆘 SOS contacts** (or `SOS_CONTACTS` in secrets). See `.streamlit/secrets.toml.example`.
 
+## Security
+
+- **Keys stay on the server.** AI, SMS and alarm keys live in `.streamlit/secrets.toml` or the host's environment
+  variables, never in the code or the browser.
+- **The API can't be used to change data by strangers.** Reading is open, but changing hospital stock or adding
+  disaster reports needs the header `X-API-Key` matching `MEDX_API_KEY`. With no key set, changes are switched off.
+- **Rate limits.** The API allows 60 requests a minute per client. The SOS button allows one alert round every
+  30 seconds per phone and 20 rounds in 10 minutes for the whole app, so nobody can use up the SIM's daily SMS limit
+  by pressing it again and again. The "I'm safe" message always gets through.
+- **The WhatsApp webhook only accepts messages signed by Twilio** when `TWILIO_AUTH_TOKEN` is set.
+- **Outside text is cleaned before it's shown.** Names, map data and anything read back from browser storage are
+  escaped or checked before going into the page; profile fields and every text box have length limits.
+- **Uploads are capped at 10 MB**, and Streamlit's cross-site request forgery protection is on.
+- No passwords or logins are stored. The profile and contacts stay in the person's own browser.
+
+## Look and feel
+
+MedX uses a "night in the village" theme: a deep teal night sky with drifting aurora light and stars, glowing
+fireflies that drift across every page (and move away from the mouse), and a home scene with hills, coconut palms,
+a lit hut and a heartbeat line pulsing across. Page headers slide in, home tiles rise one after another and tilt
+under the mouse, numbers count up, and every tap makes a small ripple. Buttons fill with light from the centre and glow
+on hover, tile icons get a spinning dashed ring, and scrolling is smoothed with Lenis on computers.
+
+All of it lives in `core/fx.py`. Turn it off with **✨ Animations** in the sidebar; it also switches off by itself
+when the phone's "reduce motion" setting is on. The dark theme for Streamlit's own buttons and boxes is in
+`.streamlit/config.toml` (on Streamlit Cloud, also copy that file into a `.streamlit` folder at the repo root).
+
 ## MedX API
 
 The same agent brain as an API, so WhatsApp bots, IVR phone systems, hospital software or a mobile app can use it.
@@ -100,9 +127,9 @@ Open `http://127.0.0.1:8000/docs` to try every endpoint in the browser.
 |---|---|
 | `POST /emergency` | Message + location → emergency type, nearest hospital that has the treatment, first aid |
 | `GET /hospitals?need=antivenom_vials&village=Kinnigoli` | Hospitals nearest first, filtered by what they have |
-| `PATCH /hospitals/{id}/stock` | Hospitals update their stock |
+| `PATCH /hospitals/{id}/stock` | Hospitals update their stock (needs the `X-API-Key` header) |
 | `POST /medicines/check` | Timetable, duplicate medicines, generic savings |
-| `POST /sar/reports` | Add a flood/landslide report, get its priority |
+| `POST /sar/reports` | Add a flood/landslide report, get its priority (needs the `X-API-Key` header) |
 | `GET /sar/zones` | Rescue zones, most urgent first, with teams to send |
 | `POST /webhook/whatsapp` | Ready for a Twilio WhatsApp number: replies with the hospital and first aid |
 
